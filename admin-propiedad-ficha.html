@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Propiedad - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* --- ESTILOS FICHA --- */
+        .card-ficha {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: white;
+            border-radius: 4px;
+            padding: 30px;
+        }
+
+        .ficha-title {
+            color: #4986e7;
+            /* Azul claro */
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .price-tag {
+            background-color: #4986e7;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-block;
+        }
+
+        .section-header {
+            font-weight: 700;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-list li i {
+            color: #28a745;
+            /* Check verde */
+            margin-right: 8px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        .description-box {
+            background-color: #f8f9fa;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 4px;
+            line-height: 1.6;
+        }
+
+        .description-title {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 15px;
+            font-weight: 600;
+            border-radius: 4px 4px 0 0;
+            margin-top: 30px;
+        }
+
+        .map-container {
+            height: 350px;
+            background-color: #eee;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        /* Galería */
+        .gallery-preview {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-item {
+            flex: 1;
+            height: 250px;
+            background-color: #eee;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
+            <div class="mb-2 position-relative d-inline-block">
+                <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
+            </div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
+            <div class="mt-2">
+                <span class="badge bg-primary" id="sidebar_operacion">-</span>
+            </div>
+            <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
+        </div>
+
+        <div class="py-2">
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
+            <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
+                Editar</a>
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
+                y videos</a>
+            <a href="#" id="link_documentos" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i>
+                Documentos</a>
+            <a href="#" id="link_estado" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado /
+                Config.</a>
+            <a href="#" id="link_bitacora" class="d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i>
+                Bitácora</a>
+            <a href="#" id="link_propietario" class="d-flex align-items-center"><i class="bi bi-person me-2"></i>
+                Propietario</a>
+            <a href="#" id="link_informes" class="d-flex align-items-center"><i class="bi bi-list-ul me-2"></i> Informes
+                prop.</a>
+
+            <a href="#" class="active d-flex align-items-center"><i class="bi bi-book me-2"></i> Ficha</a>
+
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-display me-2"></i> Portales</a>
+            <a href="#" class="d-flex align-items-center text-warning"><i class="bi bi-layers me-2"></i> Duplicar</a>
+
+            <hr class="border-secondary mx-3">
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+                listado</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="card card-ficha">
+
+            <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-3">
+                <div>
+                    <div class="text-muted small fw-bold mb-1">
+                        <i class="bi bi-house-fill me-1"></i> FICHA DE PROPIEDAD <span class="fw-normal"
+                            id="ficha_header_cod"></span>
+                    </div>
+                    <span class="badge bg-secondary mb-2" id="ficha_badge_cod">Cód. ...</span>
+
+                    <h1 class="ficha-title" id="ficha_titulo">Cargando...</h1>
+
+                    <div class="text-muted small">
+                        <strong>Dirección exacta:</strong> <span id="ficha_direccion">...</span><br>
+                        <strong>Región:</strong> <span id="ficha_region">...</span><br>
+                        <strong>Sector:</strong> <span id="ficha_sector">...</span>
+                    </div>
+
+                    <div class="mt-3 text-secondary small fw-bold">
+                        <span id="stat_dorm">0</span> Dormitorios •
+                        <span id="stat_banos">0</span> Baños •
+                        S. construida: <span id="stat_sup">0</span> m² •
+                        Gastos comunes: <span id="stat_gc">$0</span>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button class="btn btn-primary btn-sm mb-3" onclick="window.print()">
+                        <i class="bi bi-printer-fill"></i> Imprimir
+                    </button>
+                    <div>
+                        <small class="text-muted d-block mb-1 text-uppercase fw-bold"
+                            id="ficha_operacion_lbl">Venta</small>
+                        <div class="price-tag" id="ficha_precio">UF ...</div>
+                        <div class="small text-muted mt-1" id="ficha_precio_pesos">$ ...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <a href="#" class="text-primary text-decoration-none small fw-bold"><i class="bi bi-images"></i> Ver
+                    todas las imágenes</a>
+            </div>
+            <div class="gallery-preview">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80" alt="Foto 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Foto 2">
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+
+                    <h6 class="section-header"><i class="bi bi-layout-wtf"></i> Distribución</h6>
+                    <ul class="feature-list" id="lista_distribucion">
+                    </ul>
+
+                    <h6 class="section-header"><i class="bi bi-list-check"></i> Características</h6>
+                    <ul class="feature-list" id="lista_caracteristicas">
+                    </ul>
+
+                    <h6 class="section-header"><i class="bi bi-tree"></i> Exteriores</h6>
+                    <ul class="feature-list" id="lista_exteriores">
+                    </ul>
+                </div>
+
+                <div class="col-md-6">
+
+                    <h6 class="section-header"><i class="bi bi-buildings"></i> Urbanización</h6>
+                    <ul class="feature-list" id="lista_urbanizacion">
+                    </ul>
+
+                    <h6 class="section-header"><i class="bi bi-plus-circle"></i> Portal Inm. > Adicionales</h6>
+                    <ul class="feature-list" id="lista_adicionales">
+                    </ul>
+
+                    <h6 class="section-header"><i class="bi bi-lamp"></i> Portal Inm. > Ambientes</h6>
+                    <ul class="feature-list" id="lista_ambientes">
+                    </ul>
+                </div>
+            </div>
+
+            <div class="description-title">Descripción</div>
+            <div class="description-box mb-4">
+                <p id="ficha_descripcion" style="white-space: pre-line;">
+                    ...
+                </p>
+
+                <div class="description-title mt-4" style="background-color: #4986e7;">Forma de visitar</div>
+                <div class="p-3 bg-light border border-top-0 rounded-bottom">
+                    <p class="mb-0 fw-bold text-dark" id="ficha_visita">...</p>
+                </div>
+            </div>
+
+            <h6 class="section-header"><i class="bi bi-geo-alt-fill"></i> Plano de ubicación</h6>
+            <div class="map-container">
+                <iframe width="100%" height="100%" frameborder="0" style="border:0"
+                    src="https://maps.google.com/maps?q=Santiago,Chile&z=15&output=embed">
+                </iframe>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (propId) {
+                cargarDatos(propId);
+                // Conectar enlaces del Sidebar
+                document.getElementById('link_editar').href = `admin-editar-propiedad.html?id=${propId}`;
+                document.getElementById('link_imagenes').href = `admin-propiedad-imagenes.html?id=${propId}`;
+                document.getElementById('link_documentos').href = `admin-propiedad-documentos.html?id=${propId}`;
+                document.getElementById('link_estado').href = `admin-propiedad-estado.html?id=${propId}`;
+                document.getElementById('link_bitacora').href = `admin-propiedad-bitacora.html?id=${propId}`;
+                document.getElementById('link_propietario').href = `admin-propiedad-propietario.html?id=${propId}`;
+                document.getElementById('link_informes').href = `admin-propiedad-informes.html?id=${propId}`;
+            } else {
+                alert("Error: Faltan datos.");
+                window.location.href = 'admin-propiedades.html';
+            }
+        });
+
+        async function cargarDatos(id) {
+            try {
+                const res = await fetch(`http://localhost:3000/api/propiedades2/${id}`);
+                const json = await res.json();
+                if (json.success) {
+                    const p = json.data;
+
+                    // --- SIDEBAR ---
+                    document.getElementById('sidebar_cod').textContent = `Cód: ${p.id}`;
+                    document.getElementById('sidebar_tipo').textContent = p.tipo_propiedad;
+                    document.getElementById('sidebar_comuna').textContent = p.comuna;
+                    const op = p.operacion_venta ? 'VENTA' : 'ARRIENDO';
+                    document.getElementById('sidebar_operacion').textContent = op;
+
+                    // --- FICHA PRINCIPAL ---
+                    document.getElementById('ficha_header_cod').textContent = `Cód.: ${p.id} - ${p.tipo_propiedad} - ${op} - ${p.comuna}`;
+                    document.getElementById('ficha_badge_cod').textContent = `Cód. ${p.id}`;
+                    document.getElementById('ficha_titulo').textContent = `${p.tipo_propiedad}, ${p.comuna}`;
+
+                    document.getElementById('ficha_direccion').textContent = `${p.direccion_calle} ${p.direccion_numero}`;
+                    document.getElementById('ficha_region').textContent = p.region;
+                    document.getElementById('ficha_sector').textContent = p.sector || 'No informado';
+
+                    // Stats
+                    document.getElementById('stat_dorm').textContent = p.dormitorios || 0;
+                    document.getElementById('stat_banos').textContent = p.banos || 0;
+                    document.getElementById('stat_sup').textContent = p.superficie_util || 0;
+                    document.getElementById('stat_gc').textContent = '$' + (p.gastos_comunes || 0);
+
+                    // Precio y Operación
+                    document.getElementById('ficha_operacion_lbl').textContent = op;
+                    const precioVal = p.operacion_venta ? p.precio_venta : p.precio_arriendo;
+                    const moneda = p.operacion_venta ? p.moneda_venta : p.moneda_arriendo;
+                    document.getElementById('ficha_precio').textContent = `${moneda} ${new Intl.NumberFormat('es-CL').format(precioVal)}`;
+                    // Calculo aprox en pesos (solo ejemplo)
+                    if (moneda === 'UF') {
+                        document.getElementById('ficha_precio_pesos').textContent = `$ ${new Intl.NumberFormat('es-CL').format(precioVal * 38000)}`;
+                    }
+
+                    // Descripción
+                    document.getElementById('ficha_descripcion').textContent = p.descripcion_publica || "Sin descripción.";
+                    document.getElementById('ficha_visita').textContent = p.forma_visita || "Contactar ejecutivo.";
+
+                    // --- LLENADO DE LISTAS (Simulado inteligente) ---
+                    // En un sistema real, estas vendrían de `p.detalles_json`.
+                    // Aquí las construimos dinámicamente si existen en el JSON o ponemos valores de ejemplo.
+
+                    const feats = p.detalles_json || {};
+
+                    // Distribución
+                    renderList('lista_distribucion', [
+                        { label: `Dormitorios: ${p.dormitorios}`, val: true },
+                        { label: `Baños: ${p.banos}`, val: true },
+                        { label: 'Bodega', val: feats.bodega === 'Si' },
+                        { label: 'Despensa', val: false }
+                    ]);
+
+                    // Características
+                    renderList('lista_caracteristicas', [
+                        { label: `Sup. construida: ${p.superficie_util}`, val: true },
+                        { label: `Año construcción: ${p.ano_construccion || '-'}`, val: true },
+                        { label: 'Permiten mascotas', val: true }, // Asumimos true por ejemplo
+                        { label: `Tipo de piso: ${feats.pisos?.dormitorios || '-'}`, val: true }
+                    ]);
+
+                    // Exteriores
+                    renderList('lista_exteriores', [
+                        { label: 'Piscina', val: feats.piscina === 'Si' },
+                        { label: 'Estacionamiento visitas', val: true },
+                        { label: 'Quincho', val: feats.quincho === 'Si' }
+                    ]);
+
+                    // Urbanización
+                    renderList('lista_urbanizacion', [
+                        { label: 'En condominio', val: true },
+                        { label: 'Acceso controlado', val: true }
+                    ]);
+
+                    // Adicionales
+                    renderList('lista_adicionales', [
+                        { label: 'Agua corriente', val: true },
+                        { label: 'Línea telefónica', val: true }
+                    ]);
+
+                    // Ambientes
+                    renderList('lista_ambientes', [
+                        { label: 'Cocina', val: true },
+                        { label: 'Jardín', val: true },
+                        { label: 'Loggia', val: feats.loggia === 'Si' }
+                    ]);
+
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // Helper para renderizar listas con checks
+        function renderList(elementId, items) {
+            const ul = document.getElementById(elementId);
+            ul.innerHTML = '';
+            items.forEach(item => {
+                if (item.val) { // Solo mostrar si es verdadero o existe
+                    ul.innerHTML += `<li><i class="bi bi-check-lg"></i> ${item.label}</li>`;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

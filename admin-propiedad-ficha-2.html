@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Propiedad - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        /* --- SIDEBAR (Mismo estilo) --- */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* --- ESTILOS FICHA --- */
+        .card-ficha {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: white;
+            border-radius: 4px;
+            padding: 40px;
+            /* Más padding para que parezca documento */
+        }
+
+        /* Encabezado Ficha */
+        .ficha-header-icon {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-right: 5px;
+        }
+
+        .ficha-cod-badge {
+            background-color: #adb5bd;
+            font-weight: normal;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+        }
+
+        .ficha-title {
+            color: #4986e7;
+            /* Azul claro característico */
+            font-size: 2rem;
+            font-weight: 400;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .ficha-subtitle {
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .ficha-subtitle strong {
+            font-weight: 700;
+        }
+
+        /* Etiqueta de Precio */
+        .price-badge {
+            background-color: #4986e7;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 5px 15px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .price-sub {
+            font-size: 0.85rem;
+            color: #777;
+            text-align: right;
+        }
+
+        /* Secciones de Características */
+        .section-header {
+            font-weight: 700;
+            color: #444;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-header i {
+            margin-right: 8px;
+            color: #666;
+        }
+
+        /* Listas con Check */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+        .feature-list li i {
+            color: #28a745;
+            /* Verde */
+            margin-right: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        /* Descripción */
+        .desc-title {
+            background-color: #6c757d;
+            /* Gris azulado */
+            color: white;
+            padding: 8px 15px;
+            font-weight: 600;
+            border-radius: 4px 4px 0 0;
+            margin-top: 30px;
+        }
+
+        .desc-box {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            border-radius: 0 0 4px 4px;
+            line-height: 1.6;
+            color: #444;
+            white-space: pre-line;
+            /* Respetar saltos de línea */
+        }
+
+        .visit-title {
+            background-color: #4986e7;
+            /* Azul */
+        }
+
+        .visit-box {
+            background-color: #f8f9fa;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* Galería Preview */
+        .gallery-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-img {
+            width: 50%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        /* Mapa */
+        .map-frame {
+            width: 100%;
+            height: 350px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #eee;
+        }
+
+        /* Estilos de Impresión */
+        @media print {
+
+            .sidebar,
+            .btn-print,
+            .main-content>div:first-child {
+                display: none !important;
+            }
+
+            .main-content {
+                margin: 0;
+                padding: 0;
+            }
+
+            .card-ficha {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            body {
+                background-color: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
+            <div class="mb-2 position-relative d-inline-block">
+                <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
+            </div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
+            <div class="mt-2">
+                <span class="badge bg-primary" id="sidebar_operacion">-</span>
+            </div>
+            <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
+        </div>
+
+        <div class="py-2">
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
+            <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
+                Editar</a>
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
+                y videos</a>
+            <a href="#" id="link_documentos" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i>
+                Documentos</a>
+            <a href="#" id="link_estado" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado /
+                Config.</a>
+            <a href="#" id="link_bitacora" class="d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i>
+                Bitácora</a>
+            <a href="#" id="link_propietario" class="d-flex align-items-center"><i class="bi bi-person me-2"></i>
+                Propietario</a>
+            <a href="#" id="link_informes" class="d-flex align-items-center"><i class="bi bi-list-ul me-2"></i> Informes
+                prop.</a>
+
+            <a href="#" class="active d-flex align-items-center"><i class="bi bi-book me-2"></i> Ficha</a>
+
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-display me-2"></i> Portales</a>
+            <a href="#" class="d-flex align-items-center text-warning"><i class="bi bi-layers me-2"></i> Duplicar</a>
+
+            <hr class="border-secondary mx-3">
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+                listado</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="card card-ficha">
+
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="mb-2 text-secondary fw-bold" style="font-size: 0.9rem;">
+                        <i class="bi bi-house-fill me-1"></i> FICHA DE PROPIEDAD <span class="fw-normal text-muted ms-2"
+                            id="ficha_header_cod"></span>
+                    </div>
+
+                    <span class="ficha-cod-badge text-white" style="background-color: #bbb;" id="ficha_badge_cod">Cód.
+                        ...</span>
+
+                    <h1 class="ficha-title" id="ficha_titulo">Cargando datos...</h1>
+
+                    <div class="ficha-subtitle">
+                        <strong>Dirección web:</strong> <span id="ficha_web">...</span><br>
+                        <strong>Dirección exacta:</strong> <span id="ficha_exacta">...</span><br>
+                        Reg. Metropolitana<br>
+                        <span id="ficha_comuna">...</span><br>
+                        Sector: <span id="ficha_sector">...</span>
+                    </div>
+
+                    <div class="mt-3 text-dark small">
+                        <span class="fw-bold me-1">• Dormitorios:</span> <span id="stat_dorm">0</span>
+                        <span class="fw-bold mx-2">• Baños:</span> <span id="stat_banos">0</span>
+                        <span class="fw-bold mx-2">• S. construida:</span> <span id="stat_sup">0</span> m2
+                        <span class="fw-bold mx-2">• Gastos comunes:</span> <span id="stat_gc">$0</span>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button class="btn btn-primary btn-sm mb-4 btn-print" onclick="window.print()">
+                        <i class="bi bi-printer-fill me-1"></i> Imprimir
+                    </button>
+
+                    <div>
+                        <div class="text-uppercase fw-bold text-secondary mb-1" id="label_operacion">Venta</div>
+                        <div class="price-badge" id="price_uf">UF ...</div>
+                        <div class="price-sub" id="price_clp">$ ...</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+            <div class="mb-2 text-primary fw-bold small"><i class="bi bi-images"></i> <span id="count_imgs">0</span>
+                imágenes</div>
+            <div class="gallery-row" id="galeria-real">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="section-header"><i class="bi bi-layout-text-window-reverse"></i> Distribución</h6>
+                    <ul class="feature-list" id="list_distribucion"></ul>
+
+                    <h6 class="section-header"><i class="bi bi-sliders"></i> Características</h6>
+                    <ul class="feature-list" id="list_caracteristicas"></ul>
+
+                    <h6 class="section-header"><i class="bi bi-tree"></i> Exteriores</h6>
+                    <ul class="feature-list" id="list_exteriores"></ul>
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="section-header"><i class="bi bi-building"></i> Urbanización</h6>
+                    <ul class="feature-list" id="list_urbanizacion"></ul>
+
+                    <h6 class="section-header"><i class="bi bi-plus-circle"></i> Portal Inm. > Adicionales</h6>
+                    <ul class="feature-list" id="list_adicionales"></ul>
+
+                    <h6 class="section-header"><i class="bi bi-lamp"></i> Portal Inm. > Ambientes</h6>
+                    <ul class="feature-list" id="list_ambientes"></ul>
+
+                    <h6 class="section-header"><i class="bi bi-controller"></i> Portal Inm. > Comodidades</h6>
+                    <ul class="feature-list" id="list_comodidades"></ul>
+                </div>
+            </div>
+
+            <div class="desc-title">Descripción</div>
+            <div class="desc-box" id="ficha_descripcion">
+                ...
+            </div>
+
+            <div class="desc-title visit-title mt-3">Forma de visitar</div>
+            <div class="desc-box visit-box" id="ficha_visita">
+                ...
+            </div>
+
+            <h6 class="section-header"><i class="bi bi-geo-alt-fill"></i> Plano de ubicación</h6>
+            <div id="mapa-dinamico"
+                class="map-frame d-flex align-items-center justify-content-center text-muted bg-light">
+                <i class="bi bi-map me-2"></i> Cargando mapa...
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (propId) {
+                cargarDatos(propId);
+                // Conectar enlaces del Sidebar
+                document.getElementById('link_editar').href = `admin-editar-propiedad.html?id=${propId}`;
+                document.getElementById('link_imagenes').href = `admin-propiedad-imagenes.html?id=${propId}`;
+                document.getElementById('link_documentos').href = `admin-propiedad-documentos.html?id=${propId}`;
+                document.getElementById('link_estado').href = `admin-propiedad-estado.html?id=${propId}`;
+                document.getElementById('link_bitacora').href = `admin-propiedad-bitacora.html?id=${propId}`;
+                document.getElementById('link_propietario').href = `admin-propiedad-propietario.html?id=${propId}`;
+                document.getElementById('link_informes').href = `admin-propiedad-informes.html?id=${propId}`;
+            } else {
+                alert("Error: Faltan datos.");
+                window.location.href = 'admin-propiedades.html';
+            }
+        });
+
+        async function cargarDatos(id) {
+            try {
+                // 1. Conexión Real a la API
+                const res = await fetch(`http://localhost:3000/api/propiedades2/${id}`);
+                const json = await res.json();
+
+                if (json.success) {
+                    const p = json.data; // Datos crudos de la DB
+                    const d = p.detalles_json || {}; // JSON de características (pisos, quincho, etc)
+
+                    // --- ENCABEZADO Y SIDEBAR ---
+                    document.getElementById('sidebar_cod').textContent = `Cód: ${p.id}`;
+                    document.getElementById('sidebar_tipo').textContent = p.tipo_propiedad;
+                    document.getElementById('sidebar_comuna').textContent = p.comuna;
+
+                    const op = p.operacion_venta ? 'VENTA' : 'ARRIENDO';
+                    document.getElementById('sidebar_operacion').textContent = op;
+
+                    document.getElementById('ficha_header_cod').textContent = `Cód.: ${p.id} - ${p.tipo_propiedad} - ${op} - ${p.comuna}`;
+                    document.getElementById('ficha_badge_cod').textContent = `Cód. ${p.id}`;
+
+                    // Título real de la publicación
+                    document.getElementById('ficha_titulo').textContent = p.titulo_publicacion || `${p.tipo_propiedad} en ${p.comuna}`;
+
+                    // Direcciones
+                    document.getElementById('ficha_web').textContent = `${p.comuna}, ${p.region}`;
+                    document.getElementById('ficha_exacta').textContent = `${p.direccion_calle} ${p.direccion_numero} ${p.direccion_unidad || ''}`;
+                    document.getElementById('ficha_comuna').textContent = p.comuna;
+                    document.getElementById('ficha_sector').textContent = p.sector || 'No informado';
+
+                    // --- PRECIO Y OPERACIÓN ---
+                    document.getElementById('label_operacion').textContent = op;
+
+                    const valor = p.operacion_venta ? p.precio_venta : p.precio_arriendo;
+                    const moneda = p.operacion_venta ? p.moneda_venta : p.moneda_arriendo;
+
+                    // Formateo de precio chileno
+                    document.getElementById('price_uf').textContent = `${moneda} ${parseInt(valor).toLocaleString('es-CL')}`;
+
+                    // Conversión estimada si es UF (solo visual)
+                    if (moneda === 'UF') {
+                        document.getElementById('price_clp').textContent = `$ ${parseInt(valor * 38000).toLocaleString('es-CL')}`;
+                    } else {
+                        document.getElementById('price_clp').style.display = 'none';
+                    }
+
+                    // --- ESTADÍSTICAS (KPIs) ---
+                    document.getElementById('stat_dorm').textContent = p.dormitorios;
+                    document.getElementById('stat_banos').textContent = p.banos;
+                    // Usamos superficie útil si existe, sino total
+                    document.getElementById('stat_sup').textContent = p.superficie_util || p.superficie_total || 0;
+                    document.getElementById('stat_gc').textContent = '$' + parseInt(p.gastos_comunes || 0).toLocaleString('es-CL');
+
+                    // --- DESCRIPCIONES ---
+                    document.getElementById('ficha_descripcion').innerText = p.descripcion_publica || "Sin descripción.";
+                    document.getElementById('ficha_visita').innerText = p.forma_visita || "Contactar ejecutivo.";
+
+                    // --- IMAGEN PRINCIPAL (SIDEBAR) ---
+                    if (p.imagen_principal) {
+                        document.getElementById('sidebar_foto').src = `http://localhost:3000${p.imagen_principal}`;
+                    }
+
+                    // --- LISTAS DE CARACTERÍSTICAS (Extracción del JSON real) ---
+
+                    // 1. Distribución
+                    fillList('list_distribucion', [
+                        { label: 'Dormitorios', val: p.dormitorios },
+                        { label: 'Baños', val: p.banos },
+                        { label: 'Suites', val: p.suites },
+                        { label: 'Bodega', val: p.bodegas || d.bodega } // Busca en columna o JSON
+                    ]);
+
+                    // 2. Características Técnicas
+                    fillList('list_caracteristicas', [
+                        { label: 'Sup. útil', val: p.superficie_util + ' m²' },
+                        { label: 'Sup. total', val: p.superficie_total + ' m²' },
+                        { label: 'Piso dormitorios', val: d.pisos?.dormitorios },
+                        { label: 'Piso baños', val: d.pisos?.banos },
+                        { label: 'Calefacción', val: d.calefaccion },
+                        { label: 'Ventanas', val: d.ventanas }
+                    ]);
+
+                    // 3. Exteriores
+                    fillList('list_exteriores', [
+                        { label: 'Estacionamientos', val: p.estacionamientos },
+                        { label: 'Piscina', val: d.piscina },
+                        { label: 'Quincho', val: p.quincho ? 'Si' : d.quincho }, // Prioridad a columna booleana
+                        { label: 'Riego automático', val: d.riego_automatico },
+                        { label: 'Portón automático', val: d.porton_automatico }
+                    ]);
+
+                    // 4. Urbanización (Ejemplo de datos faltantes en DB, se oculta si no hay)
+                    fillList('list_urbanizacion', [
+                        { label: 'En condominio', val: d.en_condominio }
+                    ]);
+
+                    // 5. Adicionales
+                    fillList('list_adicionales', [
+                        { label: 'Loggia', val: d.loggia },
+                        { label: 'Jacuzzi', val: d.jacuzzi }
+                    ]);
+
+                    // --- MAPA DINÁMICO ---
+                    // --- MAPA DINÁMICO (CORREGIDO) ---
+                    const direccionMapa = encodeURIComponent(`${p.direccion_calle} ${p.direccion_numero}, ${p.comuna}, Chile`);
+                    document.getElementById('mapa-dinamico').innerHTML = `
+    <iframe width="100%" height="100%" frameborder="0" style="border:0"
+        src="https://maps.google.com/maps?q=${direccionMapa}&t=&z=15&ie=UTF8&iwloc=&output=embed">
+    </iframe>
+`;
+
+                    // --- GALERÍA DE FOTOS REALES ---
+                    // Necesitamos llamar a la API de imágenes para traer todas
+                    const resImg = await fetch(`http://localhost:3000/api/propiedades/${id}/imagenes`);
+                    const jsonImg = await resImg.json();
+
+                    const galeriaDiv = document.getElementById('galeria-real');
+                    galeriaDiv.innerHTML = ''; // Limpiar
+
+                    if (jsonImg.success && jsonImg.data.length > 0) {
+                        document.getElementById('count_imgs').textContent = jsonImg.data.length;
+
+                        // Mostramos solo las primeras 2 para el preview (como en el diseño original)
+                        jsonImg.data.slice(0, 2).forEach(img => {
+                            galeriaDiv.innerHTML += `
+                                <img src="http://localhost:3000${img.url_imagen}" class="gallery-img">
+                            `;
+                        });
+                    } else {
+                        document.getElementById('count_imgs').textContent = "0";
+                        galeriaDiv.innerHTML = '<div class="text-muted small w-100 text-center py-5 bg-light">Sin imágenes cargadas.</div>';
+                    }
+
+                } else {
+                    alert("No se encontraron datos para esta propiedad.");
+                }
+            } catch (e) {
+                console.error("Error crítico cargando ficha:", e);
+            }
+        }
+
+        // --- FUNCIÓN HELPER (NO MODIFICAR) ---
+        // Pinta la lista solo si el valor existe y no es 'No' o 'false'
+        const fillList = (id, items) => {
+            const ul = document.getElementById(id);
+            if (!ul) return;
+            ul.innerHTML = '';
+            items.forEach(it => {
+                // Lógica estricta: Mostrar si tiene valor y no es "No", "0", false o null
+                if (it.val && it.val !== 'No' && it.val !== false && it.val !== 0 && it.val !== '0' && it.val !== 'Seleccione...') {
+                    let texto = it.label;
+                    // Si el valor es "Si" o "true", solo mostramos la etiqueta (ej: "Piscina")
+                    // Si el valor es texto (ej: "Piso Flotante"), mostramos "Piso: Piso Flotante"
+                    if (it.val !== 'Si' && it.val !== true) {
+                        texto += `: ${it.val}`;
+                    }
+                    ul.innerHTML += `<li><i class="bi bi-check-lg"></i> ${texto}</li>`;
+                }
+            });
+        };
+
+
+    </script>
+</body>
+
+</html>

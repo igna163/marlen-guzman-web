@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado del Sistema - Nexxos Tech</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #1a1d20;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e9ecef;
+        }
+
+        /* Navbar Oscura */
+        .navbar {
+            border-bottom: 1px solid #343a40;
+        }
+
+        /* Tarjetas de Estado */
+        .card-status {
+            background-color: #212529;
+            border: 1px solid #343a40;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            border-bottom: 1px solid #343a40;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            color: #adb5bd;
+        }
+
+        /* Puntos de Estado (Semáforo) */
+        .status-dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .dot-green {
+            background-color: #198754;
+            box-shadow: 0 0 10px #198754;
+            animation: pulse 2s infinite;
+        }
+
+        .dot-yellow {
+            background-color: #ffc107;
+        }
+
+        .dot-red {
+            background-color: #dc3545;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(25, 135, 84, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+            }
+        }
+
+        /* Consola de Logs */
+        .console-window {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            padding: 15px;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: auto;
+            border: 1px solid #333;
+        }
+
+        .log-time {
+            color: #666;
+            margin-right: 10px;
+        }
+
+        /* Barras de Progreso */
+        .progress {
+            height: 8px;
+            background-color: #343a40;
+        }
+
+        .hardware-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-dark bg-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin-dashboard.html">
+                <i class="bi bi-cpu-fill text-primary"></i> NEXXOS <span class="fw-light">SYSTEM MONITOR</span>
+            </a>
+            <div class="d-flex">
+                <a href="admin-dashboard.html" class="btn btn-outline-secondary btn-sm me-2">Volver al Dashboard</a>
+                <button class="btn btn-primary btn-sm" onclick="runDiagnostics()"><i class="bi bi-arrow-repeat"></i>
+                    Ejecutar Diagnóstico</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <div class="alert alert-success d-flex align-items-center mb-4" role="alert">
+            <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+            <div>
+                <strong>SISTEMA OPERATIVO Y ESTABLE</strong>
+                <div class="small">Todos los servicios de hardware y software están funcionando dentro de los parámetros
+                    normales.</div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="card card-status h-100">
+                    <div class="card-header"><i class="bi bi-box-seam me-2"></i> Software & Contenedores</div>
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="status-dot dot-green"></span> <strong>Docker Engine</strong>
+                                <div class="small text-muted ps-4">v24.0.5 - Running</div>
+                            </div>
+                            <span class="badge bg-dark border border-secondary">OK</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="status-dot dot-green"></span> <strong>n8n Automation</strong>
+                                <div class="small text-muted ps-4">Port: 5678 - Active</div>
+                            </div>
+                            <button class="btn btn-outline-light btn-sm" style="font-size: 0.7rem;">Reiniciar</button>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <span class="status-dot dot-green"></span> <strong>Base de Datos (Volumen)</strong>
+                                <div class="small text-muted ps-4">n8n_data - Mounted</div>
+                            </div>
+                            <span class="badge bg-dark border border-secondary">OK</span>
+                        </div>
+
+                        <hr class="border-secondary">
+
+                        <h6 class="text-muted small fw-bold mb-3">CONEXIONES API EXTERNAS</h6>
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="bi bi-robot me-2 text-info"></i> OpenAI (GPT-4)</span>
+                            <span class="text-success small fw-bold">Conectado</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="bi bi-facebook me-2 text-primary"></i> Facebook Graph API</span>
+                            <span class="text-success small fw-bold">Token Válido</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-google me-2 text-warning"></i> Google Sheets</span>
+                            <span class="text-success small fw-bold">Sincronizado</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card card-status h-100">
+                    <div class="card-header"><i class="bi bi-hdd-rack me-2"></i> Rendimiento de Hardware</div>
+                    <div class="card-body">
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between">
+                                <span class="hardware-label">CPU Usage (Intel Core i7)</span>
+                                <span class="hardware-label text-white">12%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 12%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between">
+                                <span class="hardware-label">Memoria RAM (Docker Allocated)</span>
+                                <span class="hardware-label text-white">4.2GB / 16GB</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between">
+                                <span class="hardware-label">Almacenamiento (SSD NVMe)</span>
+                                <span class="hardware-label text-white">45% Usado</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 45%"></div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-dark border border-secondary mt-4">
+                            <div class="d-flex">
+                                <i class="bi bi-shield-check fs-2 me-3 text-success"></i>
+                                <div>
+                                    <h6 class="mb-1">Seguridad Hardware</h6>
+                                    <p class="small text-muted mb-0">Firewall de Windows activo. Puertos 5678 expuestos
+                                        solo localmente.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card card-status h-100">
+                    <div class="card-header"><i class="bi bi-terminal me-2"></i> Logs del Sistema</div>
+                    <div class="card-body p-0">
+                        <div class="console-window" id="consoleLogs">
+                            <div><span class="log-time">[14:00:01]</span> System init... OK</div>
+                            <div><span class="log-time">[14:00:02]</span> Checking Docker Daemon... OK</div>
+                            <div><span class="log-time">[14:00:05]</span> Connecting to n8n webhook... OK</div>
+                            <div><span class="log-time">[14:05:10]</span> User 'Marlen' logged in from 192.168.1.15
+                            </div>
+                            <div><span class="log-time">[14:10:22]</span> API Request: GET /properties/featured</div>
+                            <div><span class="log-time">[14:15:00]</span> Auto-backup: Google Drive Sync Complete</div>
+                        </div>
+                        <div class="p-3">
+                            <small class="text-muted d-block mb-2">Última actualización: Hace 2 segundos</small>
+                            <button class="btn btn-outline-secondary btn-sm w-100">Descargar Informe Técnico
+                                PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <footer class="mt-5 text-center text-muted border-top border-secondary pt-3">
+            <small>Nexxos Propiedades v2.0 • Build 2026-A • Powered by Docker & n8n AI</small>
+        </footer>
+
+    </div>
+
+    <script>
+        // Script para simular logs en vivo (Efecto Hacker/Admin)
+        const logs = document.getElementById('consoleLogs');
+        const messages = [
+            "Checking Facebook Token validity... OK",
+            "Analyzing server temperature... 45°C (Normal)",
+            "Incoming webhook: New Property Draft saved",
+            "OpenAI API latency: 120ms",
+            "Memory garbage collection... Done",
+            "Database integrity check... 100%"
+        ];
+
+        function addLog() {
+            const now = new Date();
+            const time = `[${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}]`;
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+
+            const div = document.createElement('div');
+            div.innerHTML = `<span class="log-time">${time}</span> ${randomMsg}`;
+            logs.appendChild(div);
+            logs.scrollTop = logs.scrollHeight; // Auto scroll al final
+        }
+
+        // Agregar un log nuevo cada 3-6 segundos
+        setInterval(addLog, 4000);
+
+        // Botón Diagnóstico
+        function runDiagnostics() {
+            const btn = document.querySelector('.btn-primary');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Escaneando...';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Diagnóstico Completo';
+                alert("Evaluación de Hardware y Software completada.\nTodos los sistemas operativos.");
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Ejecutar Diagnóstico';
+                }, 2000);
+            }, 2000);
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado y Configuración - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 0;
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* --- ESTILOS ESPECÍFICOS DE ESTA PÁGINA --- */
+        .section-header {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        /* Botones Toggle (Sí/No) */
+        .btn-check:checked+.btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+
+        .btn-check:not(:checked)+.btn-outline-secondary {
+            background-color: #6c757d;
+            color: white;
+            border-color: #6c757d;
+        }
+
+        /* Ajuste para el estado "No" (Gris oscuro) */
+        .btn-check[value="No"]:checked+label {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+        }
+
+        /* TARJETAS DE PORTALES (Estilo Nexxos) */
+        .portal-card {
+            background-color: #4dd0e1;
+            /* Color Calipso/Verde agua */
+            border: none;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .portal-logo {
+            background: white;
+            padding: 5px;
+            border-radius: 4px;
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .portal-logo img {
+            max-height: 40px;
+            max-width: 100%;
+        }
+
+        .form-check-input:checked {
+            background-color: #fff;
+            border-color: #fff;
+        }
+
+        .form-check-input:checked[type=checkbox] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%2328a745' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
+            <div class="mb-2 position-relative d-inline-block">
+                <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
+            </div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
+            <div class="mt-2">
+                <span class="badge bg-primary" id="sidebar_operacion">-</span>
+            </div>
+            <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
+        </div>
+
+        <div class="py-2">
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
+            <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
+                Editar</a>
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
+                y videos</a>
+            <a href="#" id="link_documentos" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i>
+                Documentos</a>
+
+            <a href="#" class="active d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado / Config.</a>
+
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i> Bitácora</a>
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-person me-2"></i> Propietario</a>
+
+            <hr class="border-secondary mx-3">
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+                listado</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <h4 class="text-secondary mb-4"><i class="bi bi-gear-fill"></i> ESTADO Y CONFIGURACIÓN <small
+                class="text-muted fs-6" id="header_cod"></small></h4>
+
+        <div class="card border-0 shadow-sm p-4">
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Estado <span class="text-danger">*</span></label>
+                    <select class="form-select border-primary" id="estado_pub">
+                        <option value="PUBLICADA">Activa</option>
+                        <option value="BORRADOR">Borrador</option>
+                        <option value="RESERVADA">Reservada</option>
+                        <option value="VENDIDA">Vendida</option>
+                        <option value="PAUSADA">Pausada</option>
+                        <option value="ELIMINADA">Eliminado</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Asignar a ejecutiva/o <span class="text-danger">*</span></label>
+                    <select class="form-select" id="ejecutivo">
+                        <option value="">Seleccione...</option>
+                        <option value="Marlen Teresita Guzman">Marlen Teresita Guzman</option>
+                        <option value="Ignacio Admin">Ignacio Admin</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr>
+
+            <h6 class="section-header">Publicación en Internet</h6>
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label class="form-label small d-block">Publicar en internet <i
+                            class="bi bi-info-circle text-primary"></i></label>
+                    <div class="btn-group btn-group-sm w-100">
+                        <input type="radio" class="btn-check" name="pub_internet" id="pubSi" value="Si">
+                        <label class="btn btn-outline-success" for="pubSi">Sí</label>
+                        <input type="radio" class="btn-check" name="pub_internet" id="pubNo" value="No">
+                        <label class="btn btn-outline-secondary" for="pubNo">No</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small d-block">Marcar como Vendida</label>
+                    <div class="btn-group btn-group-sm w-100">
+                        <input type="radio" class="btn-check" name="marca_vendida" id="venSi" value="Si">
+                        <label class="btn btn-outline-success" for="venSi">Sí</label>
+                        <input type="radio" class="btn-check" name="marca_vendida" id="venNo" value="No">
+                        <label class="btn btn-outline-secondary" for="venNo">No</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small d-block">Marcar como Arrendada</label>
+                    <div class="btn-group btn-group-sm w-100">
+                        <input type="radio" class="btn-check" name="marca_arrendada" id="arrSi" value="Si">
+                        <label class="btn btn-outline-success" for="arrSi">Sí</label>
+                        <input type="radio" class="btn-check" name="marca_arrendada" id="arrNo" value="No">
+                        <label class="btn btn-outline-secondary" for="arrNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <h6 class="section-header">Destacar en Internet</h6>
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label class="form-label small d-block">Destacadas</label>
+                    <div class="btn-group btn-group-sm w-100">
+                        <input type="radio" class="btn-check" name="destacada" id="desSi" value="Si">
+                        <label class="btn btn-outline-success" for="desSi">Sí</label>
+                        <input type="radio" class="btn-check" name="destacada" id="desNo" value="No">
+                        <label class="btn btn-outline-secondary" for="desNo">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <h6 class="section-header">Actualización con portales</h6>
+            <div class="row g-3">
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-dark fw-bold">enlaceinmobiliario.cl</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="portal_enlace" checked>
+                            <label class="form-check-label" for="portal_enlace">Enlace Inmobiliario</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-dark fw-bold">portalinmobiliario.com</div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="checkbox" id="portal_pi" checked>
+                            <label class="form-check-label" for="portal_pi">Portal Inmobiliario</label>
+                        </div>
+                        <div class="form-check small text-start w-100 ps-4">
+                            <input class="form-check-input" type="checkbox" id="portal_pi_visita" checked>
+                            <label class="form-check-label" for="portal_pi_visita">Con solicitud Visita</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-danger fw-bold">@goplaceit</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="portal_go" checked>
+                            <label class="form-check-label" for="portal_go">GoPlaceIt</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-dark fw-bold">^ icasas</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="portal_icasas" checked>
+                            <label class="form-check-label" for="portal_icasas">iCasas</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-primary fw-bold">TocToc</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="portal_toctoc" checked>
+                            <label class="form-check-label" for="portal_toctoc">TocToc</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-success fw-bold">doomos</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="portal_doomos" checked>
+                            <label class="form-check-label" for="portal_doomos">Doomos</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-warning fw-bold" style="background:#333;">yapo.cl</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="portal_yapo" checked>
+                            <label class="form-check-label" for="portal_yapo">Yapo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-lg-3">
+                    <div class="portal-card">
+                        <div class="portal-logo text-danger fw-bold">PortalTerreno</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="portal_terreno">
+                            <label class="form-check-label" for="portal_terreno">Portal Terrenos</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-end mt-4 pt-3 border-top">
+                <button class="btn btn-primary px-5 fw-bold" onclick="guardarConfig()">
+                    <i class="bi bi-check-lg"></i> Grabar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        // ⚠️ DEJAR VACÍO para compatibilidad con Cloudflare
+        const API_URL = 'https://talented-outlet-mold-classified.trycloudflare.com';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (propId) {
+                cargarDatos(propId);
+                // Configurar enlaces del sidebar
+                document.getElementById('link_editar').href = `admin-editar-propiedad.html?id=${propId}`;
+                document.getElementById('link_imagenes').href = `admin-propiedad-imagenes.html?id=${propId}`;
+                document.getElementById('link_documentos').href = `admin-propiedad-documentos.html?id=${propId}`;
+            } else {
+                alert("Error: Faltan datos.");
+                window.location.href = 'admin-propiedades.html';
+            }
+        });
+
+        async function cargarDatos(id) {
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades2/${id}`);
+                const json = await res.json();
+                if (json.success) {
+                    const p = json.data;
+
+                    // Sidebar Info
+                    document.getElementById('sidebar_cod').textContent = `Cód: ${p.id}`;
+                    document.getElementById('sidebar_tipo').textContent = p.tipo_propiedad;
+                    document.getElementById('sidebar_comuna').textContent = p.comuna;
+                    document.getElementById('sidebar_operacion').textContent = p.operacion_venta ? 'VENTA' : 'ARRIENDO';
+                    document.getElementById('header_cod').textContent = `(Cód: ${p.id})`;
+
+                    if (p.imagen_principal && !p.imagen_principal.includes('placeholder')) {
+                        document.getElementById('sidebar_foto').src = p.imagen_principal;
+                    }
+
+                    // --- LLENAR FORMULARIO CON DATOS REALES ---
+                    document.getElementById('estado_pub').value = p.estado_publicacion || 'BORRADOR';
+                    document.getElementById('ejecutivo').value = p.ejecutivo_asignado || '';
+
+                    // Toggles (Si/No) - Convierte booleanos de BD a la interfaz
+                    setRadio('pub_internet', p.publicar_internet ? 'Si' : 'No');
+                    setRadio('marca_vendida', p.es_vendida ? 'Si' : 'No');
+                    setRadio('marca_arrendada', p.es_arrendada ? 'Si' : 'No');
+                    setRadio('destacada', p.es_destacada ? 'Si' : 'No');
+
+                    // Portales (Checkboxes) - Si existen en el JSON
+                    if (p.portales_json) {
+                        const portales = p.portales_json;
+                        setCheck('portal_enlace', portales.enlace);
+                        setCheck('portal_pi', portales.portal_inmobiliario);
+                        setCheck('portal_pi_visita', portales.pi_solicitud);
+                        setCheck('portal_go', portales.goplaceit);
+                        setCheck('portal_icasas', portales.icasas);
+                        setCheck('portal_toctoc', portales.toctoc);
+                        setCheck('portal_doomos', portales.doomos);
+                        setCheck('portal_yapo', portales.yapo);
+                        setCheck('portal_terreno', portales.portal_terreno);
+                    }
+                }
+            } catch (e) { console.error("Error cargando datos:", e); }
+        }
+
+        // Funciones Helper
+        function setRadio(name, val) {
+            // Convierte true/false a 'Si'/'No' por si acaso viene boolean directo
+            let valorFinal = val;
+            if (val === true) valorFinal = 'Si';
+            if (val === false) valorFinal = 'No';
+
+            const el = document.querySelector(`input[name="${name}"][value="${valorFinal}"]`);
+            if (el) el.checked = true;
+        }
+
+        function getRadio(name) {
+            const el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? el.value : 'No';
+        }
+
+        function setCheck(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.checked = !!val; // Fuerza a booleano
+        }
+
+        function getCheck(id) {
+            const el = document.getElementById(id);
+            return el ? el.checked : false;
+        }
+
+        async function guardarConfig() {
+            const btn = document.querySelector('.btn-primary');
+            const txtOriginal = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
+            btn.disabled = true;
+
+            // Construir objeto de datos
+            const payload = {
+                estado_publicacion: document.getElementById('estado_pub').value,
+                ejecutivo_asignado: document.getElementById('ejecutivo').value,
+
+                publicar_internet: getRadio('pub_internet'),
+                es_vendida: getRadio('marca_vendida'),
+                es_arrendada: getRadio('marca_arrendada'),
+                es_destacada: getRadio('destacada'),
+
+                // Objeto JSON con los checkboxes de portales
+                portales: {
+                    enlace: getCheck('portal_enlace'),
+                    portal_inmobiliario: getCheck('portal_pi'),
+                    pi_solicitud: getCheck('portal_pi_visita'),
+                    goplaceit: getCheck('portal_go'),
+                    icasas: getCheck('portal_icasas'),
+                    toctoc: getCheck('portal_toctoc'),
+                    doomos: getCheck('portal_doomos'),
+                    yapo: getCheck('portal_yapo'),
+                    portal_terreno: getCheck('portal_terreno')
+                }
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades/${propId}/configuracion`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const json = await res.json();
+
+                if (json.success) {
+                    alert("✅ Configuración guardada correctamente");
+                } else {
+                    alert("Error al guardar: " + json.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error de conexión al guardar.");
+            } finally {
+                btn.innerHTML = txtOriginal;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

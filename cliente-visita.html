@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Visitas | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="client-visitas">
+
+    <nav class="navbar" style="position: relative;">
+        <div class="container nav-container">
+            <a href="cliente.html" class="logo">Mi Cuenta</a>
+            <div class="nav-links">
+                <a href="cliente.html" class="nav-link">Volver al Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container section">
+        <div class="section-header text-center">
+            <span class="overline">Agenda</span>
+            <h2 class="section-title">Mis Visitas Programadas</h2>
+            <p>Aquí puedes ver el historial y estado de tus citas.</p>
+        </div>
+
+        <div class="table-container"
+            style="max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora de inicio</th>
+                        <th>Hora de fin</th>
+                        <th>Motivo / Propiedad</th>
+                        <th>Código</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="visitas-table-body">
+                    <tr>
+                        <td colspan="5" class="text-center">Cargando tus visitas...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

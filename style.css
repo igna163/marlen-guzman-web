@@ -1,0 +1,1640 @@
+:root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #2C3E50;
+    --accent-color: #C5A059;
+    /* Dorado Corporativo */
+    --accent-dark: #B59326;
+    --text-color: #333333;
+    --text-light: #666666;
+    --bg-light: #f9f9f9;
+    --white: #ffffff;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+    --border-radius: 4px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-color: var(--white);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+ul {
+    list-style: none;
+}
+
+/* ========================================= */
+/* NAVBAR Y MENÚS (CORREGIDO)                */
+/* ========================================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 80px;
+    /* Altura fija para evitar saltos */
+    display: flex;
+    align-items: center;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo-img {
+    height: 60px;
+    /* Tamaño controlado del logo */
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    margin-left: auto;
+    /* Empuja los links a la derecha */
+}
+
+.nav-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-link:hover {
+    color: var(--accent-color);
+}
+
+/* --- DROPDOWNS (MENÚS DESPLEGABLES) --- */
+.dropdown-menu {
+    position: relative;
+    /* Vital para que el hijo se posicione respecto a esto */
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content {
+    display: none;
+    /* OCULTO POR DEFECTO */
+    position: absolute;
+    top: 100%;
+    /* Justo debajo del padre */
+    left: 0;
+    background-color: #ffffff;
+    min-width: 220px;
+    /* Ancho suficiente para que no se corte el texto */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 8px 8px;
+    padding: 10px 0;
+    z-index: 1000;
+    border-top: 3px solid var(--accent-color);
+}
+
+/* Mostrar al pasar el mouse */
+.dropdown-menu:hover .dropdown-content {
+    display: block;
+    animation: fadeInMenu 0.2s ease-in-out;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f8f9fa;
+    color: var(--accent-color);
+    padding-left: 25px;
+    /* Efecto de desplazamiento */
+}
+
+@keyframes fadeInMenu {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Botones Navbar */
+.btn-contact {
+    padding: 0.6rem 1.5rem;
+    border: 1px solid var(--secondary-color);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-contact:hover {
+    background-color: var(--secondary-color);
+    color: var(--white);
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+/* ========================================= */
+/* HERO SECTION (IMAGEN DE FONDO)            */
+/* ========================================= */
+.hero {
+    height: 90vh;
+    /* Ocupa casi toda la pantalla */
+    min-height: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* URL PÚBLICA PARA QUE SE VEA SIEMPRE */
+    background-image: url('https://images.unsplash.com/photo-1600596542815-e328d4de4bf7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+    background-size: cover;
+    background-position: center;
+    margin-top: 80px;
+    /* Compensa la navbar fija */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: var(--white);
+    max-width: 800px;
+    padding: 20px;
+}
+
+.hero-title {
+    color: var(--white);
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 3rem;
+    opacity: 0.95;
+    font-weight: 400;
+}
+
+.text-gold {
+    color: var(--accent-color);
+}
+
+/* Search Box */
+.search-box {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    align-items: flex-end;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.search-field {
+    flex: 1;
+    text-align: left;
+}
+
+.search-field label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-field select,
+.search-field input {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    outline: none;
+    transition: border 0.3s;
+}
+
+.search-field select:focus,
+.search-field input:focus {
+    border-color: var(--accent-color);
+}
+
+.btn-search {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 0 2.5rem;
+    height: 50px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.btn-search:hover {
+    background-color: var(--accent-color);
+}
+
+/* ========================================= */
+/* ESTILOS DEL CHATBOT (INTEGRADO)           */
+/* ========================================= */
+.chatbot-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 9999;
+    font-size: 24px;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    background-color: var(--accent-dark);
+}
+
+.chatbot-widget {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 360px;
+    height: 520px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.chat-header {
+    background: var(--accent-color);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.chat-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #e5ddd5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 13px;
+    max-width: 80%;
+    line-height: 1.4;
+}
+
+.bot {
+    background: white;
+    align-self: flex-start;
+    border-top-left-radius: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.user {
+    background: #dcf8c6;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones Rápidos Chat */
+.quick-actions {
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    background: #fff;
+    border-top: 1px solid #eee;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.quick-actions::-webkit-scrollbar {
+    display: none;
+}
+
+.action-btn {
+    background: white;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.action-btn:hover {
+    background: var(--accent-color);
+    color: white;
+}
+
+.chat-input-area {
+    padding: 12px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    background: white;
+}
+
+.chat-input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+}
+
+.chat-input-area button {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.chat-input-area button:hover {
+    background: var(--accent-dark);
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Responsive Generales */
+@media (max-width: 900px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        flex-direction: column;
+        padding: 2rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .search-box {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .btn-search {
+        width: 100%;
+    }
+
+    .chatbot-widget {
+        width: 90%;
+        right: 5%;
+        bottom: 90px;
+        height: 60vh;
+    }
+}
+
+/* Tablas y Estilos Generales */
+.section {
+    padding: 4rem 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.overline {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Properties Grid */
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.property-card {
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    border: 1px solid #eee;
+}
+
+.card-image-wrapper {
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.property-card:hover .card-image {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-price {
+    color: var(--accent-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.card-location {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* FAQ Styles */
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-group {
+    margin-bottom: 2rem;
+}
+
+.faq-group h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.faq-item {
+    background: #fff;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.faq-item summary {
+    padding: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--secondary-color);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fcfcfc;
+}
+
+.faq-item summary::after {
+    content: '+';
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.faq-content {
+    padding: 15px;
+    border-top: 1px solid #f0f0f0;
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.faq-content ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 4rem 0 2rem;
+    text-align: center;
+}
+
+.footer-logo {
+    width: 180px;
+    margin: 0 auto 20px;
+    border-radius: 4px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.footer-social a {
+    color: var(--white);
+    font-size: 1.5rem;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.footer-social a:hover {
+    color: var(--accent-color);
+}
+
+.footer-copyright {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+/* ========================================= */
+/* ABOUT SECTION (DISEÑO FILA 50/50)         */
+/* ========================================= */
+
+.about-section {
+    background-color: var(--white);
+    padding: 6rem 0;
+    /* Más espacio arriba y abajo para elegancia */
+}
+
+.about-grid {
+    display: grid;
+    /* Aquí creamos las dos columnas iguales (Fila) */
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    /* Espacio entre el texto y la foto */
+    align-items: center;
+    /* Centrar verticalmente */
+}
+
+/* El texto */
+.about-text {
+    padding-right: 20px;
+}
+
+/* El contenedor de la imagen */
+.about-image {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* Centrar la imagen en su columna */
+}
+
+/* La foto grande y elegante */
+.about-photo {
+    width: 100%;
+    max-width: 500px;
+    /* Dejamos que sea grande, pero no gigante */
+    height: auto;
+    /* Mantiene su proporción natural (rectangular o cuadrada) */
+    aspect-ratio: 4/5;
+    /* Opcional: le da una forma vertical elegante */
+    object-fit: cover;
+    border-radius: 12px;
+    /* Bordes ligeramente redondeados */
+    box-shadow: 20px 20px 0px rgba(197, 160, 89, 0.2);
+    /* Sombra decorativa dorada */
+}
+
+/* Estadísticas debajo del texto */
+.stats-list {
+    display: flex;
+    gap: 3rem;
+    margin-top: 3rem;
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-family: var(--font-heading);
+    color: var(--accent-color);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-top: 5px;
+    display: block;
+}
+
+/* Responsive: En celular se pone uno debajo del otro */
+@media (max-width: 900px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+        /* Una sola columna */
+        gap: 3rem;
+        text-align: center;
+    }
+
+    .about-text {
+        padding-right: 0;
+        order: 2;
+        /* Poner texto abajo si prefieres, o quita esta línea */
+    }
+
+    .stats-list {
+        justify-content: center;
+    }
+
+    .about-image {
+        order: 1;
+        /* Foto arriba en celular */
+    }
+
+    .about-photo {
+        max-width: 100%;
+        box-shadow: 10px 10px 0px rgba(197, 160, 89, 0.2);
+    }
+}
+
+/* Estilos para Botones Sólidos */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #C5A059;
+    /* Dorado */
+    color: #ffffff !important;
+    /* Texto blanco forzado */
+    border: 1px solid #C5A059;
+}
+
+.btn-primary:hover {
+    background-color: #B59326;
+    /* Dorado más oscuro al pasar el mouse */
+    transform: translateY(-3px);
+    /* Se eleva un poco */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================================= */
+/* CONTACT SECTION (DISEÑO PREMIUM)          */
+/* ========================================= */
+
+.contact-section {
+    background-color: #2C3E50;
+    /* Azul Oscuro Profundo */
+    padding: 6rem 0;
+    color: white;
+    /* Texto blanco para la izquierda */
+    position: relative;
+}
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+/* Columna Izquierda (Información) */
+.contact-info h2 {
+    color: #ffffff;
+    /* Título blanco */
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.text-white-dim {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.method {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.method i {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-color);
+    /* Icono Dorado */
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.method:hover i {
+    background: var(--accent-color);
+    color: white;
+}
+
+.method span {
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+
+.method p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Columna Derecha (Formulario Tarjeta) */
+.contact-form {
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    /* Sombra fuerte para efecto flotante */
+    color: #333;
+    /* Texto oscuro dentro del formulario */
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    transition: 0.3s;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--accent-color);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .contact-form {
+        padding: 2rem;
+    }
+}
+
+/* ========================================= */
+/* ESTILOS LOGIN PROFESIONAL (RESTAURADO)    */
+/* ========================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    /* Fondo oscuro fuerte */
+    backdrop-filter: blur(5px);
+    /* Efecto borroso detrás */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Para centrar la caja del login */
+.modal-content.login-modal-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 850px;
+    /* Ancho profesional */
+    border-radius: 12px;
+    padding: 0;
+    /* Sin padding general, usamos el grid */
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.4s ease;
+}
+
+/* LA MAGIA: EL GRID DIVIDIDO */
+.login-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    /* Izquierda 300px, Derecha el resto */
+    min-height: 500px;
+    /* Altura mínima para presencia */
+}
+
+/* Panel Izquierdo (Logo e Info) */
+.login-info-panel {
+    background-color: var(--secondary-color);
+    /* Azul Oscuro */
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.login-brand-logo {
+    width: 140px;
+    margin-bottom: 2rem;
+    background: white;
+    /* Recuadro blanco para que el logo resalte */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.login-welcome-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+    /* Dorado */
+}
+
+.login-desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+/* Panel Derecho (Formularios) */
+.login-form-panel {
+    padding: 3rem;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Pestañas Ingresar / Registrarse */
+.auth-tabs {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.auth-tab {
+    background: none;
+    border: none;
+    padding-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #999;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auth-tab.active {
+    color: var(--accent-color);
+    border-bottom: 3px solid var(--accent-color);
+    margin-bottom: -2px;
+}
+
+/* Inputs bonitos */
+.input-group-icon {
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #bfa378;
+}
+
+.input-group-icon input {
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    /* Espacio para el icono */
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: 0.3s;
+    background: #fcfcfc;
+    outline: none;
+}
+
+.input-group-icon input:focus {
+    border-color: var(--accent-color);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
+}
+
+/* Responsive para celular */
+@media (max-width: 768px) {
+    .login-grid {
+        grid-template-columns: 1fr;
+        /* Una sola columna */
+    }
+
+    .login-info-panel {
+        display: none;
+        /* Ocultamos el panel decorativo en celular para ahorrar espacio */
+    }
+
+    .login-form-panel {
+        padding: 2rem;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 13px;
+    max-width: 80%;
+    line-height: 1.4;
+    word-wrap: break-word;
+
+    /* ESTA ES LA CORRECCIÓN: */
+    color: #333333 !important;
+    /* Fuerza el color gris oscuro siempre */
+}
+
+/* Estilos para el Menú de Opciones */
+.chat-menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.menu-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    text-align: left;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #333;
+    font-weight: 500;
+}
+
+.menu-btn:hover {
+    background-color: #d4a373;
+    /* Color dorado de tu marca */
+    color: white;
+    border-color: #d4a373;
+}
+
+.menu-icon {
+    margin-right: 8px;
+}
+
+/* EN styles.css */
+
+.chat-menu-options {
+    display: flex;
+    flex-direction: row;
+    /* Alineados horizontalmente */
+    gap: 10px;
+    overflow-x: auto;
+    /* Permite deslizar a la derecha */
+    white-space: nowrap;
+    /* Fuerza una sola línea */
+    padding: 10px 5px;
+    max-width: 100%;
+
+    /* Ocultar barra de scroll fea en Chrome/Safari pero mantener funcionalidad */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+/* Ocultar barra scroll en Chrome */
+.chat-menu-options::-webkit-scrollbar {
+    display: none;
+}
+
+.menu-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #d4a373;
+    /* Borde dorado */
+    border-radius: 20px;
+    /* Redondeados tipo "Chip" */
+    padding: 8px 16px;
+    font-size: 0.9em;
+    cursor: pointer;
+    color: #333;
+    flex-shrink: 0;
+    /* Evita que los botones se aplasten */
+    transition: background 0.3s;
+}
+
+.menu-btn:hover {
+    background-color: #d4a373;
+    color: white;
+}
+
+.time-slots-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.slot-btn {
+    background: #bfa378;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.slot-btn:hover {
+    background: #a28a63;
+}
+
+/* Estilos para la grilla de horarios en el chat */
+.time-slots-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.slot-btn {
+    background-color: #bfa378;
+    /* El color dorado de tu marca */
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background 0.3s;
+}
+
+.slot-btn:hover {
+    background-color: #a28a63;
+    /* Un tono más oscuro al pasar el mouse */
+}
+
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Indicadores de Pasos */
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e9ecef;
+    z-index: 1;
+}
+
+.step {
+    z-index: 2;
+    background: #fff;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #adb5bd;
+    border: 2px solid #e9ecef;
+    font-weight: bold;
+    position: relative;
+    /* Para z-index */
+}
+
+.step.active {
+    background: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
+}
+
+.step-label {
+    position: absolute;
+    top: 40px;
+    font-size: 12px;
+    color: #adb5bd;
+    width: 100px;
+    text-align: center;
+    margin-left: -32px;
+}
+
+.step.active+.step-label {
+    color: #3b82f6;
+    font-weight: bold;
+}
+
+/* Cajas de Operación */
+.operation-box {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: #343a40;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Paneles Deshabilitados */
+.disabled-panel {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+/* Validación */
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+/* Estilos para Radio Buttons tipo Nexxos */
+.btn-check:checked+.btn-outline-success {
+    background-color: #198754 !important;
+    /* Verde Nexxos */
+    color: white !important;
+    border-color: #198754 !important;
+}
+
+.btn-check:checked+.btn-outline-danger {
+    background-color: #dc3545 !important;
+    /* Rojo para No */
+    color: white !important;
+    border-color: #dc3545 !important;
+}
+
+/* Para que se note cuál es cuál */
+.btn-outline-success {
+    color: #198754;
+    border-color: #198754;
+}
+
+.btn-outline-success:hover {
+    background-color: #198754;
+    color: white;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Estilo Botones Toggle Nexxos (Foto WhatsApp) */
+.btn-check:checked+.btn-outline-success {
+    background-color: #198754 !important;
+    color: white !important;
+    border-color: #198754 !important;
+}
+
+.btn-check:checked+.btn-outline-secondary {
+    background-color: #6c757d !important;
+    color: white !important;
+    border-color: #6c757d !important;
+}
+
+/* Icono estrella amarilla */
+.star-icon {
+    color: #ffc107;
+    margin-right: 4px;
+}
+
+/* Títulos de sección */
+h6.section-header {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* CÓDIGOS 16-01-2026 */
+/* --- ESTILOS NUEVOS PARA BOTONES Y MENÚ --- */
+.btn-action-wrapper {
+    position: relative;
+    /* Necesario para que el menú flote respecto a este div */
+    display: inline-block;
+}
+
+/* Menú Desplegable (Oculto por defecto) */
+.share-dropdown {
+    display: none;
+    /* Oculto */
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    z-index: 1000;
+    width: 140px;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.share-dropdown.show {
+    display: block;
+    /* Mostrar cuando se activa */
+}
+
+/* Botones Redes Sociales */
+.social-btn {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    color: white !important;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    transition: opacity 0.2s;
+}
+
+.social-btn:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+.social-btn:last-child {
+    margin-bottom: 0;
+}
+
+.social-btn i {
+    margin-right: 6px;
+}
+
+/* Colores Específicos */
+.btn-fb {
+    background-color: #3b5998;
+}
+
+/* Facebook Azul Oscuro */
+.btn-tw {
+    background-color: #1da1f2;
+}
+
+/* Twitter/X Celeste */
+.btn-wa {
+    background-color: #25d366;
+}
+
+/* WhatsApp Verde */
+.btn-li {
+    background-color: #0077b5;
+}
+
+/* LinkedIn Azul */
+/* Estilos para el Dropdown del Menú */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    padding: 10px 0;
+    min-width: 180px;
+    z-index: 1000;
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f9f9f9;
+    color: #bfa378;
+    /* Color dorado */
+}
+
+/* --- ESTILOS DE BARRA DE NAVEGACIÓN --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: #bfa378;
+}
+
+/* --- ESTILOS DROPDOWN UNIFICADOS --- */
+.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.dropdown-content {
+    display: none;
+    /* Oculto */
+    position: absolute;
+    top: 100%;
+    /* Abajo del todo */
+    left: 0;
+    background-color: #ffffff;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-top: 3px solid #bfa378;
+    border-radius: 0 0 5px 5px;
+    padding: 10px 0;
+}
+
+/* Mostrar al pasar el mouse */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.dropdown-content a:hover {
+    background-color: #f9f9f9;
+    color: #bfa378;
+    padding-left: 25px;
+    /* Efecto movimiento */
+}

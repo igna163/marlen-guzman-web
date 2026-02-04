@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Propiedades - Nexxos</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #444;
+        }
+
+        /* Navbar */
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sidebar Filtros */
+        .filters-card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+            background: white;
+        }
+
+        .filter-header {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .form-check-label {
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+        }
+
+        /* Tarjetas de Propiedad */
+        .prop-card {
+            border: none;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .prop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .prop-img-container {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .prop-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .prop-card:hover .prop-img {
+            transform: scale(1.05);
+        }
+
+        .badge-operation {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(13, 110, 253, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .badge-featured {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 193, 7, 0.95);
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .prop-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0d6efd;
+        }
+
+        .prop-price-sub {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .prop-features {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 10px 0;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .prop-feature i {
+            color: #aaa;
+            margin-right: 5px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand text-primary" href="#"><i class="bi bi-building"></i> INMOBILIARIA NEXXOS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-bold" href="#">Catálogo</a></li>
+                    <li class="nav-item"><a class="btn btn-outline-primary ms-3 btn-sm"
+                            href="admin-dashboard.html">Acceso Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="bg-primary py-4 text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <h4 class="mb-0 fw-light">Encuentra tu hogar</h4>
+                </div>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                            placeholder="Ej: Departamento en Las Condes con piscina...">
+                        <button class="btn btn-light text-primary fw-bold px-4" type="button"><i
+                                class="bi bi-search"></i> Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mt-4 mb-5">
+        <div class="row">
+
+            <div class="col-lg-3 mb-4">
+                <div class="filters-card p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-sliders"></i> Filtros</h5>
+                        <a href="#" class="small text-decoration-none">Limpiar</a>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="filter-header">Operación</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="opVenta" checked>
+                            <label class="form-check-label" for="opVenta">Venta (150)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="opArriendo">
+                            <label class="form-check-label" for="opArriendo">Arriendo (45)</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="filter-header">Tipo de Propiedad</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">Casas</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">Departamentos</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox">
+                            <label class="form-check-label">Oficinas</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="filter-header">Rango de Precio (UF)</div>
+                        <div class="input-group input-group-sm mb-2">
+                            <input type="number" class="form-control" placeholder="Desde">
+                            <span class="input-group-text">-</span>
+                            <input type="number" class="form-control" placeholder="Hasta">
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary w-100">Aplicar</button>
+                    </div>
+
+                    <div class="mb-2">
+                        <div class="filter-header">Ubicación</div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">Providencia</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox">
+                            <label class="form-check-label">Las Condes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox">
+                            <label class="form-check-label">Vitacura</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted small">Mostrando <strong>3</strong> propiedades destacadas</span>
+                    <select class="form-select form-select-sm" style="width: 200px;">
+                        <option selected>Ordenar por: Relevancia</option>
+                        <option>Precio: Menor a Mayor</option>
+                        <option>Precio: Mayor a Menor</option>
+                        <option>Más recientes</option>
+                    </select>
+                </div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="prop-card">
+                            <div class="prop-img-container">
+                                <span class="badge-operation">VENTA</span>
+                                <span class="badge-featured"><i class="bi bi-star-fill"></i> DESTACADO</span>
+                                <a href="propiedad-detalle.html">
+                                    <img src="https://images.unsplash.com/photo-1600596542815-6007b05ec456?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                        class="prop-img" alt="Casa">
+                                </a>
+                            </div>
+                            <div class="p-3">
+                                <div class="prop-price">UF 12.500</div>
+                                <div class="prop-price-sub">~ $ 465.000.000</div>
+                                <h6 class="fw-bold mt-2 text-truncate">Casa Estilo Mediterráneo</h6>
+                                <small class="text-muted d-block mb-2"><i class="bi bi-geo-alt"></i> Barrio Italia,
+                                    Providencia</small>
+
+                                <div class="prop-features">
+                                    <span class="prop-feature"><i class="bi bi-door-open"></i> 3 Dorm</span>
+                                    <span class="prop-feature"><i class="bi bi-droplet"></i> 2 Baños</span>
+                                    <span class="prop-feature"><i class="bi bi-aspect-ratio"></i> 140 m²</span>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <a href="propiedad-detalle.html" class="btn btn-primary btn-sm fw-bold">Ver Ficha
+                                        Completa</a>
+                                    <button class="btn btn-outline-success btn-sm"><i class="bi bi-whatsapp"></i>
+                                        Consultar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="prop-card">
+                            <div class="prop-img-container">
+                                <span class="badge-operation">VENTA</span>
+                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                    class="prop-img" alt="Depto">
+                            </div>
+                            <div class="p-3">
+                                <div class="prop-price">UF 8.900</div>
+                                <div class="prop-price-sub">~ $ 330.000.000</div>
+                                <h6 class="fw-bold mt-2 text-truncate">Departamento de Lujo</h6>
+                                <small class="text-muted d-block mb-2"><i class="bi bi-geo-alt"></i> El Golf, Las
+                                    Condes</small>
+
+                                <div class="prop-features">
+                                    <span class="prop-feature"><i class="bi bi-door-open"></i> 2 Dorm</span>
+                                    <span class="prop-feature"><i class="bi bi-droplet"></i> 2 Baños</span>
+                                    <span class="prop-feature"><i class="bi bi-aspect-ratio"></i> 90 m²</span>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm fw-bold">Ver Ficha Completa</button>
+                                    <button class="btn btn-outline-success btn-sm"><i class="bi bi-whatsapp"></i>
+                                        Consultar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="prop-card">
+                            <div class="prop-img-container">
+                                <span class="badge-operation bg-success">ARRIENDO</span>
+                                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                    class="prop-img" alt="Oficina">
+                            </div>
+                            <div class="p-3">
+                                <div class="prop-price">UF 45 <small class="text-muted fs-6">/mes</small></div>
+                                <div class="prop-price-sub">~ $ 1.600.000</div>
+                                <h6 class="fw-bold mt-2 text-truncate">Oficina Planta Libre</h6>
+                                <small class="text-muted d-block mb-2"><i class="bi bi-geo-alt"></i> Nueva Las
+                                    Condes</small>
+
+                                <div class="prop-features">
+                                    <span class="prop-feature"><i class="bi bi-building"></i> Piso 12</span>
+                                    <span class="prop-feature"><i class="bi bi-droplet"></i> 2 Baños</span>
+                                    <span class="prop-feature"><i class="bi bi-aspect-ratio"></i> 80 m²</span>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm fw-bold">Ver Ficha Completa</button>
+                                    <button class="btn btn-outline-success btn-sm"><i class="bi bi-whatsapp"></i>
+                                        Consultar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <nav class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

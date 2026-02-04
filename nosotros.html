@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiénes Somos | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ESTILOS DE PÁGINA INTERNA (Igual que Convenios) */
+        .page-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-bottom: 0;
+            /* Pegado a la sección siguiente */
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .page-breadcrumb {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .page-breadcrumb a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Estilos específicos de tu sección About (por si no cargan del style.css) */
+        .about-section {
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .overline {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #bfa378;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin: 10px 0 20px;
+            color: #333;
+        }
+
+        .stats-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #bfa378;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+
+<body data-page="nosotros">
+
+    <div id="nav-placeholder"></div>
+
+    <header class="page-hero">
+        <div class="container">
+            <h1 class="page-title animate-up">Quiénes Somos</h1>
+            <div class="page-breadcrumb animate-up delay-1">
+                <a href="index.html">Inicio</a> / Nosotros
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="section about-section">
+        <div class="container about-grid">
+            <div class="about-text animate-up">
+                <span class="overline">Gestión Inmobiliaria</span>
+                <h2 class="section-title">Experiencia y Dedicación</h2>
+                <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                    Con años de trayectoria en el mercado inmobiliario, me dedico a conectar personas con sus espacios
+                    soñados.
+                    Mi enfoque se basa en la transparencia, la elegancia y un servicio personalizado que va más allá de
+                    una simple transacción.
+                </p>
+                <p style="line-height: 1.8; color: #555;">
+                    Entendemos que cada propiedad tiene una historia y cada cliente un sueño. Por eso, en <strong>Marlen
+                        Guzmán</strong>,
+                    nos encargamos de cada detalle legal, comercial y estético para garantizar el éxito de su inversión.
+                </p>
+
+                <ul class="stats-list">
+                    <li><span class="stat-number">10+</span><span class="stat-label">Años de Experiencia</span></li>
+                    <li><span class="stat-number">150+</span><span class="stat-label">Propiedades Vendidas</span></li>
+                </ul>
+
+                <div style="margin-top: 40px;">
+                    <a href="index.html#contact" class="btn btn-primary"
+                        style="background: #bfa378; color: white; padding: 12px 30px; text-decoration: none; border-radius: 50px;">Contáctanos</a>
+                </div>
+            </div>
+            <div class="about-image animate-up delay-1">
+                <img src="Marlen.jpeg" alt="Marlen Guzmán" class="about-photo">
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>

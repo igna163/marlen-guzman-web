@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración | Cliente</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="client-config">
+
+    <nav class="navbar" style="position: relative;">
+        <div class="container nav-container">
+            <a href="cliente.html" class="logo">Mi Cuenta</a>
+            <div class="nav-links">
+                <a href="cliente.html" class="nav-link">Volver al Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container section">
+        <div class="section-header text-center">
+            <span class="overline">Seguridad</span>
+            <h2 class="section-title">Actualizar Contraseña</h2>
+            <p>Por tu seguridad, te pediremos tu contraseña actual para realizar cambios.</p>
+        </div>
+
+        <div class="contact-wrapper" style="max-width: 600px; margin: 0 auto; display: block;">
+
+            <div class="contact-form">
+                <h3 style="margin-bottom: 1.5rem; color: #bfa378;">Cambiar Mis Datos</h3>
+
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label>Contraseña Actual (Requerido)</label>
+                        <input type="password" id="current-password" required placeholder="Ingresa tu clave actual">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nueva Contraseña</label>
+                        <input type="password" id="new-password" required placeholder="Nueva clave">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirmar Nueva Contraseña</label>
+                        <input type="password" id="confirm-password" required placeholder="Repite la nueva clave">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Visitas - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        /* Sidebar (Estilo consistente) */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 20px;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* Tarjetas de Resumen KPI */
+        .card-stat {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .card-stat:hover {
+            transform: translateY(-3px);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Tabla y Acciones */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        .avatar-circle {
+            width: 35px;
+            height: 35px;
+            background-color: #0d6efd;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 10px;
+        }
+
+        /* Badges de Estado */
+        .badge-pendiente {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .badge-confirmada {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+
+        .badge-cancelada {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+
+        /* Hover de filas */
+        tr {
+            transition: background 0.2s;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand"><i class="bi bi-building"></i> NEXXOS ADMIN</div>
+        <a href="admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a href="admin-propiedades.html"><i class="bi bi-house-door me-2"></i> Propiedades</a>
+        <a href="admin-agenda.html" class="active"><i class="bi bi-calendar-check me-2"></i> Agenda Visitas <span
+                class="badge bg-danger ms-2" id="badge-pendientes">0</span></a>
+        <a href="admin-interesados.html"><i class="bi bi-people me-2"></i> Interesados</a>
+        <a href="admin-marketing.html"><i class="bi bi-stars me-2"></i> Marketing IA</a>
+    </div>
+
+    <div class="main-content">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold m-0 text-secondary">Gestión de Citas</h4>
+                <p class="text-muted small m-0">Administra, reagenda y consulta tus visitas.</p>
+            </div>
+            <button class="btn btn-primary fw-bold" onclick="abrirModalNuevaCita()">
+                <i class="bi bi-plus-lg"></i> Agendar Nueva
+            </button>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="card card-stat p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted small mb-1 fw-bold text-uppercase">Citas Hoy</p>
+                            <h2 class="fw-bold m-0" id="kpi-hoy">0</h2>
+                        </div>
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary"><i class="bi bi-calendar-event"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted small mb-1 fw-bold text-uppercase">Pendientes</p>
+                            <h2 class="fw-bold m-0 text-warning" id="kpi-pendientes">0</h2>
+                        </div>
+                        <div class="icon-box bg-warning bg-opacity-10 text-warning"><i
+                                class="bi bi-hourglass-split"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted small mb-1 fw-bold text-uppercase">Confirmadas</p>
+                            <h2 class="fw-bold m-0 text-success" id="kpi-confirmadas">0</h2>
+                        </div>
+                        <div class="icon-box bg-success bg-opacity-10 text-success"><i class="bi bi-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stat p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted small mb-1 fw-bold text-uppercase">Canceladas</p>
+                            <h2 class="fw-bold m-0 text-danger" id="kpi-canceladas">0</h2>
+                        </div>
+                        <div class="icon-box bg-danger bg-opacity-10 text-danger"><i class="bi bi-x-circle"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4 p-3">
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="buscador"
+                            placeholder="Buscar por nombre, teléfono o email..." onkeyup="filtrarTabla()">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="filtroEstado" onchange="filtrarTabla()">
+                        <option value="">Todos los estados</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Confirmada">Confirmada</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="filtroFecha" onchange="filtrarTabla()">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-success w-100" onclick="cargarCitasDesdeN8N()">
+                        <i class="bi bi-arrow-clockwise"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-3">Cliente</th>
+                            <th>Contacto</th>
+                            <th>Propiedad</th>
+                            <th>Fecha y Hora</th>
+                            <th>Estado</th>
+                            <th class="text-end pe-3">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCitasBody">
+                        <tr>
+                            <td colspan="6" class="text-center py-4">Cargando citas...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="mensajeVacio" class="text-center py-5 d-none">
+                <i class="bi bi-calendar-x text-muted display-4"></i>
+                <p class="text-muted mt-2">No se encontraron citas con esos criterios.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modalCita" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="modalTitulo">Agendar Nueva Visita</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCita">
+                        <input type="hidden" id="citaId">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Cliente</label>
+                            <input type="text" class="form-control" id="nombreCliente" placeholder="Nombre completo"
+                                required>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Teléfono</label>
+                                <input type="tel" class="form-control" id="telefonoCliente" placeholder="+569..."
+                                    required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control" id="emailCliente"
+                                    placeholder="correo@ejemplo.com">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Propiedad</label>
+                            <input type="text" class="form-control" id="propiedadTexto"
+                                placeholder="Ej: Depto Independencia 136060">
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Fecha Inicio</label>
+                                <input type="datetime-local" class="form-control" id="fechaInicio" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Fecha Fin</label>
+                                <input type="datetime-local" class="form-control" id="fechaFin" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Estado</label>
+                            <select class="form-select" id="estadoCita">
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Confirmada">Confirmada</option>
+                                <option value="Cancelada">Cancelada</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardar" onclick="guardarCita()">Guardar
+                        Cita</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // CONFIGURACIÓN DE TUS WEBHOOKS DE N8N
+        const URL_LEER_CITAS = 'http://localhost:5678/webhook-test/ver-citas'; // Tu URL GET
+        const URL_GUARDAR_CITA = 'http://localhost:5678/webhook/agendar-citas-2001'; // Tu URL POST
+
+        let listaCitas = []; // Almacén local de datos
+
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarCitasDesdeN8N();
+        });
+
+        // --- 1. CARGAR DATOS (CONSULTAR) ---
+        async function cargarCitasDesdeN8N() {
+            const tbody = document.getElementById('tablaCitasBody');
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4"><div class="spinner-border text-primary" role="status"></div><p>Cargando datos...</p></td></tr>';
+
+            try {
+                // Si no tienes el servidor n8n corriendo, usa datos falsos para probar la interfaz
+                /* const res = await fetch(URL_LEER_CITAS);
+                listaCitas = await res.json();
+                */
+
+                // MODO SIMULACIÓN (Para que veas la interfaz bonita si n8n está apagado)
+                // Borra esto cuando conectes tu n8n real
+                await new Promise(r => setTimeout(r, 800)); // Simula delay
+                listaCitas = [
+                    { id: 1, nombre: "Juan Pérez", telefono: "+56912345678", email: "juan@mail.com", propiedad: "Depto Independencia", inicio: "2026-01-22T10:00", fin: "2026-01-22T10:30", estado: "Pendiente" },
+                    { id: 2, nombre: "María Soto", telefono: "+56987654321", email: "maria@mail.com", propiedad: "Casa Los Andes", inicio: "2026-01-23T15:00", fin: "2026-01-23T15:45", estado: "Confirmada" }
+                ];
+                // --------------------------------------------------------------------
+
+                renderTabla();
+                actualizarKPIs();
+
+            } catch (error) {
+                console.error("Error cargando citas:", error);
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error de conexión con el servidor de citas.</td></tr>';
+            }
+        }
+
+        // --- 2. RENDERIZAR TABLA ---
+        function renderTabla() {
+            const tbody = document.getElementById('tablaCitasBody');
+            const buscar = document.getElementById('buscador').value.toLowerCase();
+            const fEstado = document.getElementById('filtroEstado').value;
+
+            tbody.innerHTML = '';
+
+            // Filtros en el cliente (rápido)
+            const filtradas = listaCitas.filter(c => {
+                const textoMatch = (c.nombre || '').toLowerCase().includes(buscar) || (c.telefono || '').includes(buscar);
+                const estadoMatch = fEstado ? c.estado === fEstado : true;
+                return textoMatch && estadoMatch;
+            });
+
+            if (filtradas.length === 0) {
+                document.getElementById('mensajeVacio').classList.remove('d-none');
+                return;
+            } else {
+                document.getElementById('mensajeVacio').classList.add('d-none');
+            }
+
+            filtradas.forEach(c => {
+                // Estilos de estado
+                let badgeClass = 'badge-pendiente';
+                let icon = '<i class="bi bi-clock"></i>';
+                if (c.estado === 'Confirmada') { badgeClass = 'badge-confirmada'; icon = '<i class="bi bi-check-circle"></i>'; }
+                if (c.estado === 'Cancelada') { badgeClass = 'badge-cancelada'; icon = '<i class="bi bi-x-circle"></i>'; }
+
+                const iniciales = c.nombre ? c.nombre.substring(0, 2).toUpperCase() : 'NN';
+                const fechaFormat = new Date(c.inicio).toLocaleString('es-CL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+                const fila = `
+                    <tr>
+                        <td class="ps-3">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle">${iniciales}</div>
+                                <div>
+                                    <div class="fw-bold text-dark">${c.nombre}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="small"><i class="bi bi-telephone text-muted"></i> ${c.telefono || '-'}</div>
+                            <div class="small text-muted text-truncate" style="max-width: 150px;">${c.email || '-'}</div>
+                        </td>
+                        <td><span class="badge bg-light text-dark border text-truncate" style="max-width: 150px;">${c.propiedad || 'Sin propiedad'}</span></td>
+                        <td>
+                            <div class="fw-bold">${fechaFormat}</div>
+                        </td>
+                        <td><span class="badge ${badgeClass} p-2 rounded-pill">${icon} ${c.estado}</span></td>
+                        <td class="text-end pe-3">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    Acciones
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow">
+                                    <li><a class="dropdown-item text-primary" href="#" onclick="editarCita(${c.id})"><i class="bi bi-pencil"></i> Editar / Reagendar</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#" onclick="cancelarCita(${c.id})"><i class="bi bi-x-circle"></i> Cancelar Cita</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += fila;
+            });
+        }
+
+        // --- 3. AGENDAR / REAGENDAR (GUARDAR) ---
+        function abrirModalNuevaCita() {
+            document.getElementById('formCita').reset();
+            document.getElementById('citaId').value = '';
+            document.getElementById('modalTitulo').innerText = "Agendar Nueva Visita";
+            new bootstrap.Modal(document.getElementById('modalCita')).show();
+        }
+
+        function editarCita(id) {
+            const c = listaCitas.find(x => x.id === id);
+            if (!c) return;
+
+            document.getElementById('citaId').value = c.id;
+            document.getElementById('nombreCliente').value = c.nombre;
+            document.getElementById('telefonoCliente').value = c.telefono;
+            document.getElementById('emailCliente').value = c.email;
+            document.getElementById('propiedadTexto').value = c.propiedad;
+            document.getElementById('fechaInicio').value = c.inicio; // Formato debe coincidir con datetime-local
+            document.getElementById('fechaFin').value = c.fin;
+            document.getElementById('estadoCita').value = c.estado;
+
+            document.getElementById('modalTitulo').innerText = "Editar / Reagendar Cita";
+            new bootstrap.Modal(document.getElementById('modalCita')).show();
+        }
+
+        async function guardarCita() {
+            const btn = document.getElementById('btnGuardar');
+            btn.innerHTML = 'Guardando...';
+            btn.disabled = true;
+
+            const datos = {
+                id: document.getElementById('citaId').value, // Si hay ID es edición
+                nombre: document.getElementById('nombreCliente').value,
+                telefono: document.getElementById('telefonoCliente').value,
+                email: document.getElementById('emailCliente').value,
+                propiedad: document.getElementById('propiedadTexto').value,
+                start: document.getElementById('fechaInicio').value,
+                end: document.getElementById('fechaFin').value,
+                estado: document.getElementById('estadoCita').value
+            };
+
+            try {
+                // ENVIAR A N8N (POST)
+                /* await fetch(URL_GUARDAR_CITA, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+                */
+
+                // SIMULACIÓN DE GUARDADO (Borrar al conectar)
+                await new Promise(r => setTimeout(r, 1000));
+                if (datos.id) {
+                    // Actualizar local
+                    const idx = listaCitas.findIndex(x => x.id == datos.id);
+                    if (idx !== -1) listaCitas[idx] = { ...listaCitas[idx], ...datos, inicio: datos.start, fin: datos.end };
+                } else {
+                    // Crear nuevo local
+                    datos.id = Date.now();
+                    datos.inicio = datos.start; // Ajuste de nombres
+                    listaCitas.unshift(datos);
+                }
+
+                alert("✅ Cita guardada correctamente.");
+                bootstrap.Modal.getInstance(document.getElementById('modalCita')).hide();
+                renderTabla();
+                actualizarKPIs();
+
+            } catch (error) {
+                console.error(error);
+                alert("❌ Error al guardar la cita.");
+            } finally {
+                btn.innerHTML = 'Guardar Cita';
+                btn.disabled = false;
+            }
+        }
+
+        function cancelarCita(id) {
+            if (confirm("¿Seguro que deseas cancelar esta cita?")) {
+                // Aquí llamarías a tu webhook de actualización con estado = 'Cancelada'
+                const cita = listaCitas.find(x => x.id === id);
+                if (cita) {
+                    cita.estado = 'Cancelada';
+                    renderTabla();
+                    actualizarKPIs();
+                    // fetch(...) para actualizar en servidor
+                }
+            }
+        }
+
+        // --- 4. UTILIDADES ---
+        function filtrarTabla() {
+            renderTabla();
+        }
+
+        function actualizarKPIs() {
+            const pendientes = listaCitas.filter(c => c.estado === 'Pendiente').length;
+            document.getElementById('kpi-pendientes').innerText = pendientes;
+            document.getElementById('badge-pendientes').innerText = pendientes; // Badge sidebar
+
+            document.getElementById('kpi-confirmadas').innerText = listaCitas.filter(c => c.estado === 'Confirmada').length;
+            document.getElementById('kpi-canceladas').innerText = listaCitas.filter(c => c.estado === 'Cancelada').length;
+
+            // Citas Hoy
+            const hoyStr = new Date().toISOString().split('T')[0];
+            const hoyCount = listaCitas.filter(c => c.inicio && c.inicio.startsWith(hoyStr)).length;
+            document.getElementById('kpi-hoy').innerText = hoyCount;
+        }
+
+    </script>
+</body>
+
+</html>

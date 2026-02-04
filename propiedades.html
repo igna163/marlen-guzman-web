@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Propiedades | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            padding-top: 80px;
+            background-color: #f8f9fa;
+        }
+
+        /* Barra de Filtros Lateral */
+        .sidebar-filters {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 100px;
+            /* Se queda fija al bajar */
+        }
+
+        .filter-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #bfa378;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .btn-filter {
+            width: 100%;
+            background-color: #bfa378;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-filter:hover {
+            background-color: #a38960;
+        }
+
+        /* Tarjeta de Propiedad */
+        .property-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .property-card:hover .card-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        /* Etiquetas sobre la imagen */
+        .badge-status {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 12px;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .bg-venta {
+            background-color: #bfa378;
+        }
+
+        .bg-arriendo {
+            background-color: #2c3e50;
+        }
+
+        .badge-code {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .card-location {
+            color: #777;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .card-price {
+            color: #bfa378;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-price small {
+            color: #999;
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin-left: 5px;
+        }
+
+        .card-features {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 15px;
+            margin-top: auto;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-detail {
+            display: block;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #bfa378;
+            color: #bfa378;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-detail:hover {
+            background-color: #bfa378;
+            color: white;
+        }
+
+        /* Responsive Layout */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .catalog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-filters {
+                position: static;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body data-page="propiedades">
+
+    <div id="nav-placeholder"></div>
+
+    <section class="section" style="padding-top: 40px;">
+        <div class="container">
+
+            <div class="catalog-grid">
+
+                <aside>
+                    <div class="sidebar-filters">
+                        <div class="filter-title">Filtrar Propiedades</div>
+                        <form id="filter-form">
+
+                            <div class="form-group">
+                                <label>Operación</label>
+                                <select id="filter-operacion" class="form-control">
+                                    <option value="">Todas</option>
+                                    <option value="venta">Venta</option>
+                                    <option value="arriendo">Arriendo</option>
+                                    <option value="temporal">Temporal</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tipo de Propiedad</label>
+                                <select id="filter-tipo" class="form-control">
+                                    <option value="">Seleccione...</option>
+                                    <option value="Casa" selected>Casa</option>
+                                    <option value="Departamento">Departamento</option>
+                                    <option value="Oficina">Oficina</option>
+                                    <option value="Sitio">Sitio</option>
+                                    <option value="Local Comercial">Local Comercial</option>
+                                    <option value="Industrial">Industrial</option>
+                                    <option value="Agrícola">Agrícola</option>
+                                    <option value="Parcela">Parcela</option>
+                                    <option value="Estacionamiento">Estacionamiento</option>
+                                    <option value="Terreno Construccion">Terreno Construccion</option>
+                                    <option value="Bodega">Bodega</option>
+                                    <option value="Negocio/Patentes/Derechos de llave">Negocio/Patentes/Derechos de
+                                        llave</option>
+                                    <option value="Residencial/Pieza">Residencial/Pieza</option>
+                                    <option value="Hotel/Apart Hotel">Hotel/Apart Hotel</option>
+                                    <option value="Complejos Turísticos">Complejos Turísticos</option>
+                                    <option value="Departamento Amoblado">Departamento Amoblado</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ubicación</label>
+                                <input type="text" id="filter-comuna" class="form-control"
+                                    placeholder="Ej: Los Andes, Providencia...">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Dormitorios</label>
+                                        <select id="filter-dorm" class="form-control">
+                                            <option value="0">Todos</option>
+                                            <option value="1">1+</option>
+                                            <option value="2">2+</option>
+                                            <option value="3">3+</option>
+                                            <option value="4">4+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Baños</label>
+                                        <select id="filter-banos" class="form-control">
+                                            <option value="0">Todos</option>
+                                            <option value="1">1+</option>
+                                            <option value="2">2+</option>
+                                            <option value="3">3+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn-filter" onclick="aplicarFiltros()">
+                                <i class="fas fa-search"></i> ACTUALIZAR RESULTADOS
+                            </button>
+                        </form>
+                    </div>
+                </aside>
+
+                <main>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="section-title mb-0" style="font-size: 1.8rem;" id="page-title">Todas las Propiedades
+                        </h2>
+                        <span class="text-muted small"><strong id="total-props">0</strong> propiedades
+                            encontradas</span>
+                    </div>
+
+                    <div id="loading-spinner" class="text-center py-5" style="display: none;">
+                        <i class="fas fa-circle-notch fa-spin fa-3x text-muted"></i>
+                        <p class="mt-3 text-muted">Buscando las mejores opciones...</p>
+                    </div>
+
+                    <div id="properties-grid" class="row">
+                    </div>
+
+                    <div class="text-center mt-5">
+                        <button class="btn btn-outline-secondary btn-sm me-2" disabled>Anterior</button>
+                        <button class="btn btn-outline-secondary btn-sm active">1</button>
+                        <button class="btn btn-outline-secondary btn-sm">2</button>
+                        <button class="btn btn-outline-secondary btn-sm ms-2">Siguiente</button>
+                    </div>
+                </main>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+    <script type="module" src="script.js"></script>
+
+    <script>
+        // --- LÓGICA DEL CATÁLOGO ---
+        let allProperties = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Detectar si viene con filtro desde el menú (?op=venta)
+            const urlParams = new URLSearchParams(window.location.search);
+            const opParam = urlParams.get('op'); // venta, arriendo, temporal
+
+            if (opParam) {
+                document.getElementById('filter-operacion').value = opParam;
+                const titulos = { 'venta': 'Propiedades en Venta', 'arriendo': 'Propiedades en Arriendo', 'temporal': 'Arriendo Temporal' };
+                if (titulos[opParam]) document.getElementById('page-title').innerText = titulos[opParam];
+            }
+
+            // 2. Cargar datos
+            fetchPropiedades();
+        });
+
+        async function fetchPropiedades() {
+            document.getElementById('loading-spinner').style.display = 'block';
+            document.getElementById('properties-grid').innerHTML = '';
+
+            try {
+                // LLAMADA A TU API (Simulada o Real)
+                const res = await fetch('http://localhost:3000/api/propiedades-list?limit=100');
+                const json = await res.json();
+
+                if (json.success) {
+                    allProperties = json.data;
+                    aplicarFiltros(); // Renderizar
+                } else {
+                    console.error("Error API:", json.message);
+                }
+            } catch (error) {
+                console.error("Error conexión:", error);
+                document.getElementById('properties-grid').innerHTML = '<div class="col-12 text-center py-5">Error cargando propiedades. Verifique conexión.</div>';
+            } finally {
+                document.getElementById('loading-spinner').style.display = 'none';
+            }
+        }
+
+        function aplicarFiltros() {
+            const op = document.getElementById('filter-operacion').value;
+            const tipo = document.getElementById('filter-tipo').value;
+            const comuna = document.getElementById('filter-comuna').value.toLowerCase();
+            const dorms = parseInt(document.getElementById('filter-dorm').value) || 0;
+            const banos = parseInt(document.getElementById('filter-banos').value) || 0;
+
+            const filtrados = allProperties.filter(p => {
+                // Filtro Operación
+                if (op === 'venta' && !p.operacion_venta) return false;
+                if (op === 'arriendo' && !p.operacion_arriendo) return false;
+                // Filtro Tipo
+                if (tipo && p.tipo_propiedad !== tipo) return false;
+                // Filtro Comuna
+                if (comuna && !p.comuna.toLowerCase().includes(comuna)) return false;
+                // Filtro Dorms/Baños
+                if (p.dormitorios < dorms) return false;
+                if (p.banos < banos) return false;
+
+                return true;
+            });
+
+            document.getElementById('total-props').innerText = filtrados.length;
+            renderizarPropiedades(filtrados);
+        }
+
+        function renderizarPropiedades(lista) {
+            const grid = document.getElementById('properties-grid');
+            grid.innerHTML = '';
+
+            if (lista.length === 0) {
+                grid.innerHTML = '<div class="col-12 text-center py-5"><h3>No encontramos propiedades</h3><p>Prueba con otros criterios de búsqueda.</p></div>';
+                return;
+            }
+
+            lista.forEach(p => {
+                // Lógica Precio
+                let precioDisplay = '';
+                let badgeHtml = '';
+
+                if (p.operacion_venta) {
+                    precioDisplay = `${p.moneda_venta} ${new Intl.NumberFormat('es-CL').format(p.precio_venta)}`;
+                    badgeHtml = `<span class="badge-status bg-venta">VENTA</span>`;
+                } else if (p.operacion_arriendo) {
+                    precioDisplay = `${p.moneda_arriendo} ${new Intl.NumberFormat('es-CL').format(p.precio_arriendo)}`;
+                    badgeHtml = `<span class="badge-status bg-arriendo">ARRIENDO</span>`;
+                }
+
+                // Imagen por defecto si no hay
+                const imgUrl = p.imagen_principal || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'; // Foto genérica bonita
+
+                // Construcción de la Tarjeta
+                const html = `
+                <div class="col-md-6 col-lg-4 animate-up">
+                    <div class="property-card">
+                        <div class="card-img-wrapper">
+                            ${badgeHtml}
+                            <span class="badge-code">COD: ${p.id}</span>
+                            <img src="${imgUrl}" alt="${p.tipo_propiedad}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">${p.tipo_propiedad} en ${p.comuna}</h5>
+                            <p class="card-location"><i class="fas fa-map-marker-alt"></i> ${p.sector || p.comuna}</p>
+                            
+                            <div class="card-price">${precioDisplay}</div>
+                            
+                            <div class="card-features">
+                                <div class="feature-item"><i class="fas fa-bed"></i> ${p.dormitorios}</div>
+                                <div class="feature-item"><i class="fas fa-bath"></i> ${p.banos}</div>
+                                <div class="feature-item"><i class="fas fa-ruler-combined"></i> ${p.superficie_util} m²</div>
+                            </div>
+
+                            <a href="web-ficha.html?id=${p.id}" class="btn-detail">VER DETALLES</a>
+                        </div>
+                    </div>
+                </div>
+                `;
+                grid.innerHTML += html;
+            });
+        }
+    </script>
+</body>
+
+</html>

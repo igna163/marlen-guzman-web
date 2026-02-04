@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Propiedad - Paso 6 (Resumen)</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #555;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Pasos */
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 40px;
+            right: 40px;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .step-item {
+            z-index: 2;
+            text-align: center;
+            position: relative;
+            background-color: #f4f6f9;
+            padding: 0 10px;
+        }
+
+        .step-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto;
+            background: #fff;
+            border: 2px solid #e9ecef;
+            color: #adb5bd;
+            cursor: pointer;
+        }
+
+        .step-item.completed .step-circle {
+            background: #198754;
+            border-color: #198754;
+            color: white;
+        }
+
+        /* Verde para completados */
+        .step-item.active .step-circle {
+            background: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.2);
+        }
+
+        .step-label {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #adb5bd;
+        }
+
+        .step-item.active .step-label {
+            color: #0d6efd;
+            font-weight: 600;
+        }
+
+        /* Estilos Resumen */
+        .summary-label {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .summary-value {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .edit-link {
+            font-size: 0.8rem;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        /* Alerta de Error de Datos */
+        .missing-data {
+            color: #dc3545;
+            font-weight: bold;
+            background: #ffe6e6;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-4 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <small class="text-muted">Panel de Control • Agregar propiedad</small>
+                        <h5 class="text-primary fw-bold mt-1"><i class="bi bi-check-circle"></i> CONFIRMAR PUBLICACIÓN
+                        </h5>
+                    </div>
+                    <button class="btn btn-success fw-bold px-4 shadow-sm" onclick="finalizarPublicacion()">
+                        <i class="bi bi-cloud-upload"></i> PUBLICAR AHORA
+                    </button>
+                </div>
+
+                <div class="step-indicator">
+                    <div class="step-item completed" onclick="location.href='admin-publicar-3.html'">
+                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                            class="step-label">Tipo</span>
+                    </div>
+                    <div class="step-item completed" onclick="location.href='admin-publicar-paso2.html'">
+                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                            class="step-label">Ubicación</span>
+                    </div>
+                    <div class="step-item completed" onclick="location.href='admin-publicar-paso3.html'">
+                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                            class="step-label">Características</span>
+                    </div>
+                    <div class="step-item completed" onclick="location.href='admin-publicar-paso4.html'">
+                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                            class="step-label">Observaciones</span>
+                    </div>
+                    <div class="step-item completed" onclick="location.href='admin-publicar-paso5.html'">
+                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                            class="step-label">Propietario</span>
+                    </div>
+                    <div class="step-item active">
+                        <div class="step-circle">6</div><span class="step-label">Confirmar</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-light border border-info d-flex align-items-center mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill text-info fs-4 me-3"></i>
+                    <div>
+                        <strong>Revisa cuidadosamente la información.</strong>
+                        <div class="small text-muted">Si necesitas corregir algo, haz clic en el botón "Editar" de cada
+                            sección.</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+
+                        <div class="card p-4">
+                            <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
+                                <h6 class="fw-bold text-primary">📍 Operación y Ubicación</h6>
+                                <a href="admin-publicar-3.html" class="edit-link"><i class="bi bi-pencil"></i>
+                                    Editar</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="summary-label">Tipo de Propiedad</div>
+                                    <div class="summary-value" id="resTipo">Cargando...</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="summary-label">Rol SII</div>
+                                    <div class="summary-value" id="resRol">Cargando...</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="summary-label">Región / Comuna</div>
+                                    <div class="summary-value" id="resUbicacion">Cargando...</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="summary-label">Dirección</div>
+                                    <div class="summary-value" id="resDireccion">Cargando...</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-4">
+                            <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
+                                <h6 class="fw-bold text-primary">🏠 Características</h6>
+                                <a href="admin-publicar-paso3.html" class="edit-link"><i class="bi bi-pencil"></i>
+                                    Editar</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="summary-label">Dormitorios</div>
+                                    <div class="summary-value" id="resDorm">0</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="summary-label">Baños</div>
+                                    <div class="summary-value" id="resBano">0</div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="summary-label">Superficie Útil</div>
+                                    <div class="summary-value" id="resSup">0 m²</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-4">
+                            <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
+                                <h6 class="fw-bold text-primary"><i class="bi bi-file-text"></i> Publicación Web</h6>
+                                <a href="admin-publicar-paso4.html" class="edit-link"><i class="bi bi-pencil"></i>
+                                    Editar</a>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="summary-label">Título Publicación</div>
+                                <div class="summary-value fw-bold" id="resTitulo">Cargando...</div>
+                            </div>
+
+                            <div class="summary-label">Descripción</div>
+                            <p class="text-muted small fst-italic p-3 bg-light rounded border" id="resDesc">
+                                "No se ha generado descripción..."
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="card p-4 bg-light border-0">
+                            <div class="d-flex justify-content-between border-bottom pb-2 mb-3">
+                                <h6 class="fw-bold text-dark">👤 Propietario</h6>
+                                <a href="admin-publicar-paso5.html" class="edit-link"><i class="bi bi-pencil"></i>
+                                    Editar</a>
+                            </div>
+
+                            <div class="summary-label">Nombre Completo</div>
+                            <div class="summary-value" id="resDuenoNombre">Cargando...</div>
+
+                            <div class="summary-label">RUT</div>
+                            <div class="summary-value" id="resDuenoRut">Cargando...</div>
+
+                            <div class="summary-label">Contacto</div>
+                            <div class="summary-value mb-0" id="resDuenoEmail">Cargando...</div>
+                        </div>
+
+                        <div class="card p-3 mt-3">
+                            <h6 class="small fw-bold mb-3">Se publicará automáticamente en:</h6>
+                            <ul class="list-unstyled small">
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Sitio Web Nexxos
+                                </li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Portal
+                                    Inmobiliario</li>
+                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success"></i> Facebook
+                                    Marketplace</li>
+                                <li class="mb-0 text-muted"><i class="bi bi-circle"></i> Instagram (Pendiente revisión)
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-outline-secondary" onclick="window.print()">
+                                <i class="bi bi-printer"></i> Imprimir Ficha Borrador
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. CARGAR DATOS PARA VISUALIZACIÓN (RESUMEN)
+        document.addEventListener('DOMContentLoaded', cargarDatosResumen);
+
+        function cargarDatosResumen() {
+            // Recuperar todas las "cajitas" de la memoria
+            const p1 = JSON.parse(localStorage.getItem('nuevaPropiedad_Paso1')) || {};
+            const p2 = JSON.parse(localStorage.getItem('propiedad_paso2')) || {};
+            const p3 = JSON.parse(localStorage.getItem('propiedad_paso3')) || {};
+            const p4 = JSON.parse(localStorage.getItem('propiedad_paso4')) || {};
+            const p5 = JSON.parse(localStorage.getItem('propiedad_paso5')) || {};
+
+            // --- PINTAR EN PANTALLA ---
+
+            // A. Operación y Ubicación
+            const tipo = p1.tipo || "Propiedad";
+            let operacionTxt = "Desconocida";
+            let precioTxt = "---";
+
+            if (p1.operacion) {
+                if (p1.operacion.venta) {
+                    operacionTxt = "Venta";
+                    precioTxt = `${p1.operacion.precioVenta} ${p1.operacion.monedaVenta || 'UF'}`;
+                } else if (p1.operacion.arriendo) {
+                    operacionTxt = "Arriendo";
+                    precioTxt = `${p1.operacion.precioArriendo} ${p1.operacion.monedaArriendo || 'CLP'}`;
+                }
+            }
+            setText('resTipo', `${tipo} en ${operacionTxt}`);
+            setText('resRol', p1.rol);
+            setText('resUbicacion', `${p2.comuna || ''}, ${p2.region || ''}`);
+            setText('resDireccion', `${p2.calle || ''} #${p2.numero || ''}`);
+            setText('resPrecio', precioTxt); // Asegurarse que existe este ID en el HTML si lo agregaste
+
+            // B. Características
+            setText('resDorm', p3.num_dormitorios);
+            setText('resBano', p3.num_banos);
+            setText('resSup', p3.sup_construida ? `${p3.sup_construida} m²` : '0 m²');
+
+            // C. Descripción
+            setText('resTitulo', p4.titulo);
+            setText('resDesc', p4.descripcion);
+
+            // D. Propietario
+            const nombreFull = `${p5.nombre || ''} ${p5.apellidoP || ''}`.trim();
+            setText('resDuenoNombre', nombreFull);
+            setText('resDuenoRut', p5.rut);
+            setText('resDuenoEmail', p5.email);
+        }
+
+        // Función auxiliar para escribir en el HTML sin errores
+        function setText(id, valor) {
+            const elemento = document.getElementById(id);
+            if (elemento) {
+                if (valor && valor !== "" && valor !== "undefined") {
+                    elemento.innerText = valor;
+                } else {
+                    elemento.innerHTML = '<span class="missing-data">Falta Información</span>';
+                }
+            }
+        }
+
+        // 2. FUNCIÓN FINAL: ENVIAR A LA BASE DE DATOS
+        // 2. FUNCIÓN FINAL: ENVIAR A BD Y REDIRIGIR A FOTOS
+        async function finalizarPublicacion() {
+            // Cambiamos el mensaje para avisar que viene la carga de fotos
+            const confirmacion = confirm("¿Estás segura de guardar la propiedad?\n\nAl aceptar, se creará la ficha y pasarás a SUBIR LAS FOTOS.");
+
+            if (confirmacion) {
+                const btn = document.querySelector('.btn-success');
+                const textoOriginal = btn.innerHTML;
+
+                // Efecto visual de carga
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Creando ficha...';
+                btn.disabled = true;
+
+                // Preparamos el paquete completo recuperando del localStorage
+                const paqueteDatos = {
+                    p1: JSON.parse(localStorage.getItem('nuevaPropiedad_Paso1')) || {},
+                    p2: JSON.parse(localStorage.getItem('propiedad_paso2')) || {},
+                    p3: JSON.parse(localStorage.getItem('propiedad_paso3')) || {},
+                    p4: JSON.parse(localStorage.getItem('propiedad_paso4')) || {},
+                    p5: JSON.parse(localStorage.getItem('propiedad_paso5')) || {}
+                };
+
+                try {
+                    // Enviamos a la API (Endpoint V2)
+                    const respuesta = await fetch('http://localhost:3000/api/publicar-v2', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(paqueteDatos)
+                    });
+
+                    const resultado = await respuesta.json();
+
+                    if (resultado.success) {
+                        // Limpiamos SOLO los datos del formulario de publicación
+                        localStorage.removeItem('nuevaPropiedad_Paso1');
+                        localStorage.removeItem('propiedad_paso2');
+                        localStorage.removeItem('propiedad_paso3');
+                        localStorage.removeItem('propiedad_paso4');
+                        localStorage.removeItem('propiedad_paso5');
+
+                        alert(`✅ ¡FICHA CREADA CON ÉXITO!\n\nID Asignado: ${resultado.propiedadId}\n\nAcepta para subir las imágenes.`);
+
+                        // --- CAMBIO CLAVE: REDIRECCIÓN AL MÓDULO DE IMÁGENES ---
+                        // Usamos el ID que nos devolvió la base de datos
+                        window.location.href = `admin-propiedad-imagenes.html?id=${resultado.propiedadId}`;
+
+                    } else {
+                        throw new Error(resultado.error || "Error desconocido en el servidor");
+                    }
+
+                } catch (error) {
+                    console.error("Error:", error);
+                    alert("❌ Error al guardar: " + error.message + "\n\nRevisa que el servidor esté corriendo.");
+                    btn.innerHTML = textoOriginal;
+                    btn.disabled = false;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

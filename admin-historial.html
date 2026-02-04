@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Propiedades | Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="admin-historial">
+    <nav class="navbar" style="position: relative;">
+        <div class="container nav-container">
+            <a href="admin.html" class="logo">Panel Admin</a>
+            <div class="nav-links">
+                <a href="admin.html" class="nav-link">Volver al Panel</a>
+                <button id="logout-btn-dashboard" class="btn btn-primary" style="padding: 0.5rem 1rem;">Salir</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container section">
+        <div class="section-header text-center">
+            <span class="overline">Historial</span>
+            <h2 class="section-title">Propiedades Vendidas / Arrendadas / Arrendadas Temporalmente</h2>
+        </div>
+
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Propiedad</th>
+                        <th>Operación</th>
+                        <th>Precio Final</th>
+                        <th>Ubicación</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="history-table-body">
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

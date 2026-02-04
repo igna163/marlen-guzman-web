@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasación IA | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .ai-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 0 0 50px 50px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            opacity: 0.1;
+            background-size: cover;
+        }
+
+        .ai-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .appraisal-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: -60px auto 50px;
+            padding: 40px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #bfa378;
+            box-shadow: 0 0 0 3px rgba(191, 163, 120, 0.2);
+            outline: none;
+        }
+
+        .btn-ai {
+            background: linear-gradient(45deg, #bfa378, #d4b88f);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(191, 163, 120, 0.4);
+        }
+
+        /* Animation State */
+        .ai-processing {
+            text-align: center;
+            padding: 40px;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .pulse-ring {
+            width: 80px;
+            height: 80px;
+            background: rgba(191, 163, 120, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .pulse-ring::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: #bfa378;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .msg-console {
+            font-family: 'Courier New', monospace;
+            color: #666;
+            height: 20px;
+            margin-top: 10px;
+        }
+
+        /* Result State */
+        .ai-result {
+            display: none;
+            /* Hidden by default */
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .price-range {
+            font-size: 3rem;
+            font-family: 'Playfair Display', serif;
+            color: #1a1a2e;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .confidence-meter {
+            background: #eee;
+            height: 6px;
+            border-radius: 3px;
+            width: 200px;
+            margin: 0 auto 10px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: #28a745;
+            width: 85%;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <div class="ai-hero">
+        <div class="ai-content">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 20px;">Tasación
+                Inmobiliaria IA</h1>
+            <p style="font-size: 1.2rem; opacity: 0.9;">Descubre el valor estimado de tu propiedad en segundos
+                utilizando nuestros algoritmos de mercado.</p>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="appraisal-card">
+
+            <!-- STEP 1: FORM -->
+            <div id="ai-step-form">
+                <h2 style="text-align: center; margin-bottom: 30px; font-family: 'Playfair Display', serif;">Ingresa los
+                    datos de tu propiedad</h2>
+                <form onsubmit="startAIAppraisal(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Comuna</label>
+                            <select id="ai-comuna" class="form-control" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="Calle Larga">Calle Larga</option>
+                                <option value="Catemu">Catemu</option>
+                                <option value="Independencia">Independencia</option>
+                                <option value="Los Andes">Los Andes</option>
+                                <option value="Putaendo">Putaendo</option>
+                                <option value="Reñaca Alto">Reñaca Alto</option>
+                                <option value="Rinconada">Rinconada</option>
+                                <option value="San Esteban">San Esteban</option>
+                                <option value="San Felipe">San Felipe</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo Propiedad</label>
+                            <select id="ai-type" class="form-control" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Casa" selected>Casa</option>
+                                <option value="Departamento">Departamento</option>
+                                <option value="Oficina">Oficina</option>
+                                <option value="Sitio">Sitio</option>
+                                <option value="Local Comercial">Local Comercial</option>
+                                <option value="Industrial">Industrial</option>
+                                <option value="Agrícola">Agrícola</option>
+                                <option value="Parcela">Parcela</option>
+                                <option value="Estacionamiento">Estacionamiento</option>
+                                <option value="Terreno Construccion">Terreno Construccion</option>
+                                <option value="Bodega">Bodega</option>
+                                <option value="Negocio/Patentes/Derechos de llave">Negocio/Patentes/Derechos de
+                                    llave</option>
+                                <option value="Residencial/Pieza">Residencial/Pieza</option>
+                                <option value="Hotel/Apart Hotel">Hotel/Apart Hotel</option>
+                                <option value="Complejos Turísticos">Complejos Turísticos</option>
+                                <option value="Departamento Amoblado">Departamento Amoblado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Metros Útiles (m²)</label>
+                            <input type="number" id="ai-m2" class="form-control" placeholder="Ej: 140" required
+                                min="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Dormitorios</label>
+                            <select id="ai-dorms" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3" selected>3</option>
+                                <option value="4">4</option>
+                                <option value="5">5+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Baños</label>
+                            <select id="ai-baths" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4+">4+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Año Construcción (Aprox)</label>
+                            <input type="number" id="ai-year" class="form-control" placeholder="Ej: 2015" value="2010">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-ai">
+                        <i class="fas fa-magic"></i> Analizar Propiedad
+                    </button>
+                    <p style="text-align: center; font-size: 0.8rem; color: #888; margin-top: 15px;">*Tasación
+                        referencial basada en datos de mercado actuales.</p>
+                </form>
+            </div>
+
+            <!-- STEP 2: PROCESSING ANIMATION -->
+            <div id="ai-step-processing" class="ai-processing">
+                <div class="pulse-ring"></div>
+                <h3 style="font-family: 'Playfair Display'; margin-bottom: 10px;">Marlen AI está analizando...</h3>
+                <div id="ai-console-msg" class="msg-console">Conectando a base de datos...</div>
+            </div>
+
+            <!-- STEP 3: RESULT -->
+            <div id="ai-step-result" class="ai-result">
+                <span class="badge"
+                    style="background: #28a745; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 15px; display: inline-block;">ANÁLISIS
+                    COMPLETADO</span>
+                <h2 style="font-family: 'Playfair Display'; color: #666; font-size: 1.5rem;">Valor de Mercado Estimado
+                </h2>
+
+                <div class="price-range" id="ai-result-price">UF 4.500 - 4.800</div>
+                <p id="ai-result-clp" style="color: #888; margin-bottom: 30px; font-size: 1.1rem;">$166.000.000 -
+                    $177.000.000 aprox.</p>
+
+                <div class="confidence-meter">
+                    <div class="confidence-fill"></div>
+                </div>
+                <p style="font-size: 0.8rem; color: #999; margin-bottom: 40px;">Confianza del algoritmo: Alta</p>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #bfa378;">
+                    <h4 style="margin-bottom: 10px; color: #333;">¿Quieres el valor exacto?</h4>
+                    <p style="color: #666; font-size: 0.95rem; margin-bottom: 15px;">La IA te da una referencia, pero un
+                        experto puede ajustar este valor considerando terminaciones, orientación y estado real.</p>
+                    <a href="https://wa.me/56952286689?text=Hola,%20me%20interesa%20una%20tasación%20exacta%20para%20mi%20propiedad"
+                        class="btn btn-outline-primary"
+                        style="background: #bfa378; color: white; border: none; padding: 10px 25px; border-radius: 5px; text-decoration: none; font-weight: 600; display: inline-block;">
+                        <i class="fab fa-whatsapp"></i> Hablar con un Humano
+                    </a>
+                </div>
+
+                <button onclick="resetAI()"
+                    style="background: none; border: none; color: #999; text-decoration: underline; margin-top: 20px; cursor: pointer;">Nueva
+                    Tasación</button>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+    <script type="module" src="script.js"></script> <!-- Reusing main script for logic -->
+</body>
+
+</html>

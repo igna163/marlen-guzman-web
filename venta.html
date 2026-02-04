@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venta - Marlen Guzmán | Gestión Inmobiliaria</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific page styles */
+        body {
+            padding-top: 80px;
+        }
+
+        /* ESTILOS PARA PAGINACIÓN Y CONTROL */
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 40px;
+        }
+
+        .page-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .page-btn:hover {
+            border-color: #bfa378;
+            color: #bfa378;
+        }
+
+        .page-btn.active {
+            background-color: #bfa378;
+            color: white;
+            border-color: #bfa378;
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body data-page="venta">
+    <div id="nav-placeholder"></div>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="overline">Propiedades</span>
+                <h2 class="section-title">En Venta</h2>
+            </div>
+
+            <div class="filters-container">
+                <div class="filters-row">
+                    <div class="filter-group search-group">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="filter-location" placeholder="Comuna, Ciudad...">
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="filter-type">
+                            <option value="">Tipo de Propiedad</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Departamento">Departamento</option>
+                            <option value="Parcela">Parcela</option>
+                            <option value="Terreno">Terreno</option>
+                            <option value="Oficina">Oficina</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="filter-dorms">
+                            <option value="">Dormitorios</option>
+                            <option value="1">1+</option>
+                            <option value="2">2+</option>
+                            <option value="3">3+</option>
+                            <option value="4">4+</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="filter-baths">
+                            <option value="">Baños</option>
+                            <option value="1">1+</option>
+                            <option value="2">2+</option>
+                            <option value="3">3+</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group price-group">
+                        <select id="filter-currency" style="width: 70px;">
+                            <option value="UF">UF</option>
+                            <option value="CLP">$</option>
+                        </select>
+                        <input type="number" id="filter-min-price" placeholder="Mín">
+                        <span class="separator">-</span>
+                        <input type="number" id="filter-max-price" placeholder="Máx">
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="filter-sort">
+                            <option value="">Ordenar por</option>
+                            <option value="price_asc">Menor Precio</option>
+                            <option value="price_desc">Mayor Precio</option>
+                            <option value="newest">Más Recientes</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-apply-filters" class="btn-filter-apply">Filtrar</button>
+                    <button id="btn-clear-filters" class="btn-filter-clear"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+
+            <div class="pagination-controls">
+                <div class="results-count">
+                    <p style="margin:0; font-size: 0.95rem; color: #666;">
+                        Mostrando <span id="start-index" style="font-weight:bold; color:#333;">0</span> -
+                        <span id="end-index" style="font-weight:bold; color:#333;">0</span> de
+                        <span id="total-items" style="font-weight:bold; color:#333;">0</span> Resultados
+                    </p>
+                </div>
+                <div class="display-limit">
+                    <label for="items-per-page" style="font-size: 0.9rem; margin-right: 10px;">Mostrar:</label>
+                    <select id="items-per-page"
+                        style="padding: 5px 10px; border-radius: 4px; border: 1px solid #ddd; cursor: pointer;">
+                        <option value="6">6</option>
+                        <option value="9" selected>9</option>
+                        <option value="12">12</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="properties-grid" id="category-grid">
+            </div>
+
+            <div class="pagination-wrapper" id="pagination-container">
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="index.html" class="btn-outline">Volver al Inicio</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="property-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="detail-gallery">
+                    <img id="detail-main-img" src="" alt="Imagen Principal" class="detail-main-img">
+                    <div id="detail-thumbnails" class="detail-thumbnails"></div>
+                </div>
+                <div class="detail-info">
+                    <div class="detail-header">
+                        <div>
+                            <span id="detail-operation-badge" class="badge"></span>
+                            <span id="detail-type-badge" class="badge"></span>
+                            <h2 id="detail-title"></h2>
+                            <p id="detail-location"></p>
+                        </div>
+                        <div id="detail-price" class="detail-price"></div>
+                    </div>
+                    <div class="detail-specs">
+                        <div class="spec-item"><i class="fas fa-bed"></i> <span id="detail-dorms"></span> Dorm</div>
+                        <div class="spec-item"><i class="fas fa-bath"></i> <span id="detail-baths"></span> Baños</div>
+                        <div class="spec-item"><i class="fas fa-ruler-combined"></i> <span id="detail-m2"></span> m²
+                            Totales</div>
+                        <div class="spec-item"><i class="fas fa-ruler-horizontal"></i> <span id="detail-m2-util"></span>
+                            m² Útiles</div>
+                    </div>
+                    <div class="detail-description">
+                        <h3>Descripción</h3>
+                        <p id="detail-desc"></p>
+                    </div>
+
+                    <div id="mortgage-calculator" class="calculator-box"
+                        style="margin-top: 25px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; display: none;">
+                        <h4
+                            style="color: #2C3E50; margin-bottom: 15px; font-family: 'Inter', sans-serif; font-size: 1.1rem; border-bottom: 2px solid #bfa378; padding-bottom: 10px; display: inline-block;">
+                            <i class="fas fa-calculator"></i> Simulador Hipotecario
+                        </h4>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 0.85rem; font-weight: 600; color: #555;">Pie (%)</label>
+                                <select id="calc-pie" class="form-control" style="padding: 8px; font-size: 0.9rem;">
+                                    <option value="10">10%</option>
+                                    <option value="20" selected>20%</option>
+                                    <option value="30">30%</option>
+                                    <option value="40">40%</option>
+                                    <option value="50">50%</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label style="font-size: 0.85rem; font-weight: 600; color: #555;">Plazo (Años)</label>
+                                <select id="calc-years" class="form-control" style="padding: 8px; font-size: 0.9rem;">
+                                    <option value="15">15 Años</option>
+                                    <option value="20" selected>20 Años</option>
+                                    <option value="25">25 Años</option>
+                                    <option value="30">30 Años</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div
+                            style="background: white; padding: 15px; border-radius: 6px; border: 1px solid #ddd; text-align: center;">
+                            <span style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 5px;">Dividendo
+                                Mensual Estimado:</span>
+                            <span id="calc-result" style="font-size: 1.6rem; font-weight: 800; color: #28a745;">UF
+                                0</span>
+                        </div>
+                        <p style="font-size: 0.75rem; color: #888; margin-top: 10px; text-align: center;">
+                            *Cálculo referencial con tasa anual estimada del 4.8%. No incluye seguros ni gastos
+                            operacionales.
+                        </p>
+                    </div>
+                    <div class="detail-amenities-section">
+                        <h3>Características</h3>
+                        <div id="detail-amenities" class="amenities-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content login-modal-content">
+            <span class="close-modal">×</span>
+            <div class="login-grid">
+                <div class="login-info-panel">
+                    <img src="Logo_MG.jpeg" alt="Logo" class="login-brand-logo">
+                    <h3 class="login-welcome-title">ACCESO A <span class="text-gold">SISTEMA</span></h3>
+                </div>
+                <div class="login-form-panel">
+                    <form id="login-form" class="auth-form active">
+                        <h3 style="margin-bottom: 20px;">Iniciar Sesión</h3>
+                        <div class="input-group-icon">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="username" placeholder="Usuario" required>
+                        </div>
+                        <div class="input-group-icon">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="password" placeholder="Contraseña" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="chatbot-widget" class="chatbot-widget">
+        <div id="chat-header" class="chat-header">
+            <div class="chat-title">
+                <div class="status-dot"
+                    style="height:10px; width:10px; background:#00ff00; border-radius:50%; margin-right:8px; display:inline-block;">
+                </div>
+                Marlen Guzmán IA
+            </div>
+            <button id="close-chat" class="close-chat">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+            <div class="message bot">Hola 👋. Soy la IA de Marlen Guzmán. ¿En qué te ayudo hoy?</div>
+        </div>
+
+        <div id="typing-indicator" class="typing"
+            style="display:none; color:#888; font-style:italic; font-size:12px; padding:5px 15px;">
+            Marlen está escribiendo...
+        </div>
+
+        <div class="quick-actions">
+            <button class="action-btn" onclick="window.fillInput('agendar')">📅 Agendar</button>
+            <button class="action-btn" onclick="window.fillInput('consultar')">🔍 Mis Citas</button>
+            <button class="action-btn" onclick="window.fillInput('reprogramar')">🔄 Reprogramar</button>
+            <button class="action-btn" onclick="window.fillInput('cancelar')">❌ Cancelar</button>
+        </div>
+
+        <div id="chat-input-area" class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje...">
+            <button id="send-chat-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <button id="chatbot-toggle" class="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <div id="booking-modal" class="modal">
+        <div class="modal-content"
+            style="max-width: 500px; position: relative; background: #fff; padding: 2rem; border-radius: 8px;">
+            <span class="close-modal" onclick="document.getElementById('booking-modal').style.display='none'"
+                style="position: absolute; top: 10px; right: 15px; font-size: 1.5rem; cursor: pointer;">&times;</span>
+
+            <div class="section-header text-center" style="margin-bottom: 1.5rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Agendar Visita</h3>
+                <p id="booking-prop-title" style="color: var(--accent-color); font-weight: 600; font-size: 0.9rem;">
+                    Propiedad Seleccionada
+                </p>
+            </div>
+
+            <form id="booking-form" class="contact-form" style="box-shadow: none; padding: 0;">
+                <div class="form-group">
+                    <label style="font-size: 0.9rem; font-weight: 600;">Tu Nombre</label>
+                    <input type="text" id="book-name" required placeholder="Ej: Juan Pérez"
+                        style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size: 0.9rem; font-weight: 600;">Teléfono / WhatsApp</label>
+                    <input type="tel" id="book-phone" required placeholder="+56 9 1234 5678"
+                        style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size: 0.9rem; font-weight: 600;">Email</label>
+                    <input type="email" id="book-email" required placeholder="correo@ejemplo.com"
+                        style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label style="font-size: 0.9rem; font-weight: 600;">Fecha</label>
+                        <input type="date" id="book-date" required
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 0.9rem; font-weight: 600;">Hora</label>
+                        <input type="time" id="book-time" required min="09:00" max="19:00"
+                            style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem;">
+                    Confirmar Solicitud
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

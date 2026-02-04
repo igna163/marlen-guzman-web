@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marlen Guzmán | Gestión Inmobiliaria</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-page="home">
+    <div id="nav-placeholder"></div>
+
+    <header id="home" class="hero"
+        style="background-image: url('https://images.adsttc.com/media/images/5127/d195/b3fc/4b11/a700/29c7/medium_jpg/1260988652-1855682237-los-andes-house-6.jpg?1361564053'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1 class="hero-title animate-up">Encuentre su hogar ideal con <br><span class="text-gold">distinción y
+                    confianza</span></h1>
+            <p class="hero-subtitle animate-up delay-1">Gestión inmobiliaria personalizada para propiedades exclusivas.
+            </p>
+
+            <div class="search-box animate-up delay-2">
+                <div class="search-field">
+                    <label for="home-operation">Operación</label>
+                    <select id="home-operation">
+                        <option value="venta">Comprar</option>
+                        <option value="arriendo" selected>Arrendar</option>
+                        <option value="arriendotemporal">Arriendo Temporal</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label for="home-type">Tipo</label>
+                    <select id="home-type">
+                        <option value="">Seleccione...</option>
+                        <option value="Casa" selected>Casa</option>
+                        <option value="Departamento">Departamento</option>
+                        <option value="Oficina">Oficina</option>
+                        <option value="Sitio">Sitio</option>
+                        <option value="Local Comercial">Local Comercial</option>
+                        <option value="Industrial">Industrial</option>
+                        <option value="Agrícola">Agrícola</option>
+                        <option value="Parcela">Parcela</option>
+                        <option value="Estacionamiento">Estacionamiento</option>
+                        <option value="Terreno Construccion">Terreno Construccion</option>
+                        <option value="Bodega">Bodega</option>
+                        <option value="Negocio/Patentes/Derechos de llave">Negocio/Patentes/Derechos de
+                            llave</option>
+                        <option value="Residencial/Pieza">Residencial/Pieza</option>
+                        <option value="Hotel/Apart Hotel">Hotel/Apart Hotel</option>
+                        <option value="Complejos Turísticos">Complejos Turísticos</option>
+                        <option value="Departamento Amoblado">Departamento Amoblado</option>
+                    </select>
+                </div>
+                <div class="search-field" style="position: relative;">
+                    <label for="home-location">Ubicación</label>
+                    <input type="text" id="home-location" list="comunas-marlen" placeholder="Ej: Los Andes, Reñaca..."
+                        autocomplete="off">
+                    <datalist id="comunas-marlen">
+                        <option value="Reñaca Alto"></option>
+                        <option value="Los Andes"></option>
+                        <option value="San Felipe"></option>
+                        <option value="Catemu"></option>
+                        <option value="Putaendo"></option>
+                        <option value="Rinconada"></option>
+                        <option value="Calle Larga"></option>
+                        <option value="Independencia"></option>
+                    </datalist>
+                </div>
+                <button id="btn-home-search" class="btn-search">Buscar</button>
+            </div>
+
+            <div class="animate-up delay-3"
+                style="margin-top: 25px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+
+                <a href="tasacion.html"
+                    style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: 500; transition: all 0.3s; text-decoration: none; display: flex; align-items: center;">
+                    <i class="fas fa-robot" style="margin-right: 8px; color: #bfa378;"></i> ¿Cuánto vale mi propiedad?
+                </a>
+
+                <a href="https://wa.me/56952286689" target="_blank"
+                    style="background: #fff; color: #333; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s; display: flex; align-items: center;">
+                    <i class="fab fa-whatsapp" style="margin-right: 8px; color: #25D366; font-size: 1.1rem;"></i> Hablar
+                    con Marlen
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <section id="properties" class="section bg-light">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="overline">Catálogo Exclusivo</span>
+                <h2 class="section-title">Propiedades Destacadas</h2>
+            </div>
+            <div id="featured-grid" class="properties-grid">
+                <!-- Las propiedades destacadas se cargarán aquí dinámicamente -->
+                <div class="text-center" style="width: 100%; padding: 40px;">
+                    <i class="fas fa-spinner fa-spin fa-2x" style="color: #bfa378;"></i>
+                    <p>Cargando propiedades...</p>
+                </div>
+            </div>
+            <div class="text-center mt-4" style="margin-top: 40px;">
+                <a href="propiedades.html" class="btn btn-primary"
+                    style="padding: 15px 35px; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);">
+                    Ver Catálogo Completo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="contact-wrapper">
+
+                <div class="contact-info">
+                    <h2 class="section-title text-white">Hablemos de su próximo proyecto</h2>
+                    <p class="text-white-dim">Estamos listos para asesorarlo en cada paso del camino.</p>
+
+                    <div class="contact-methods">
+                        <div class="method">
+                            <a href="tel:+56952286689"
+                                style="text-decoration:none; color:inherit; display:flex; gap:1rem; align-items: center;">
+                                <i class="fas fa-phone-alt"></i>
+                                <div><span>Llámenos</span>
+                                    <p>+56 9 5228 6689</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="method">
+                            <a href="mailto:marlenguzman.mg@gmail.com"
+                                style="text-decoration:none; color:inherit; display:flex; gap:1rem; align-items: center;">
+                                <i class="fas fa-envelope"></i>
+                                <div><span>Email</span>
+                                    <p>marlenguzman.mg@gmail.com</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="method">
+                            <a href="https://wa.me/56952286689" target="_blank"
+                                style="text-decoration:none; color:inherit; display:flex; gap:1rem; align-items: center;">
+                                <i class="fab fa-whatsapp"></i>
+                                <div><span>WhatsApp</span>
+                                    <p>+56 9 5228 6689</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="main-contact-form">
+                    <div class="form-group">
+                        <input type="text" id="contact-name" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="contact-email" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="contact-phone" placeholder="Teléfono">
+                    </div>
+                    <div class="form-group">
+                        <textarea id="contact-message" placeholder="¿En qué podemos ayudarle?" rows="4"
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block"
+                        style="padding: 15px; font-size: 1rem;">Enviar Mensaje</button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="location-map" class="section" style="padding: 60px 0; background-color: #f9f9f9;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+            <div class="section-header text-center" style="margin-bottom: 40px;">
+                <span class="overline"
+                    style="color: #bfa378; text-transform: uppercase; letter-spacing: 2px;">Visítanos</span>
+                <h2 class="section-title">Nuestra Ubicación</h2>
+            </div>
+            <div class="row" style="display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start;">
+                <div class="col-mapa" style="flex: 1; min-width: 320px;">
+                    <div class="map-responsive"
+                        style="width: 100%; height: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3345.056086786064!2d-70.5985!3d-32.8335!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x968804e1c2e64673%3A0x6a0c0a3733e8b0a1!2sGeneral%20Freire%20228%2C%20Los%20Andes%2C%20Valpara%C3%ADso!5e0!3m2!1ses!2scl!4v1700000000000!5m2!1ses!2scl"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="col-info"
+                    style="flex: 0 0 350px; min-width: 300px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid #eee;">
+                    <div style="margin-bottom: 25px;">
+                        <h4 style="color: #bfa378;">Dirección Oficina</h4>
+                        <p style="color: #666;"><i class="fas fa-map-marker-alt" style="color: #bfa378;"></i> General
+                            Freire 228,<br>Los Andes, Región de Valparaíso</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #bfa378;">Horarios de Atención</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; color: #444;">
+                            <li
+                                style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f4f4f4;">
+                                <span>Lunes a Viernes</span><span style="font-weight: 600;">09:00 - 18:30</span>
+                            </li>
+                            <li
+                                style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f4f4f4;">
+                                <span>Sábado</span><span style="font-weight: 600;">10:30 - 14:00</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="section bg-white">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="overline">Ayuda</span>
+                <h2 class="section-title">Preguntas Frecuentes</h2>
+            </div>
+            <div class="faq-container">
+
+                <div class="faq-group">
+                    <h3>Para Arrendar</h3>
+                    <details class="faq-item">
+                        <summary>Documentos Personas Naturales</summary>
+                        <div class="faq-content">
+                            <ul>
+                                <li>Cédula de identidad vigente</li>
+                                <li>Contrato de trabajo indefinido</li>
+                                <li>Certificado de cotizaciones AFP (12 meses)</li>
+                                <li>3 últimas liquidaciones de sueldo</li>
+                                <li>Certificado de Dicom Platinum 360</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Para Vender y Comprar</h3>
+                    <details class="faq-item">
+                        <summary>¿Cuánto vale mi propiedad?</summary>
+                        <div class="faq-content">
+                            <p>El precio se determina mediante un estudio de mercado comparando propiedades similares en
+                                la zona, ubicación, estado y demanda actual.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Qué necesito para comprar una propiedad?</summary>
+                        <div class="faq-content">
+                            <p>Identificación oficial, comprobantes de ingresos, historial crediticio (si aplica) y
+                                preaprobación de crédito.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Qué gastos debo considerar?</summary>
+                        <div class="faq-content">
+                            <p>Debes considerar impuestos, tasación, honorarios, estudio de títulos, escritura e
+                                inscripción del Conservador de Bienes Raíces.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Cuánto tiempo tardaré en vender o rentar?</summary>
+                        <div class="faq-content">
+                            <p>Depende del precio, ubicación, estado del inmueble y condiciones del mercado. Una
+                                correcta estrategia reduce significativamente los tiempos.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Trabajan con propiedades usadas y nuevas?</summary>
+                        <div class="faq-content">
+                            <p>Sí, manejamos propiedades nuevas, usadas, residenciales y comerciales.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Servicios y Comisiones</h3>
+                    <details class="faq-item">
+                        <summary>¿Cuánto cobran de comisión?</summary>
+                        <div class="faq-content">
+                            <p>La comisión varía según el tipo de operación:</p>
+                            <ul>
+                                <li><strong>Venta:</strong> 2% del valor de la venta.</li>
+                                <li><strong>Arriendo:</strong> 50% del primer mes (pago único).</li>
+                                <li><strong>Administración:</strong> 4% mensual.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Qué servicios incluyen?</summary>
+                        <div class="faq-content">
+                            <p>Publicidad profesional, fotografías, promoción digital, visitas, filtrado de clientes,
+                                negociación y acompañamiento legal hasta el cierre.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Cobertura y Contacto</h3>
+                    <details class="faq-item">
+                        <summary>¿En qué zonas trabajan?</summary>
+                        <div class="faq-content">
+                            <p><strong>Quinta Región:</strong> Reñaca Alto, Los Andes, San Felipe, Catemu, Putaendo,
+                                Rinconada, Calle Larga.</p>
+                            <p><strong>Región Metropolitana:</strong> Independencia.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Cómo puedo iniciar el proceso?</summary>
+                        <div class="faq-content">
+                            <p>Contáctanos directamente para asesorarte:</p>
+                            <ul>
+                                <li>WhatsApp: <a href="https://wa.me/56952286689">+569 5228 6689</a></li>
+                                <li>Email: <a href="mailto:marlenguzman.mg@gmail.com">marlenguzman.mg@gmail.com</a></li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Administración de Propiedades</h3>
+                    <details class="faq-item">
+                        <summary>¿Por qué debería entregarles mi propiedad en administración?</summary>
+                        <div class="faq-content">
+                            <p>Para su tranquilidad. Nosotros nos encargamos de todo: cobranza mensual, reajustes de
+                                IPC, gestión de reparaciones y, lo más importante, filtramos rigurosamente al
+                                arrendatario para asegurar el pago.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Qué pasa si el arrendatario no paga?</summary>
+                        <div class="faq-content">
+                            <p>Contamos con un equipo legal y procedimientos estrictos. Gestionamos la cobranza
+                                extrajudicial y judicial si es necesario, protegiendo siempre sus intereses como
+                                propietario.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Se encargan de las reparaciones?</summary>
+                        <div class="faq-content">
+                            <p>Sí. Coordinamos con maestros de confianza cualquier arreglo necesario, previa
+                                autorización del propietario, descontando los costos del arriendo o gestionando el pago
+                                directo.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Seguridad y Legal</h3>
+                    <details class="faq-item">
+                        <summary>¿Revisan los antecedentes legales de la propiedad?</summary>
+                        <div class="faq-content">
+                            <p>Absolutamente. Antes de cualquier operación, realizamos un <strong>Estudio de
+                                    Títulos</strong> para verificar que la propiedad no tenga embargos, litigios o
+                                problemas de herencia que impidan la venta.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿El proceso se hace ante notario?</summary>
+                        <div class="faq-content">
+                            <p>Sí, por seguridad de ambas partes. Tanto la <em>Promesa de Compraventa</em> como la
+                                <em>Escritura Final</em> se firman ante notario, y nosotros los acompañamos en ese
+                                trámite presencialmente.
+                            </p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Marketing y Difusión</h3>
+                    <details class="faq-item">
+                        <summary>¿Dónde publicarán mi propiedad?</summary>
+                        <div class="faq-content">
+                            <p>Su propiedad tendrá máxima visibilidad en:
+                            <ul>
+                                <li>Portales inmobiliarios líderes (Portal Inmobiliario, Yapo, TocToc, etc.)</li>
+                                <li>Nuestras redes sociales (Instagram y Facebook) con campañas pagadas.</li>
+                                <li>Nuestra cartera de clientes inversionistas y red de corredores aliados.</li>
+                            </ul>
+                            </p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Hacen visitas los fines de semana?</summary>
+                        <div class="faq-content">
+                            <p>Entendemos que los compradores trabajan. Por eso, coordinamos visitas flexibles,
+                                incluyendo sábados, siempre acompañados por un agente de Marlen Guzmán para mayor
+                                seguridad.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Visitas y Disponibilidad</h3>
+                    <details class="faq-item">
+                        <summary>¿En qué horarios se pueden visitar las propiedades?</summary>
+                        <div class="faq-content">
+                            <p>Nos adaptamos a su jornada laboral. Entendemos que usted trabaja, por lo que tenemos un
+                                horario especial <strong>"After Office"</strong>:</p>
+                            <ul>
+                                <li><strong>Lunes a Viernes:</strong> 17:00 a 21:00 hrs.</li>
+                                <li><strong>Fines de Semana y Festivos:</strong> 10:00 a 21:00 hrs.</li>
+                            </ul>
+                            <p>Siempre con previa coordinación para asegurar la mejor atención.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Quién muestra las propiedades?</summary>
+                        <div class="faq-content">
+                            <p>La atención es <strong>100% personalizada y exclusiva</strong>. Todas las visitas son
+                                guiadas directamente por <strong>Marlen Guzmán</strong>. Garantizamos que será atendido
+                                por una experta que conoce cada detalle de la propiedad, sin intermediarios ni
+                                ejecutivos rotativos.</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="faq-group">
+                    <h3>Seguridad y Respaldo</h3>
+                    <details class="faq-item">
+                        <summary>¿Es seguro entregar las llaves de mi propiedad?</summary>
+                        <div class="faq-content">
+                            <p>Totalmente. Al ser una gestión unipersonal y exclusiva, <strong>solo Marlen Guzmán
+                                    custodia las llaves</strong> y el acceso a su propiedad. No hay rotación de personal
+                                ni terceros involucrados, lo que garantiza máxima seguridad y control en cada visita.
+                            </p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>¿Revisan a los interesados antes de la visita?</summary>
+                        <div class="faq-content">
+                            <p>Sí. Por seguridad del propietario y eficiencia del proceso, realizamos un filtro previo
+                                telefónico para asegurar que los interesados cumplan con el perfil y requisitos básicos
+                                antes de agendar la visita presencial.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div id="chatbot-widget" class="chatbot-widget">
+        <div id="chat-header" class="chat-header">
+            <div class="chat-title">
+                <div class="status-dot"
+                    style="height:10px; width:10px; background:#00ff00; border-radius:50%; margin-right:8px; display:inline-block;">
+                </div>
+                Chatbot Gestión Inmobiliaria Marlén Guzmán
+            </div>
+            <button id="close-chat" class="close-chat">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+            <div class="message bot">Hola 👋. Soy la IA de Marlen Guzmán. ¿En qué te ayudo hoy?</div>
+        </div>
+
+        <div id="typing-indicator" class="typing"
+            style="display:none; color:#888; font-style:italic; font-size:12px; padding:5px 15px;">
+            Marlen está escribiendo...
+        </div>
+
+        <div class="quick-actions">
+            <button class="action-btn" onclick="window.fillInput('agendar')">📅 Agendar</button>
+            <button class="action-btn" onclick="window.fillInput('consultar')">🔍 Mis Citas</button>
+            <button class="action-btn" onclick="window.fillInput('reprogramar')">🔄 Reprogramar</button>
+            <button class="action-btn" onclick="window.fillInput('cancelar')">❌ Cancelar</button>
+            <button class="action-btn" onclick="window.fillInput('disponibilidad')">📅 Disponibilidad</button>
+        </div>
+
+        <div id="chat-input-area" class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje...">
+            <button id="send-chat-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <button id="chatbot-toggle" class="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+
+    <script type="module" src="script.js"></script>
+
+    <script>
+        fetch('http://localhost:3000/api/visitas/registrar', { method: 'POST' })
+            .then(() => console.log("✅ Visita registrada"))
+            .catch(err => console.error("❌ Error al contar visita:", err));
+        document.getElementById('btn-home-search').addEventListener('click', function (e) {
+            // Evitamos que el botón haga cualquier acción por defecto anterior
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            // 1. Capturamos los valores seleccionados
+            const operacion = document.getElementById('home-operation').value;
+            const tipo = document.getElementById('home-type').value;
+            const ubicacion = document.getElementById('home-location').value;
+
+            // 2. Construimos la URL base
+            let urlDestino = `propiedades.html?op=${operacion}`;
+
+            // 3. Si el usuario seleccionó tipo o ubicación, los agregamos a la URL
+            if (tipo) {
+                urlDestino += `&tipo=${encodeURIComponent(tipo)}`;
+            }
+            if (ubicacion) {
+                urlDestino += `&ubicacion=${encodeURIComponent(ubicacion)}`;
+            }
+
+            // 4. Redirigimos a la página única de propiedades
+            window.location.href = urlDestino;
+        });
+    </script>
+</body>
+
+</html>

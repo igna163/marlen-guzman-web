@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicar Propiedad - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* --- ESTILOS DUPLICAR --- */
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #4986e7;
+            padding: 15px 20px;
+            color: #4986e7;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-card {
+            background: #f8f9fa;
+            /* Gris muy claro de fondo */
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .badge-copia {
+            background-color: #e9ecef;
+            color: #4986e7;
+            font-weight: 700;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        /* Toggles estilo Nexxos (Cuadrados) */
+        .btn-check:checked+.btn-success {
+            background-color: #20c997;
+            border-color: #20c997;
+        }
+
+        .btn-check:not(:checked)+.btn-outline-secondary {
+            background-color: #fff;
+            color: #6c757d;
+            border-color: #ced4da;
+        }
+
+        .section-label {
+            color: #adb5bd;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
+            <div class="mb-2 position-relative d-inline-block">
+                <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
+            </div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
+            <div class="mt-2">
+                <span class="badge bg-primary" id="sidebar_operacion">-</span>
+            </div>
+            <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
+        </div>
+
+        <div class="py-2">
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
+            <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
+                Editar</a>
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
+                y videos</a>
+            <a href="#" id="link_documentos" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i>
+                Documentos</a>
+            <a href="#" id="link_estado" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado /
+                Config.</a>
+            <a href="#" id="link_bitacora" class="d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i>
+                Bitácora</a>
+            <a href="#" id="link_propietario" class="d-flex align-items-center"><i class="bi bi-person me-2"></i>
+                Propietario</a>
+            <a href="#" id="link_informes" class="d-flex align-items-center"><i class="bi bi-list-ul me-2"></i> Informes
+                prop.</a>
+            <a href="#" id="link_ficha" class="d-flex align-items-center"><i class="bi bi-book me-2"></i> Ficha</a>
+            <a href="#" id="link_portales" class="d-flex align-items-center"><i class="bi bi-display me-2"></i>
+                Portales</a>
+
+            <a href="#" class="active d-flex align-items-center text-warning"><i class="bi bi-layers me-2"></i>
+                Duplicar</a>
+
+            <hr class="border-secondary mx-3">
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+                listado</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <h5 class="fw-bold text-secondary mb-4">
+            <i class="bi bi-house-door-fill"></i> EDITAR PROPIEDAD
+            <span class="fw-normal text-muted" id="header_titulo" style="font-size: 0.9rem;">Cargando...</span>
+        </h5>
+
+        <div class="card border-0 shadow-sm p-4">
+
+            <div class="info-box">
+                <span>Información sobre condiciones de duplicar una propiedad</span>
+                <button class="btn btn-sm btn-primary">Ver <i class="bi bi-check-circle-fill ms-1"></i></button>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <label class="fw-bold text-primary me-3">Indique cuantas veces quiere duplicar la propiedad (máximo
+                    10)</label>
+                <select class="form-select w-auto" id="cantidad_copias">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+            <div class="copy-card">
+                <span class="badge-copia">1ª Copia</span>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold small">Rol</label>
+                    <input type="text" class="form-control w-50" id="rol_copia" placeholder="00000-00000">
+                </div>
+
+                <span class="section-label">Ubicación</span>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label small">Unidad</label>
+                        <input type="text" class="form-control" id="unidad_copia">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">Letra</label>
+                        <input type="text" class="form-control" id="letra_copia">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small">Etapa</label>
+                        <input type="text" class="form-control" id="etapa_copia">
+                    </div>
+                </div>
+
+                <span class="section-label">Precio</span>
+
+                <div class="row align-items-center mb-2">
+                    <div class="col-md-2 text-muted small">En Venta</div>
+                    <div class="col-md-2">
+                        <div class="btn-group btn-group-sm w-100">
+                            <input type="radio" class="btn-check" name="venta_switch" id="vsi" checked>
+                            <label class="btn btn-success" for="vsi">Sí</label>
+                            <input type="radio" class="btn-check" name="venta_switch" id="vno">
+                            <label class="btn btn-outline-secondary" for="vno">No</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control form-control-sm" id="precio_venta" value="2.100">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select form-select-sm bg-secondary text-white border-0">
+                            <option value="UF">UF</option>
+                            <option value="CLP">$</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-muted small">En Arriendo</div>
+                    <div class="col-md-2">
+                        <div class="btn-group btn-group-sm w-100">
+                            <input type="radio" class="btn-check" name="arr_switch" id="asi">
+                            <label class="btn btn-success" for="asi">Sí</label>
+                            <input type="radio" class="btn-check" name="arr_switch" id="ano" checked>
+                            <label class="btn btn-outline-secondary" for="ano">No</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control form-control-sm" id="precio_arriendo" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select form-select-sm bg-secondary text-white border-0">
+                            <option value="CLP">$</option>
+                            <option value="UF">UF</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-end mt-4 pt-3 border-top">
+                <button class="btn btn-primary px-4 fw-bold" onclick="duplicarPropiedad()">
+                    <i class="bi bi-check-lg"></i> Duplicar propiedad
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (propId) {
+                cargarDatos(propId);
+                // Conectar enlaces del Sidebar
+                document.getElementById('link_editar').href = `admin-editar-propiedad.html?id=${propId}`;
+                document.getElementById('link_imagenes').href = `admin-propiedad-imagenes.html?id=${propId}`;
+                document.getElementById('link_documentos').href = `admin-propiedad-documentos.html?id=${propId}`;
+                document.getElementById('link_estado').href = `admin-propiedad-estado.html?id=${propId}`;
+                document.getElementById('link_bitacora').href = `admin-propiedad-bitacora.html?id=${propId}`;
+                document.getElementById('link_propietario').href = `admin-propiedad-propietario.html?id=${propId}`;
+                document.getElementById('link_informes').href = `admin-propiedad-informes.html?id=${propId}`;
+                document.getElementById('link_ficha').href = `admin-propiedad-ficha.html?id=${propId}`;
+                // Portales usa el modal, así que aquí no lo enlazamos o usamos #
+            } else {
+                alert("Error: Faltan datos.");
+                window.location.href = 'admin-propiedades.html';
+            }
+        });
+
+        async function cargarDatos(id) {
+            try {
+                const res = await fetch(`http://localhost:3000/api/propiedades2/${id}`);
+                const json = await res.json();
+                if (json.success) {
+                    const p = json.data;
+
+                    // Llenar Sidebar
+                    document.getElementById('sidebar_cod').textContent = `Cód: ${p.id}`;
+                    document.getElementById('sidebar_tipo').textContent = p.tipo_propiedad;
+                    document.getElementById('sidebar_comuna').textContent = p.comuna;
+                    const op = p.operacion_venta ? 'VENTA' : 'ARRIENDO';
+                    document.getElementById('sidebar_operacion').textContent = op;
+
+                    // Título Header
+                    document.getElementById('header_titulo').textContent = `Cód.: ${p.id} - ${p.tipo_propiedad} - ${op} - ${p.comuna}`;
+
+                    // Pre-llenar datos para la copia
+                    document.getElementById('rol_copia').value = p.rol_sii || '';
+                    document.getElementById('unidad_copia').value = p.direccion_unidad || '';
+                    document.getElementById('letra_copia').value = p.letra || '';
+                    document.getElementById('etapa_copia').value = p.etapa || '';
+
+                    if (p.operacion_venta) {
+                        document.getElementById('precio_venta').value = new Intl.NumberFormat('es-CL').format(p.precio_venta);
+                    }
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        function duplicarPropiedad() {
+            const btn = document.querySelector('.btn-primary');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Procesando...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert("✅ Propiedad duplicada exitosamente.\nSe ha creado la copia con nuevo ID.");
+                window.location.href = 'admin-propiedades.html'; // Volver al listado
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>

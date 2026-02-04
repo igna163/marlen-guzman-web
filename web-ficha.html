@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Propiedad | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            padding-top: 80px;
+            background: #fff;
+        }
+
+        /* Galería */
+        .gallery-main {
+            height: 400px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .gallery-thumb {
+            height: 80px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+
+        .gallery-thumb:hover {
+            opacity: 1;
+        }
+
+        /* Detalles */
+        .prop-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .prop-address {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .price-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .main-price {
+            color: #bfa378;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .feature-item {
+            text-align: center;
+            color: #555;
+        }
+
+        .feature-item i {
+            font-size: 1.5rem;
+            color: #bfa378;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Formulario de Contacto (Sticky) */
+        .contact-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 100px;
+        }
+
+        .contact-card h3 {
+            font-family: 'Playfair Display';
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: #bfa378;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background: #a38960;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <section class="section">
+        <div class="container">
+            <div class="mb-4 small text-muted">
+                <a href="propiedades.html" style="text-decoration:none; color:inherit;">Propiedades</a> / <span
+                    id="bread-code">...</span>
+            </div>
+
+            <div class="row" style="display: flex; flex-wrap: wrap; gap: 40px;">
+
+                <div style="flex: 2; min-width: 300px;">
+                    <h1 class="prop-title" id="prop-title">Cargando...</h1>
+                    <p class="prop-address"><i class="fas fa-map-marker-alt text-gold"></i> <span
+                            id="prop-address">...</span></p>
+
+                    <img src="" id="main-img" class="gallery-main" alt="Principal">
+                    <div class="gallery-grid">
+                        <img src="https://placehold.co/150" class="gallery-thumb">
+                        <img src="https://placehold.co/150" class="gallery-thumb">
+                        <img src="https://placehold.co/150" class="gallery-thumb">
+                        <img src="https://placehold.co/150" class="gallery-thumb">
+                    </div>
+
+                    <div class="features-grid">
+                        <div class="feature-item"><i class="fas fa-bed"></i> <span
+                                id="feat-dorm">0</span><br>Dormitorios</div>
+                        <div class="feature-item"><i class="fas fa-bath"></i> <span id="feat-banos">0</span><br>Baños
+                        </div>
+                        <div class="feature-item"><i class="fas fa-ruler-combined"></i> <span id="feat-sup">0</span>
+                            m²<br>Totales</div>
+                    </div>
+
+                    <h3 style="font-family:'Playfair Display'; margin-bottom:15px;">Descripción</h3>
+                    <p id="prop-desc" style="line-height: 1.8; color: #555; white-space: pre-line;">...</p>
+
+                    <h3 style="font-family:'Playfair Display'; margin-top: 40px; margin-bottom:15px;">Ubicación</h3>
+                    <div style="height: 300px; background: #eee; border-radius: 8px;">
+                        <iframe id="prop-map" width="100%" height="100%" frameborder="0"
+                            style="border:0; border-radius:8px;" src="about:blank"></iframe>
+                    </div>
+                </div>
+
+                <div style="flex: 1; min-width: 300px;">
+                    <div class="contact-card">
+                        <div class="price-box">
+                            <div class="text-uppercase small text-muted mb-1" id="prop-op">Valor</div>
+                            <div class="main-price" id="prop-price">UF ...</div>
+                            <div class="small text-muted" id="prop-price-clp">$ ...</div>
+                        </div>
+
+                        <h3>Agendar Visita</h3>
+                        <p class="small text-muted mb-4">Complete el formulario y coordinaremos una visita a la
+                            brevedad.</p>
+
+                        <form onsubmit="alert('Solicitud enviada. ¡Te contactaremos pronto!'); return false;">
+                            <input type="text" class="form-control" placeholder="Nombre completo" required>
+                            <input type="email" class="form-control" placeholder="Correo electrónico" required>
+                            <input type="tel" class="form-control" placeholder="Teléfono / WhatsApp" required>
+                            <textarea class="form-control" rows="3"
+                                placeholder="Mensaje opcional (ej: Disponibilidad horaria)"></textarea>
+                            <button type="submit" class="btn-submit">ENVIAR SOLICITUD</button>
+                        </form>
+
+                        <div class="mt-4 text-center">
+                            <p class="small mb-2">O contáctanos directamente:</p>
+                            <a href="https://wa.me/56952286689" target="_blank"
+                                style="color: #25D366; text-decoration: none; font-weight: 600; font-size: 1.1rem;">
+                                <i class="fab fa-whatsapp"></i> +56 9 5228 6689
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+    <script type="module" src="script.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        if (propId) {
+            fetch(`http://localhost:3000/api/propiedades2/${propId}`)
+                .then(res => res.json())
+                .then(json => {
+                    if (json.success) {
+                        const p = json.data;
+                        const imgs = json.imagenes;
+
+                        // Llenar textos básicos
+                        document.getElementById('bread-code').innerText = `COD: ${p.id}`;
+                        document.getElementById('prop-title').innerText = p.titulo_publicacion;
+                        document.getElementById('prop-address').innerText = `${p.direccion_calle} ${p.direccion_numero}, ${p.comuna}`;
+                        document.getElementById('feat-dorm').innerText = p.dormitorios;
+                        document.getElementById('feat-banos').innerText = p.banos;
+                        document.getElementById('feat-sup').innerText = p.superficie_util;
+                        document.getElementById('prop-desc').innerText = p.descripcion_publica;
+
+                        // --- CONFIGURACIÓN DEL MAPA (LO NUEVO) ---
+                        // Construimos la dirección: "Calle Numero, Comuna, Chile"
+                        const direccionCompleta = `${p.direccion_calle} ${p.direccion_numero}, ${p.comuna}, Chile`;
+                        // Generamos la URL de Google Maps para embeber
+                        const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(direccionCompleta)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+                        document.getElementById('prop-map').src = mapUrl;
+
+                        // 1. Poner Imagen Principal
+                        const mainImg = document.getElementById('main-img');
+                        mainImg.src = p.imagen_principal || 'https://placehold.co/800';
+
+                        // 2. Cargar Galería de Miniaturas
+                        const galleryGrid = document.querySelector('.gallery-grid');
+                        galleryGrid.innerHTML = '';
+
+                        if (imgs && imgs.length > 0) {
+                            imgs.forEach(img => {
+                                const thumb = document.createElement('img');
+                                thumb.src = img.url_imagen;
+                                thumb.className = 'gallery-thumb';
+                                thumb.onclick = () => { mainImg.src = img.url_imagen; };
+                                galleryGrid.appendChild(thumb);
+                            });
+                        }
+
+                        // Precios
+                        const valor = p.operacion_venta ? p.precio_venta : p.precio_arriendo;
+                        const moneda = p.operacion_venta ? p.moneda_venta : p.moneda_arriendo;
+                        document.getElementById('prop-price').innerText = `${moneda} ${new Intl.NumberFormat('es-CL').format(valor)}`;
+                    }
+                })
+                .catch(e => console.error("Error cargando ficha:", e));
+        }
+    </script>
+</body>
+
+</html>

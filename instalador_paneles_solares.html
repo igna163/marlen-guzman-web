@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación Solar | Marlen Guzmán</title>
+
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .solar-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 100px 20px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #bfa378;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #bfa378;
+            margin-bottom: 20px;
+        }
+
+        /* ESTILOS DE LA CALCULADORA (NUEVO) */
+        .calculator-section {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eee;
+            margin-bottom: 60px;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .calc-result-box {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #bfa378;
+            display: none;
+            /* Oculto al inicio */
+        }
+
+        @media (max-width: 768px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .quote-form-container {
+            background-color: #f9f9f9;
+            padding: 40px;
+            border-radius: 15px;
+            border-left: 5px solid #bfa378;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-submit {
+            background-color: #bfa378;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #a38b63;
+        }
+    </style>
+</head>
+
+<body data-page="paneles-solares">
+
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+
+        <div class="solar-hero">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 15px; color: #ffffff;">
+                Energía Solar para tu Hogar</h1>
+            <p style="font-size: 1.25rem; max-width: 700px; margin: 0 auto; color: #ffffff; font-weight: 400;">Aumenta
+                el valor de tu propiedad y reduce tu cuenta de luz hasta en un 80% con tecnología sustentable.</p>
+        </div>
+
+        <div class="section-header text-center" style="margin-bottom: 40px;">
+            <span class="overline" style="color: #bfa378; letter-spacing: 2px; text-transform: uppercase;">¿Por qué
+                elegirnos?</span>
+            <h2 class="section-title" style="font-family: 'Playfair Display', serif;">Beneficios de la Energía Solar
+            </h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-solar-panel feature-icon"></i>
+                <h3>Ahorro Inmediato</h3>
+                <p style="color: #666;">Reduce drásticamente tus gastos mensuales en electricidad desde el primer mes de
+                    instalación.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line feature-icon"></i>
+                <h3>Mayor Plusvalía</h3>
+                <p style="color: #666;">Una propiedad con eficiencia energética y paneles solares se vende a un precio
+                    mayor en el mercado.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-leaf feature-icon"></i>
+                <h3>Sustentabilidad</h3>
+                <p style="color: #666;">Contribuye al cuidado del medio ambiente reduciendo tu huella de carbono con
+                    energía limpia.</p>
+            </div>
+        </div>
+
+        <section class="calculator-section">
+            <div class="section-header text-center" style="margin-bottom: 30px;">
+                <h2 style="font-family: 'Playfair Display', serif; color: #1a1a1a;">Simula tu Ahorro</h2>
+                <p>Descubre cuánto podrías ahorrar generando tu propia energía.</p>
+            </div>
+
+            <div class="calc-grid">
+                <div>
+                    <div class="form-group">
+                        <label style="font-weight: 600;">💰 Tu Gasto Mensual de Luz ($)</label>
+                        <input type="number" id="solar-bill" placeholder="Ej: 45000" class="form-control"
+                            style="font-size: 1.1rem;">
+                        <small style="color: #888;">Ingresa el promedio de tus últimas boletas.</small>
+                    </div>
+                    <button onclick="calculateSolarSavings()" class="btn-submit">
+                        <i class="fas fa-calculator"></i> Calcular Ahorro
+                    </button>
+                </div>
+
+                <div id="solar-results" class="calc-result-box">
+                    <h4
+                        style="color: #bfa378; margin-bottom: 15px; font-family: 'Playfair Display', serif; border-bottom: 1px solid #ddd; padding-bottom: 10px;">
+                        Resultados Estimados:
+                    </h4>
+
+                    <div style="margin-bottom: 15px;">
+                        <span style="display: block; font-size: 0.9rem; color: #666;">Ahorro Anual Estimado:</span>
+                        <span id="res-savings" style="font-size: 1.8rem; font-weight: 700; color: #28a745;">$0</span>
+                    </div>
+
+                    <div style="display: flex; gap: 20px;">
+                        <div>
+                            <span style="display: block; font-size: 0.85rem; color: #666;">Paneles Sugeridos:</span>
+                            <strong id="res-panels" style="font-size: 1.2rem;">0</strong>
+                        </div>
+                        <div>
+                            <span style="display: block; font-size: 0.85rem; color: #666;">Retorno Inversión:</span>
+                            <strong id="res-roi" style="font-size: 1.2rem;">0 años</strong>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.8rem; color: #999; margin-top: 15px; font-style: italic;">
+                        *Cálculo referencial basado en radiación promedio de la Zona Central.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="row" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px;">¿Listo para el cambio?</h2>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">Nuestro equipo de expertos evaluará tu propiedad
+                        para
+                        diseñar la solución fotovoltaica perfecta para tus necesidades de consumo.</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 15px;"><i class="fas fa-check-circle"
+                                style="color: #bfa378; margin-right: 10px;"></i> Evaluación técnica gratuita.</li>
+                        <li style="margin-bottom: 15px;"><i class="fas fa-check-circle"
+                                style="color: #bfa378; margin-right: 10px;"></i> Tramitación SEC incluida.</li>
+                        <li style="margin-bottom: 15px;"><i class="fas fa-check-circle"
+                                style="color: #bfa378; margin-right: 10px;"></i> Garantía de instalación.</li>
+                    </ul>
+                </div>
+
+                <div style="flex: 1; min-width: 300px;">
+                    <div id="nav-placeholder"></div>
+                    <form id="formSolarPublico" onsubmit="enviarCotizacionPublica(event)">
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="sol_nombre" class="form-control" placeholder="Tu nombre" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" id="sol_telefono" class="form-control" placeholder="+56 9 ..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="sol_email" class="form-control" placeholder="nombre@correo.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comuna">Comuna de la Propiedad</label>
+                            <select id="sol_comuna" class="form-control" required>
+                                <option value="Los Andes" selected>Los Andes</option>
+                                <option value="San Felipe">San Felipe</option>
+                                <option value="Reñaca Alto">Reñaca Alto</option>
+                                <option value="Catemu">Catemu</option>
+                                <option value="Putaendo">Putaendo</option>
+                                <option value="Rinconada">Rinconada</option>
+                                <option value="Calle Larga">Calle Larga</option>
+                                <option value="Independencia">Independencia</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Consumo Mensual Aprox. ($)</label>
+                            <select id="sol_consumo" class="form-control">
+                                <option value="Bajo">Menos de $30.000</option>
+                                <option value="Medio">Entre $30.000 y $60.000</option>
+                                <option value="Alto">Más de $60.000</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="btnEnviarSolar">Enviar Solicitud</button>
+                    </form>
+
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+
+    <div id="chatbot-widget" class="chatbot-widget">
+        <div id="chat-header" class="chat-header">
+            <div class="chat-title">
+                <div class="status-dot"
+                    style="height:10px; width:10px; background:#00ff00; border-radius:50%; margin-right:8px; display:inline-block;">
+                </div>
+                Marlen Guzmán IA
+            </div>
+            <button id="close-chat" class="close-chat">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+            <div class="message bot">Hola 👋. Soy la IA de Marlen Guzmán. ¿En qué te ayudo hoy?</div>
+        </div>
+
+        <div id="typing-indicator" class="typing"
+            style="display:none; color:#888; font-style:italic; font-size:12px; padding:5px 15px;">
+            Marlen está escribiendo...
+        </div>
+
+        <div class="quick-actions">
+            <button class="action-btn" onclick="window.fillInput('agendar')">📅 Agendar</button>
+            <button class="action-btn" onclick="window.fillInput('consultar')">🔍 Mis Citas</button>
+            <button class="action-btn" onclick="window.fillInput('reprogramar')">🔄 Reprogramar</button>
+            <button class="action-btn" onclick="window.fillInput('cancelar')">❌ Cancelar</button>
+        </div>
+
+        <div id="chat-input-area" class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje...">
+            <button id="send-chat-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <button id="chatbot-toggle" class="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+    <script type="module" src="script.js"></script>
+    <script>
+        async function enviarCotizacionPublica(event) {
+            event.preventDefault(); // 1. Evita que la página se recargue
+
+            // 2. Referencia al botón para efecto visual
+            const btn = document.getElementById('btnEnviarSolar');
+            const textoOriginal = btn.innerText;
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+            btn.style.backgroundColor = "#ccc"; // Gris mientras carga
+
+            // 3. Capturar datos del formulario
+            const datos = {
+                nombre: document.getElementById('sol_nombre').value,
+                telefono: document.getElementById('sol_telefono').value,
+                email: document.getElementById('sol_email').value || 'Sin email', // Manejo si está vacío
+                comuna: document.getElementById('sol_comuna').value,
+                consumo: document.getElementById('sol_consumo').value,
+                // Datos automáticos para el CRM
+                origen: 'Web Solar',
+                estado: 'NUEVO'
+            };
+
+            try {
+                // 4. Enviar al Servidor (API que creamos antes)
+                const res = await fetch('http://localhost:3000/api/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+
+                const json = await res.json();
+
+                if (json.success) {
+                    // 5. Éxito: Mostrar mensaje y limpiar
+                    alert("✅ ¡Solicitud recibida con éxito! Un especialista de Marlen Guzmán te contactará pronto.");
+                    document.getElementById('formSolarPublico').reset();
+                } else {
+                    alert("Hubo un problema al enviar: " + (json.error || "Error desconocido"));
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Error de conexión con el servidor. Por favor intenta más tarde o contáctanos por WhatsApp.");
+            } finally {
+                // 6. Restaurar botón
+                btn.innerText = textoOriginal;
+                btn.disabled = false;
+                btn.style.backgroundColor = "#bfa378"; // Volver al dorado
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

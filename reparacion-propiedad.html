@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remodelación de Propiedades | Marlen Guzmán</title>
+
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Estilo específico para la imagen de fondo de Remodelación */
+        .reno-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 100px 20px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid #eee;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #bfa378;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #bfa378;
+            margin-bottom: 20px;
+        }
+
+        /* --- ESTILOS DE LA CALCULADORA DE PRESUPUESTO (NUEVO) --- */
+        .budget-calculator {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 80px;
+        }
+
+        .budget-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .result-display {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid #bfa378;
+        }
+
+        .result-initial {
+            background: #f8f9fa;
+            color: #666;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px dashed #ccc;
+        }
+
+        @media(max-width: 768px) {
+            .budget-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* -------------------------------------------------------- */
+
+        .quote-form-container {
+            background-color: #f9f9f9;
+            padding: 40px;
+            border-radius: 15px;
+            border-left: 5px solid #bfa378;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-submit {
+            background-color: #bfa378;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #a38b63;
+        }
+    </style>
+</head>
+
+<body data-page="reparacion-propiedad">
+    <div id="nav-placeholder"></div>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+
+        <div class="reno-hero">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 15px; color: #ffffff;">
+                Renueva y Valoriza tu Propiedad</h1>
+            <p style="font-size: 1.25rem; max-width: 700px; margin: 0 auto; color: #ffffff; font-weight: 400;">Servicios
+                integrales de remodelación, pintura y mantención para vender o arrendar al mejor precio.</p>
+        </div>
+
+        <div class="section-header text-center" style="margin-bottom: 40px;">
+            <span class="overline" style="color: #bfa378; letter-spacing: 2px; text-transform: uppercase;">
+                ¿Por qué invertir?
+            </span>
+            <h2 class="section-title" style="font-family: 'Playfair Display', serif;">
+                Beneficios de Remodelar
+            </h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-paint-roller feature-icon"></i>
+                <h3>Estética Renovada</h3>
+                <p style="color: #666;">
+                    Moderniza espacios antiguos con pintura fresca y terminaciones de calidad que atraen a más
+                    interesados.
+                </p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-hand-holding-usd feature-icon"></i>
+                <h3>Mayor Rentabilidad</h3>
+                <p style="color: #666;">
+                    Una propiedad recién remodelada puede aumentar su valor de arriendo o venta hasta en un 20%.
+                </p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-tools feature-icon"></i>
+                <h3>Mantención Preventiva</h3>
+                <p style="color: #666;">
+                    Soluciona problemas de gasfitería o electricidad antes de que se conviertan en reparaciones
+                    costosas.
+                </p>
+            </div>
+        </div>
+
+        <section class="budget-calculator">
+            <div class="section-header text-center" style="margin-bottom: 30px;">
+                <h2 style="font-family: 'Playfair Display', serif;">Estimador de Costos</h2>
+                <p>Calcula una referencia rápida para tu proyecto según los metros cuadrados.</p>
+            </div>
+
+            <div class="budget-grid">
+                <div class="form-section">
+                    <div class="form-group">
+                        <label style="font-weight: 600;">Metros Cuadrados (m²)</label>
+                        <input type="number" id="calc-m2" placeholder="Ej: 40" class="form-control">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label style="font-weight: 600;">Tipo de Trabajo</label>
+                        <select id="calc-level" class="form-control">
+                            <option value="1.5">Pintura Interior (Básico)</option>
+                            <option value="4.5">Pisos y Terminaciones (Medio)</option>
+                            <option value="12">Remodelación Baño/Cocina (Completo)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="calculateBudget()" class="btn-submit" style="margin-top: 20px;">
+                        <i class="fas fa-calculator"></i> Calcular Estimado
+                    </button>
+                </div>
+
+                <div>
+                    <div class="result-initial" id="initial-box">
+                        <i class="fas fa-hard-hat" style="font-size: 3rem; margin-bottom: 15px; color: #ccc;"></i>
+                        <p>Ingresa los datos para obtener un valor referencial.</p>
+                    </div>
+
+                    <div class="result-display" id="result-box" style="display: none;">
+                        <h4 style="margin-bottom: 10px; color: #bfa378;">Presupuesto Estimado</h4>
+                        <div id="budget-result" style="font-size: 2.5rem; font-weight: 700;">UF 0</div>
+                        <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">
+                            Incluye materiales estándar y mano de obra especializada.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="cost-estimator">
+            <div class="row" style="display: flex; flex-wrap: wrap; gap: 40px; align-items: center;">
+                <div style="flex: 1; min-width: 300px;">
+                    <h2 style="font-family: 'Playfair Display', serif; margin-bottom: 20px;">
+                        Transformamos tu espacio
+                    </h2>
+                    <p style="margin-bottom: 20px; line-height: 1.6;">
+                        Contamos con un equipo de maestros especialistas para dejar tu propiedad impecable y lista para
+                        habitar.
+                    </p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 15px;">
+                            <i class="fas fa-check-circle" style="color: #bfa378; margin-right: 10px;"></i>
+                            Pintura interior y exterior
+                        </li>
+                        <li style="margin-bottom: 15px;">
+                            <i class="fas fa-check-circle" style="color: #bfa378; margin-right: 10px;"></i>
+                            Cambio de pisos (flotante, cerámica)
+                        </li>
+                        <li style="margin-bottom: 15px;">
+                            <i class="fas fa-check-circle" style="color: #bfa378; margin-right: 10px;"></i>
+                            Gasfitería y electricidad básica
+                        </li>
+                        <li style="margin-bottom: 15px;">
+                            <i class="fas fa-check-circle" style="color: #bfa378; margin-right: 10px;"></i>
+                            Ampliaciones y tabiquería
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="flex: 1; min-width: 300px;">
+                    <div class="quote-form-container">
+                        <h3 class="text-center" style="margin-bottom: 25px;">Cotiza tu Proyecto</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Nombre Completo</label>
+                                <input type="text" class="form-control" placeholder="Tu nombre">
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="tel" class="form-control" placeholder="+56 9 ...">
+                            </div>
+                            <div class="form-group">
+                                <label for="comuna">Comuna de la Propiedad</label>
+                                <select id="comuna" name="comuna" class="form-control" required>
+                                    <option value="Reñaca Alto">Reñaca Alto</option>
+                                    <option value="Los Andes" selected>Los Andes</option>
+                                    <option value="San Felipe">San Felipe</option>
+                                    <option value="Catemu">Catemu</option>
+                                    <option value="Putaendo">Putaendo</option>
+                                    <option value="Rinconada">Rinconada</option>
+                                    <option value="Calle Larga">Calle Larga</option>
+                                    <option value="Independencia">Independencia</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tipo de Servicio Necesario</label>
+                                <select class="form-control">
+                                    <option>Pintura General</option>
+                                    <option>Cambio de Pisos</option>
+                                    <option selected>Remodelación de Baño/Cocina</option>
+                                    <option>Reparaciones Varias</option>
+                                    <option>Ampliación</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-submit">Solicitar Visita</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+    <div id="chatbot-widget" class="chatbot-widget">
+        <div id="chat-header" class="chat-header">
+            <div class="chat-title">
+                <div class="status-dot"
+                    style="height:10px; width:10px; background:#00ff00; border-radius:50%; margin-right:8px; display:inline-block;">
+                </div>
+                Marlen Guzmán IA
+            </div>
+            <button id="close-chat" class="close-chat">×</button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+            <div class="message bot">Hola 👋. Soy la IA de Marlen Guzmán. ¿En qué te ayudo hoy?</div>
+        </div>
+
+        <div id="typing-indicator" class="typing"
+            style="display:none; color:#888; font-style:italic; font-size:12px; padding:5px 15px;">
+            Marlen está escribiendo...
+        </div>
+
+        <div class="quick-actions">
+            <button class="action-btn" onclick="window.fillInput('agendar')">📅 Agendar</button>
+            <button class="action-btn" onclick="window.fillInput('consultar')">🔍 Mis Citas</button>
+            <button class="action-btn" onclick="window.fillInput('reprogramar')">🔄 Reprogramar</button>
+            <button class="action-btn" onclick="window.fillInput('cancelar')">❌ Cancelar</button>
+        </div>
+
+        <div id="chat-input-area" class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe tu mensaje...">
+            <button id="send-chat-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <button id="chatbot-toggle" class="chatbot-toggle">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+    <div id="footer-placeholder"></div>
+
+    <script src="cargador.js"></script>
+
+    <script type="module" src="script.js"></script>
+
+    <script>
+        function calculateBudget() {
+            const m2Input = document.getElementById('calc-m2');
+            const factorInput = document.getElementById('calc-level');
+
+            const m2 = parseFloat(m2Input.value);
+            const factor = parseFloat(factorInput.value);
+
+            if (!m2 || m2 <= 0) {
+                alert("Por favor ingresa los metros cuadrados válidos.");
+                return;
+            }
+
+            const totalUF = m2 * factor;
+
+            document.getElementById('budget-result').textContent = "UF " + totalUF.toLocaleString('es-CL', { maximumFractionDigits: 1 });
+
+            document.getElementById('initial-box').style.display = 'none';
+            document.getElementById('result-box').style.display = 'block';
+            document.getElementById('result-box').style.animation = 'fadeIn 0.5s';
+        }
+    </script>
+</body>
+
+</html>

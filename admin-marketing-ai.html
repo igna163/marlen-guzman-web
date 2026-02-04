@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing AI - Panel Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            color: #555;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 20px;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* Tarjetas de Redes Sociales */
+        .social-card {
+            border: 2px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 10px;
+        }
+
+        .social-card:hover {
+            transform: translateY(-3px);
+            border-color: #ccc;
+        }
+
+        .social-card.active {
+            border-color: #0d6efd;
+            background-color: #e7f1ff;
+            box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+        }
+
+        .instagram {
+            color: #E1306C;
+        }
+
+        .facebook {
+            color: #4267B2;
+        }
+
+        .linkedin {
+            color: #0077b5;
+        }
+
+        .whatsapp {
+            color: #25D366;
+        }
+
+        /* Preview del Post (Simulador Celular) */
+        .phone-mockup {
+            background: white;
+            border: 12px solid #2c3e50;
+            border-radius: 30px;
+            padding: 15px;
+            max-width: 340px;
+            margin: 0 auto;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            min-height: 580px;
+            position: relative;
+        }
+
+        /* Notch del celular */
+        .phone-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 20px;
+            background: #2c3e50;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            margin-top: 15px;
+        }
+
+        .fb-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #0d6efd;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .fb-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1c1e21;
+        }
+
+        .fb-time {
+            font-size: 0.75rem;
+            color: #65676b;
+        }
+
+        .fb-text {
+            font-size: 0.9rem;
+            color: #050505;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+
+        .fb-image-container {
+            background: #f0f2f5;
+            width: 100%;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .fb-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .fb-actions {
+            border-top: 1px solid #ced0d4;
+            padding-top: 8px;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-around;
+            color: #65676b;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Animación "Pensando" */
+        @keyframes pulse-purple {
+            0% {
+                box-shadow: 0 0 0 0 rgba(111, 66, 193, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(111, 66, 193, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(111, 66, 193, 0);
+            }
+        }
+
+        .btn-ai-generate {
+            background: linear-gradient(45deg, #6f42c1, #0d6efd);
+            border: none;
+            color: white;
+            animation: pulse-purple 2s infinite;
+        }
+
+        .btn-ai-generate:hover {
+            opacity: 0.9;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand"><i class="bi bi-building"></i> NEXXOS ADMIN</div>
+        <a href="admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a href="admin-propiedades.html"><i class="bi bi-house-door me-2"></i> Propiedades</a>
+        <a href="admin-publicar-3.html"><i class="bi bi-plus-circle me-2"></i> Publicar</a>
+        <a href="#" class="active"><i class="bi bi-stars me-2"></i> Marketing IA</a>
+    </div>
+
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold text-dark"><i class="bi bi-robot text-primary"></i> Generador de Campañas IA</h3>
+                <p class="text-muted mb-0">Crea anuncios virales gratis usando algoritmos inteligentes.</p>
+            </div>
+            <div class="text-end">
+                <span class="badge bg-success p-2">Modo: Gratuito (Simulado)</span>
+                <span class="badge bg-secondary p-2">Meta Ads: Desconectado</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm p-4 mb-4">
+
+                    <h5 class="mb-3 text-secondary">1. Configura tu Anuncio</h5>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Propiedad a promocionar</label>
+                        <select class="form-select form-select-lg" id="selectPropiedad"
+                            onchange="cargarDatosPropiedad()">
+                            <option value="">-- Cargando propiedades... --</option>
+                        </select>
+                    </div>
+
+                    <h5 class="mb-3 text-secondary">2. Elige la Plataforma</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-3">
+                            <div class="card p-2 text-center social-card active"
+                                onclick="selectPlatform(this, 'instagram')">
+                                <i class="bi bi-instagram fs-3 instagram"></i>
+                                <div class="small fw-bold mt-1">Instagram</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card p-2 text-center social-card" onclick="selectPlatform(this, 'facebook')">
+                                <i class="bi bi-facebook fs-3 facebook"></i>
+                                <div class="small fw-bold mt-1">Facebook</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card p-2 text-center social-card" onclick="selectPlatform(this, 'linkedin')">
+                                <i class="bi bi-linkedin fs-3 linkedin"></i>
+                                <div class="small fw-bold mt-1">LinkedIn</div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="card p-2 text-center social-card" onclick="selectPlatform(this, 'whatsapp')">
+                                <i class="bi bi-whatsapp fs-3 whatsapp"></i>
+                                <div class="small fw-bold mt-1">WhatsApp</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-3 text-secondary">3. Estrategia de IA</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Tono de Comunicación</label>
+                            <select class="form-select" id="tonoIA">
+                                <option value="aspiracional">🤩 Aspiracional (Emocional)</option>
+                                <option value="urgencia">🔥 Urgencia (Oportunidad)</option>
+                                <option value="corporativo">👔 Corporativo (Inversionista)</option>
+                                <option value="cercano">🤝 Cercano (Amigable)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Objetivo</label>
+                            <select class="form-select" id="objetivoIA">
+                                <option value="visita">Conseguir Visitas</option>
+                                <option value="info">Recibir Mensajes (DM)</option>
+                                <option value="trafico">Clics al Sitio Web</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-ai-generate w-100 py-3 fw-bold shadow rounded-pill"
+                        onclick="generarAnuncio()">
+                        <i class="bi bi-stars"></i> GENERAR COPY CON INTELIGENCIA ARTIFICIAL
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <h6 class="text-center text-muted mb-3">Vista Previa en Tiempo Real</h6>
+
+                <div class="phone-mockup">
+                    <div class="post-header">
+                        <div class="fb-avatar d-flex align-items-center justify-content-center text-white">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <div>
+                            <div class="fb-name">Marlen Guzmán Propiedades</div>
+                            <div class="fb-time">Publicidad • <i class="bi bi-globe"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="fb-text" id="postText">
+                        👋 Hola Marlen, selecciona una propiedad a la izquierda y presiona "Generar" para ver la magia
+                        de la IA aquí.
+                    </div>
+
+                    <div class="fb-image-container">
+                        <img id="postImage" src="https://placehold.co/400x300?text=Selecciona+Propiedad"
+                            class="fb-image">
+                    </div>
+
+                    <div class="bg-light p-2 mb-2 d-flex justify-content-between align-items-center border rounded">
+                        <div>
+                            <small class="text-muted d-block" style="font-size: 0.65rem;">INMOBILIARIANEXXOS.CL</small>
+                            <span class="fw-bold small">Ver Propiedad Exclusiva</span>
+                        </div>
+                        <button class="btn btn-outline-secondary btn-sm px-3">Más información</button>
+                    </div>
+
+                    <div class="fb-actions">
+                        <span><i class="bi bi-hand-thumbs-up"></i> Me gusta</span>
+                        <span><i class="bi bi-chat-square"></i> Comentar</span>
+                        <span><i class="bi bi-share"></i> Compartir</span>
+                    </div>
+
+                    <div class="mt-4 d-grid gap-2">
+                        <button class="btn btn-outline-dark btn-sm rounded-pill" onclick="copiarTexto()">
+                            <i class="bi bi-clipboard"></i> Copiar Texto
+                        </button>
+
+                        <button id="btnPublicar" class="btn btn-primary btn-sm rounded-pill fw-bold shadow-sm"
+                            onclick="publicarReal()">
+                            <i class="bi bi-facebook"></i> PUBLICAR EN FACEBOOK
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card mt-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="fw-bold text-success"><i class="bi bi-graph-up"></i> Predicción de Rendimiento</h6>
+                        <div class="d-flex justify-content-between mt-3 text-center">
+                            <div>
+                                <h4 class="mb-0 fw-bold">12k</h4>
+                                <small class="text-muted">Alcance</small>
+                            </div>
+                            <div>
+                                <h4 class="mb-0 fw-bold">1.5%</h4>
+                                <small class="text-muted">CTR Est.</small>
+                            </div>
+                            <div>
+                                <h4 class="mb-0 fw-bold">15-20</h4>
+                                <small class="text-muted">Leads</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPlatform = 'instagram';
+        let propiedadesData = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarPropiedadesSelect();
+        });
+
+        // 1. CARGAR PROPIEDADES REALES DESDE TU DB (Gratis)
+        async function cargarPropiedadesSelect() {
+            const select = document.getElementById('selectPropiedad');
+            try {
+                // Usamos la API que ya tienes funcionando
+                const res = await fetch('http://localhost:3000/api/propiedades-list?limit=50');
+                const json = await res.json();
+
+                if (json.success) {
+                    propiedadesData = json.data;
+                    select.innerHTML = '<option value="">-- Selecciona una propiedad --</option>';
+
+                    propiedadesData.forEach(p => {
+                        // Creamos la opción con datos reales
+                        const operacion = p.operacion_venta ? 'Venta' : 'Arriendo';
+                        const opcion = document.createElement('option');
+                        opcion.value = p.id; // Guardamos el ID
+                        opcion.text = `#${p.id} | ${p.tipo_propiedad} en ${p.comuna} (${operacion})`;
+                        select.appendChild(opcion);
+                    });
+                } else {
+                    select.innerHTML = '<option>No hay propiedades publicadas</option>';
+                }
+            } catch (error) {
+                console.error(error);
+                select.innerHTML = '<option>Error de conexión con API</option>';
+            }
+        }
+
+        // 2. ACTUALIZAR IMAGEN CUANDO SELECCIONAN UNA PROPIEDAD
+        function cargarDatosPropiedad() {
+            const id = document.getElementById('selectPropiedad').value;
+            if (!id) return;
+
+            const p = propiedadesData.find(prop => prop.id == id);
+            if (p) {
+                // Si tienes imágenes en la DB, úsalas. Si no, usa una genérica bonita.
+                // Aquí simulamos que cargamos la imagen principal.
+                const img = document.getElementById('postImage');
+                // Intentamos usar la primera imagen si existe en un array, sino placeholder
+                img.src = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"; // Imagen genérica de depa bonita
+            }
+        }
+
+        function selectPlatform(card, platform) {
+            document.querySelectorAll('.social-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            currentPlatform = platform;
+        }
+
+        // 3. GENERADOR DE COPY "IA" (Lógica de Plantillas Inteligentes - GRATIS)
+        function generarAnuncio() {
+            const id = document.getElementById('selectPropiedad').value;
+            if (!id) { alert("⚠️ Por favor selecciona una propiedad primero."); return; }
+
+            const p = propiedadesData.find(prop => prop.id == id);
+            const tono = document.getElementById('tonoIA').value;
+            const objetivo = document.getElementById('objetivoIA').value;
+
+            const btn = document.querySelector('.btn-ai-generate');
+            const textArea = document.getElementById('postText');
+
+            // Efecto de carga
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Conectando neuronas...';
+            textArea.style.opacity = '0.5';
+
+            // Simulamos tiempo de pensamiento de IA (1.5 seg)
+            setTimeout(() => {
+                const textoGenerado = crearTextoInteligente(p, currentPlatform, tono, objetivo);
+
+                // Efecto de escritura
+                textArea.innerHTML = "";
+                textArea.style.opacity = '1';
+                let i = 0;
+
+                function escribir() {
+                    if (i < textoGenerado.length) {
+                        const char = textoGenerado.charAt(i);
+                        textArea.innerHTML += (char === '\n') ? '<br>' : char;
+                        i++;
+                        setTimeout(escribir, 5); // Velocidad
+                    } else {
+                        btn.innerHTML = '<i class="bi bi-stars"></i> GENERAR NUEVO COPY';
+                    }
+                }
+                escribir();
+
+            }, 1500);
+        }
+
+        // 4. EL CEREBRO DE LA "IA" (PLANTILLAS DINÁMICAS)
+        function crearTextoInteligente(p, plataforma, tono, objetivo) {
+            // Extraer datos reales
+            const operacion = p.operacion_venta ? 'Venta' : 'Arriendo';
+            const tipo = p.tipo_propiedad;
+            const comuna = p.comuna;
+            const sector = p.sector ? `en sector ${p.sector}` : '';
+
+            // Formatear precio
+            let precioTexto = "";
+            if (p.operacion_venta) {
+                precioTexto = (p.moneda_venta === 'UF') ? `UF ${p.precio_venta}` : `$${new Intl.NumberFormat('es-CL').format(p.precio_venta)}`;
+            } else {
+                precioTexto = (p.moneda_arriendo === 'UF') ? `UF ${p.precio_arriendo}` : `$${new Intl.NumberFormat('es-CL').format(p.precio_arriendo)}`;
+            }
+
+            let titulo = "", cuerpo = "", cierre = "", hashtags = "";
+
+            // --- LÓGICA DE INSTAGRAM / FACEBOOK ---
+            if (plataforma === 'instagram' || plataforma === 'facebook') {
+
+                if (tono === 'aspiracional') {
+                    titulo = `✨ ¿Te imaginas despertar aquí? 😍\n\n`;
+                    cuerpo = `Tu nuevo comienzo empieza en este espectacular ${tipo} ubicado en ${comuna}. Un espacio diseñado para disfrutar cada momento.\n\n📍 Ubicación privilegiada ${sector}\n💎 Valor: ${precioTexto}\n\nEs el lugar que estabas buscando para ti y tu familia.`;
+                }
+                else if (tono === 'urgencia') {
+                    titulo = `🚨 ¡OPORTUNIDAD EN ${comuna.toUpperCase()}! 🔥\n\n`;
+                    cuerpo = `Se va rápido. ${tipo} en ${operacion} por solo ${precioTexto}. \n\n📍 Ubicación: ${comuna} ${sector}\n✅ Disponible para visita inmediata.\n\nNo dejes que te ganen esta oportunidad única de mercado.`;
+                }
+                else if (tono === 'corporativo') {
+                    titulo = `🏢 OPORTUNIDAD DE INVERSIÓN INMOBILIARIA\n\n`;
+                    cuerpo = `Disponible para ${operacion.toLowerCase()}: ${tipo} en comuna de ${comuna}.\n\nCaracterísticas:\n• Precio Competitivo: ${precioTexto}\n• Sector consolidado: ${sector || comuna}\n• Alta plusvalía proyectada.\n\nPropiedad gestionada por profesionales.`;
+                }
+                else { // Cercano
+                    titulo = `🏡 ¿Buscas tu nuevo hogar en ${comuna}? 🌿\n\n`;
+                    cuerpo = `Mira lo que acaba de entrar. Un ${tipo} precioso ${sector}, ideal para estar tranquilo y conectado.\n\n💰 Lo tenemos en ${precioTexto}.\n\nMe encantó la iluminación que tiene, ¡tienes que verlo!`;
+                }
+
+                // Call to Action (Cierre)
+                if (objetivo === 'visita') cierre = `\n\n📅 ¿Coordinamos una visita esta semana? Envíame un mensaje directo.`;
+                else if (objetivo === 'info') cierre = `\n\n👇 Comenta "INFO" y te envío la ficha técnica completa.`;
+                else cierre = `\n\n🔗 Revisa más fotos en el link de nuestra biografía.`;
+
+                hashtags = `\n\n#${comuna.replace(/\s/g, '')} #PropiedadesChile #Nexxos #${tipo.replace(/\s/g, '')} #BienesRaices`;
+
+            }
+            // --- LÓGICA LINKEDIN ---
+            else if (plataforma === 'linkedin') {
+                titulo = `📢 EXCELENTE OPORTUNIDAD EN ${comuna.toUpperCase()}\n\n`;
+                cuerpo = `Para mi red de contactos, comparto esta interesante propiedad disponible para ${operacion}.\n\nSe trata de un(a) ${tipo} con excelente ubicación en ${comuna}.\nValor de mercado: ${precioTexto}.\n\nIdeal para inversión o vivienda definitiva.`;
+                cierre = `\n\nInteresados contactar por interno para agendar reunión.`;
+                hashtags = `\n\n#RealEstate #Inversion #Chile #${comuna}`;
+            }
+            // --- LÓGICA WHATSAPP ---
+            else {
+                return `Hola! 👋 Te comparto esta propiedad que te puede interesar:\n\n🏡 ${tipo} en ${comuna}\n📍 ${sector || 'Excelente ubicación'}\n💰 ${precioTexto}\n\nAvísame si quieres ver las fotos o agendar una visita. ¡Saludos!`;
+            }
+
+            return titulo + cuerpo + cierre + hashtags;
+        }
+
+        function copiarTexto() {
+            const texto = document.getElementById('postText').innerText;
+            navigator.clipboard.writeText(texto).then(() => {
+                alert("¡Texto copiado! Ahora pégalo en la red social.");
+            });
+        }
+        // 3. Publicación Real (Preparado para n8n / Webhooks)
+        // 4. PUBLICAR REAL (CONEXIÓN A N8N -> FACEBOOK)
+        // 4. PUBLICAR REAL (CONEXIÓN A N8N DOCKER)
+        async function publicarReal() {
+            const btn = document.getElementById('btnPublicar');
+            const textoDelPost = document.getElementById('postText').innerText;
+            const imagenUrl = document.getElementById('postImage').src;
+
+            // --- VALIDACIÓN DE SEGURIDAD ---
+            // Facebook NO puede leer imágenes de tu computador (localhost o file://).
+            // Solo funcionará si la imagen viene de internet (como las de Unsplash que usas de ejemplo).
+            if (imagenUrl.includes("localhost") || imagenUrl.includes("file://")) {
+                alert("⚠️ ERROR TÉCNICO:\n\nFacebook no puede acceder a imágenes guardadas en tu PC local.\n\nPara esta prueba, asegúrate de seleccionar una propiedad que tenga una foto de internet (ej: Unsplash).");
+                return;
+            }
+
+            // 1. Efecto visual de carga
+            const textoOriginal = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Enviando a n8n...';
+            btn.disabled = true;
+
+            // 2. Preparamos el paquete para n8n
+            // Estos nombres (mensaje, imagen) deben coincidir con los que pusiste en el nodo de Facebook en n8n
+            const datosParaN8N = {
+                mensaje: textoDelPost,
+                imagen: imagenUrl,
+                plataforma: "facebook"
+            };
+
+            console.log("🚀 Enviando datos a n8n:", datosParaN8N);
+
+            try {
+                // 3. ENVÍO AL WEBHOOK (Ajusta el puerto si cambiaste tu Docker, por defecto es 5678)
+                const response = await fetch('https://promote-minimum-dale-enables.trycloudflare.com/webhook-test/publicar-facebook', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datosParaN8N)
+                });
+
+                // 4. Respuesta
+                if (response.ok) {
+                    const resultado = await response.json();
+                    console.log("✅ Respuesta n8n:", resultado);
+
+                    alert("✅ ¡ÉXITO!\n\nLa publicación se ha enviado a la cola de procesamiento de Facebook.\nRevisa tu página 'Pruebas de Automatización Ignacio' en unos segundos.");
+
+                    btn.className = "btn btn-success btn-sm rounded-pill fw-bold shadow-sm";
+                    btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> PUBLICADO';
+                } else {
+                    throw new Error("El servidor n8n respondió con error.");
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("❌ Error de conexión con n8n.\n\n1. Verifica que tu Docker esté corriendo.\n2. Verifica que el Workflow en n8n esté activo o en modo 'Execute'.");
+
+                // Restaurar botón
+                btn.innerHTML = textoOriginal;
+                btn.disabled = false;
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

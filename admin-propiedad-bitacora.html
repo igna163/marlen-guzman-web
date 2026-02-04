@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 0;
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* --- ESTILOS BITÁCORA --- */
+        .card-bitacora {
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background-color: #fff;
+        }
+
+        .bitacora-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-trazabilidad {
+            background-color: #f0ad4e;
+            /* Naranja Nexxos */
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .btn-trazabilidad:hover {
+            background-color: #ec971f;
+            color: white;
+        }
+
+        .btn-comentario {
+            background-color: #0d6efd;
+            /* Azul */
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* --- TIMELINE ITEMS --- */
+        .timeline-item {
+            display: flex;
+            padding: 20px;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        .timeline-avatar {
+            width: 50px;
+            height: 50px;
+            background-color: #adb5bd;
+            /* Gris por defecto */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Flechita del chat */
+        .timeline-content {
+            background-color: #f8f9fa;
+            /* Fondo gris muy claro */
+            padding: 15px;
+            border-radius: 4px;
+            width: 100%;
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid #f8f9fa;
+        }
+
+        .user-name {
+            color: #4986e7;
+            /* Azul Nexxos */
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .timestamp {
+            color: #999;
+            font-size: 0.75rem;
+            margin-left: 10px;
+            font-weight: 400;
+        }
+
+        .action-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
+            <div class="mb-2 position-relative d-inline-block">
+                <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
+            </div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
+            <div class="mt-2">
+                <span class="badge bg-primary" id="sidebar_operacion">-</span>
+            </div>
+            <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
+        </div>
+
+        <div class="py-2">
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
+            <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
+                Editar</a>
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
+                y videos</a>
+            <a href="#" id="link_documentos" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i>
+                Documentos</a>
+            <a href="#" id="link_estado" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado /
+                Config.</a>
+
+            <a href="#" class="active d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i> Bitácora</a>
+
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-person me-2"></i> Propietario</a>
+
+            <hr class="border-secondary mx-3">
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+                listado</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="mb-3">
+            <a href="admin-propiedades.html" class="text-decoration-none text-muted small">Panel de Control</a>
+            <span class="text-muted small mx-1">•</span>
+            <a href="#" class="text-decoration-none text-muted small">Propiedades</a>
+            <span class="text-muted small mx-1">•</span>
+            <span class="text-muted small">Bitácora</span>
+        </div>
+
+        <div class="mb-4">
+            <h5 class="fw-bold text-secondary">
+                <i class="bi bi-house-door-fill"></i> BITÁCORA DE LA PROPIEDAD
+                <span class="fw-normal text-muted" id="header_titulo" style="font-size: 0.9rem;">Cargando
+                    datos...</span>
+            </h5>
+        </div>
+
+        <div class="card card-bitacora">
+
+            <div class="bitacora-header">
+                <button class="btn btn-trazabilidad btn-sm">
+                    <i class="bi bi-arrow-repeat"></i> Trazabilidad de estados
+                </button>
+                <button class="btn btn-comentario btn-sm" onclick="agregarComentario()">
+                    <i class="bi bi-plus-lg"></i> Agregar comentario
+                </button>
+            </div>
+
+            <div id="lista-bitacora">
+
+                <div class="timeline-item">
+                    <div class="timeline-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="user-name">Marlen Teresita Guzman</span>
+                            <span class="timestamp">12/01/2026 14:45:53</span>
+                        </div>
+                        <div class="action-text text-muted">
+                            Se editó la propiedad: Cambio de precio de UF 3.500 a UF 3.450.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="user-name">Marlen Teresita Guzman</span>
+                            <span class="timestamp">10/01/2026 09:30:15</span>
+                        </div>
+                        <div class="action-text text-muted">
+                            Se agregó la propiedad
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        // ⚠️ DEJAR VACÍO para compatibilidad total
+        const API_URL = 'https://talented-outlet-mold-classified.trycloudflare.com';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (propId) {
+                cargarInfoPropiedad(propId);
+                // Configurar enlaces sidebar
+                document.getElementById('link_editar').href = `admin-editar-propiedad.html?id=${propId}`;
+                document.getElementById('link_imagenes').href = `admin-propiedad-imagenes.html?id=${propId}`;
+                document.getElementById('link_documentos').href = `admin-propiedad-documentos.html?id=${propId}`;
+                document.getElementById('link_estado').href = `admin-propiedad-estado.html?id=${propId}`;
+
+                cargarBitacora(); // Cargar historial real
+            } else {
+                alert("Error: Faltan datos.");
+                window.location.href = 'admin-propiedades.html';
+            }
+        });
+
+        // 1. CARGAR INFO DEL SIDEBAR
+        async function cargarInfoPropiedad(id) {
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades2/${id}`);
+                const json = await res.json();
+                if (json.success) {
+                    const p = json.data;
+                    document.getElementById('sidebar_cod').textContent = `Cód: ${p.id}`;
+                    document.getElementById('sidebar_tipo').textContent = p.tipo_propiedad;
+                    document.getElementById('sidebar_comuna').textContent = p.comuna;
+                    document.getElementById('sidebar_operacion').textContent = p.operacion_venta ? 'VENTA' : 'ARRIENDO';
+
+                    const titulo = `Cód.: ${p.id} - ${p.tipo_propiedad} - ${p.comuna}`;
+                    document.getElementById('header_titulo').textContent = titulo;
+
+                    if (p.imagen_principal && !p.imagen_principal.includes('placeholder')) {
+                        document.getElementById('sidebar_foto').src = p.imagen_principal;
+                    }
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        // 2. CARGAR BITÁCORA DESDE BD
+        async function cargarBitacora() {
+            const lista = document.getElementById('lista-bitacora');
+            lista.innerHTML = '<div class="text-center py-4 text-muted">Cargando historial...</div>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades/${propId}/bitacora`);
+                const json = await res.json();
+
+                lista.innerHTML = '';
+
+                if (json.success && json.data.length > 0) {
+                    json.data.forEach(log => {
+                        const fecha = new Date(log.fecha).toLocaleString('es-CL');
+                        let icono = 'bi-chat-left-text-fill';
+                        let colorTexto = 'text-dark';
+
+                        // Iconos según tipo de acción
+                        if (log.accion === 'Edición') { icono = 'bi-pencil-fill'; colorTexto = 'text-muted'; }
+                        if (log.accion === 'Creación') { icono = 'bi-plus-circle-fill'; colorTexto = 'text-success'; }
+                        if (log.accion === 'Estado') { icono = 'bi-arrow-repeat'; colorTexto = 'text-primary'; }
+
+                        const item = `
+                    <div class="timeline-item">
+                        <div class="timeline-avatar">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="user-name">${log.usuario}</span>
+                                <span class="timestamp">${fecha}</span>
+                            </div>
+                            <div class="action-text ${colorTexto}">
+                                <i class="bi ${icono} me-1"></i> ${log.detalle}
+                            </div>
+                        </div>
+                    </div>`;
+                        lista.innerHTML += item;
+                    });
+                } else {
+                    lista.innerHTML = '<div class="text-center py-5 text-muted">No hay registros en la bitácora aún.</div>';
+                }
+            } catch (error) {
+                console.error(error);
+                lista.innerHTML = '<div class="text-center text-danger">Error al cargar bitácora.</div>';
+            }
+        }
+
+        // 3. AGREGAR COMENTARIO REAL
+        async function agregarComentario() {
+            const texto = prompt("Escribe tu comentario interno:");
+            if (!texto) return;
+
+            // Optimismo UI: Agregarlo visualmente de inmediato
+            // (Opcional, pero se ve más rápido. Aquí recargaremos todo para asegurar)
+
+            try {
+                const payload = {
+                    usuario: 'Marlen Teresita', // Aquí podrías poner el usuario logueado real
+                    accion: 'Comentario',
+                    detalle: texto
+                };
+
+                const res = await fetch(`${API_URL}/api/propiedades/${propId}/bitacora`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const json = await res.json();
+
+                if (json.success) {
+                    cargarBitacora(); // Recargar para ver el nuevo comentario
+                } else {
+                    alert("Error al guardar comentario.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error de conexión.");
+            }
+        }
+    </script>
+</body>
+
+</html>

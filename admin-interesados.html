@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Interesados - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            color: #555;
+            overflow-x: hidden;
+        }
+
+        /* SIDEBAR (Estándar) */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 20px;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* KANBAN BOARD */
+        .kanban-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            height: 100%;
+        }
+
+        .kanban-column {
+            flex: 0 0 300px;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .column-header {
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .column-count {
+            background-color: #adb5bd;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+        }
+
+        /* Colores de Encabezado de Columna */
+        .col-new .column-header {
+            color: #dc3545;
+            border-bottom: 3px solid #dc3545;
+            padding-bottom: 5px;
+        }
+
+        .col-contact .column-header {
+            color: #0d6efd;
+            border-bottom: 3px solid #0d6efd;
+            padding-bottom: 5px;
+        }
+
+        .col-visit .column-header {
+            color: #fd7e14;
+            border-bottom: 3px solid #fd7e14;
+            padding-bottom: 5px;
+        }
+
+        .col-negot .column-header {
+            color: #6f42c1;
+            border-bottom: 3px solid #6f42c1;
+            padding-bottom: 5px;
+        }
+
+        .col-closed .column-header {
+            color: #198754;
+            border-bottom: 3px solid #198754;
+            padding-bottom: 5px;
+        }
+
+        /* TARJETAS DE CLIENTE (LEADS) */
+        .lead-card {
+            background: white;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            border-left: 4px solid transparent;
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .lead-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .lead-card:active {
+            cursor: grabbing;
+        }
+
+        /* Indicador de origen (Web, Portal, etc) */
+        .lead-source {
+            font-size: 0.7rem;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .lead-name {
+            font-weight: 700;
+            color: #333;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .lead-prop {
+            color: #0d6efd;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .lead-prop:hover {
+            text-decoration: underline;
+        }
+
+        .lead-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-icon {
+            color: #6c757d;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .btn-icon.whatsapp:hover {
+            color: #25D366;
+        }
+
+        .btn-icon.email:hover {
+            color: #0d6efd;
+        }
+
+        .btn-icon.phone:hover {
+            color: #333;
+        }
+
+        .lead-time {
+            font-size: 0.7rem;
+            color: #aaa;
+        }
+
+        /* Score IA */
+        .ai-score {
+            float: right;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .score-hot {
+            color: #dc3545;
+        }
+
+        /* Caliente */
+        .score-warm {
+            color: #ffc107;
+        }
+
+        /* Tibio */
+        .score-cold {
+            color: #6c757d;
+        }
+
+        /* Frio */
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand"><i class="bi bi-building"></i> NEXXOS ADMIN</div>
+        <a href="admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a href="admin-propiedades.html"><i class="bi bi-house-door me-2"></i> Propiedades</a>
+        <a href="admin-agenda.html"><i class="bi bi-calendar-check me-2"></i> Agenda</a>
+        <a href="admin-interesados.html" class="active"><i class="bi bi-people me-2"></i> Interesados (CRM)</a>
+        <a href="admin-reportes.html"><i class="bi bi-bar-chart me-2"></i> Reportes</a>
+    </div>
+
+    <div class="main-content">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold m-0 text-secondary">Pipeline de Ventas</h4>
+                <p class="text-muted small m-0">Gestiona tus prospectos desde el primer contacto hasta el cierre.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-filter"></i> Filtrar</button>
+                <button class="btn btn-primary btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#modalNuevoLead">
+                    <i class="bi bi-plus-lg"></i> Nuevo Lead
+                </button>
+            </div>
+        </div>
+
+        <div class="kanban-container">
+            <div class="kanban-column col-new" ondrop="drop(event, 'NUEVO')" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <span><i class="bi bi-star-fill me-1"></i> Nuevos</span>
+                    <span class="column-count">0</span>
+                </div>
+            </div>
+
+            <div class="kanban-column col-contact" ondrop="drop(event, 'CONTACTADO')" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <span><i class="bi bi-chat-text-fill me-1"></i> Contactados</span>
+                    <span class="column-count">0</span>
+                </div>
+            </div>
+
+            <div class="kanban-column col-visit" ondrop="drop(event, 'VISITA')" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <span><i class="bi bi-calendar-event-fill me-1"></i> Visita</span>
+                    <span class="column-count">0</span>
+                </div>
+            </div>
+
+            <div class="kanban-column col-negot" ondrop="drop(event, 'OFERTA')" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <span><i class="bi bi-briefcase-fill me-1"></i> Oferta</span>
+                    <span class="column-count">0</span>
+                </div>
+            </div>
+
+            <div class="kanban-column col-closed" ondrop="drop(event, 'CERRADO')" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <span><i class="bi bi-check-circle-fill me-1"></i> Cerrado</span>
+                    <span class="column-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalNuevoLead" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title fw-bold"><i class="bi bi-sun-fill me-2"></i>Nueva Cotización Solar</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formNuevoLead">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">Nombre Completo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="leadNombre" placeholder="Ej: Juan Pérez"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small">Teléfono</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                        <input type="tel" class="form-control" id="leadTelefono" placeholder="+569..."
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control" id="leadEmail"
+                                            placeholder="correo@ejemplo.com" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">Comuna</label>
+                                <select class="form-select" id="leadComuna" required>
+                                    <option value="" selected disabled>Seleccione...</option>
+                                    <option value="Los Andes">Los Andes</option>
+                                    <option value="San Felipe">San Felipe</option>
+                                    <option value="Rinconada">Rinconada</option>
+                                    <option value="Calle Larga">Calle Larga</option>
+                                    <option value="San Esteban">San Esteban</option>
+                                    <option value="Santiago">Santiago</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3 p-3 bg-light rounded border">
+                                <label class="form-label fw-bold small text-primary">⚡ Consumo Mensual Aproximado
+                                    ($)</label>
+                                <select class="form-select border-primary" id="leadConsumo" required>
+                                    <option value="Bajo">Menos de $30.000</option>
+                                    <option value="Medio">Entre $30.000 y $60.000</option>
+                                    <option value="Alto">Más de $60.000</option>
+                                    <option value="Muy Alto">Sobre $100.000 (Comercial)</option>
+                                </select>
+                                <div class="form-text small">Este dato define el tamaño del kit solar a ofrecer.</div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="guardarLead()">
+                            <i class="bi bi-save me-1"></i> Crear Solicitud
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalDocumentos" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-white">
+                        <h5 class="modal-title"><i class="bi bi-shield-lock me-2"></i>Documentos del Cliente</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="docLeadId">
+                        <div class="mb-3 border-bottom pb-3">
+                            <label class="form-label fw-bold small">Subir Nuevo Archivo</label>
+                            <div class="input-group">
+                                <select class="form-select form-select-sm" id="docTipo">
+                                    <option value="RUT">RUT / Identidad</option>
+                                    <option value="Liquidacion">Liquidación de Sueldo</option>
+                                    <option value="AFP">Certificado AFP</option>
+                                    <option value="DICOM">Informe DICOM</option>
+                                    <option value="Otro">Otro Documento</option>
+                                </select>
+                                <input type="file" class="form-control form-control-sm" id="docFile">
+                                <button class="btn btn-primary btn-sm" onclick="subirDocumentoLead()">Subir</button>
+                            </div>
+                        </div>
+                        <h6 class="fw-bold mb-3">Archivos Guardados:</h6>
+                        <div id="lista-documentos-lead" class="list-group list-group-flush">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                cargarLeadsDesdeBD();
+            });
+
+            // --- 1. CARGAR LEADS Y DISTRIBUIR EN COLUMNAS ---
+            async function cargarLeadsDesdeBD() {
+                try {
+                    const res = await fetch('http://localhost:3000/api/leads');
+                    const json = await res.json();
+
+                    if (json.success) {
+                        // Limpiar columnas antes de pintar (para no duplicar)
+                        document.querySelectorAll('.kanban-column .lead-card').forEach(e => e.remove());
+
+                        // Recorrer cada lead y ponerlo en su columna
+                        json.data.forEach(lead => {
+                            renderizarTarjeta(lead);
+                        });
+
+                        actualizarContadores();
+                    }
+                } catch (error) {
+                    console.error("Error conectando con el servidor:", error);
+                }
+            }
+
+            // --- 2. DIBUJAR LA TARJETA EN LA COLUMNA CORRECTA ---
+            // --- 2. DIBUJAR LA TARJETA EN LA COLUMNA CORRECTA CON IA (Labor #6) ---
+            function renderizarTarjeta(lead) {
+                // LÓGICA DE PRIORIDAD IA
+                let estrellas = "";
+                let porcentaje = "";
+                let claseScore = "";
+
+                // Clasificación automática según el consumo mensual guardado en la DB
+                switch (lead.consumo_mensual) {
+                    case 'Muy Alto':
+                        estrellas = "⭐⭐⭐⭐⭐"; porcentaje = "98%"; claseScore = "score-hot";
+                        break;
+                    case 'Alto':
+                        estrellas = "⭐⭐⭐⭐"; porcentaje = "85%"; claseScore = "score-warm";
+                        break;
+                    case 'Medio':
+                        estrellas = "⭐⭐⭐"; porcentaje = "60%"; claseScore = "score-warm";
+                        break;
+                    case 'Bajo':
+                        estrellas = "⭐⭐"; porcentaje = "35%"; claseScore = "score-cold";
+                        break;
+                    default:
+                        estrellas = "⭐"; porcentaje = "10%"; claseScore = "score-cold";
+                }
+
+                const estados = {
+                    'NUEVO': { col: '.col-new', color: '#dc3545' },
+                    'CONTACTADO': { col: '.col-contact', color: '#0d6efd' },
+                    'VISITA': { col: '.col-visit', color: '#fd7e14' },
+                    'OFERTA': { col: '.col-negot', color: '#6f42c1' },
+                    'CERRADO': { col: '.col-closed', color: '#198754' }
+                };
+
+                const config = estados[lead.estado] || estados['NUEVO'];
+                const iconoOrigen = lead.origen === 'Instagram' ? 'bi-instagram' : (lead.origen === 'Web' ? 'bi-globe' : 'bi-person-badge');
+
+                // HTML de la Tarjeta con IA, Menú y Drag & Drop integrado
+                const html = `
+                <div class="lead-card" id="lead-${lead.id}" draggable="true" ondragstart="drag(event, ${lead.id})" style="border-left-color: ${config.color};">
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <span class="lead-source"><i class="bi ${iconoOrigen}"></i> ${lead.origen || 'Web'}</span>
+                        <span class="ai-score ${claseScore}" title="Prioridad según IA">
+                            ${estrellas} <small class="d-block text-end" style="font-size:0.6rem;">${porcentaje} AI Match</small>
+                        </span>
+                    </div>
+                    
+                    <div class="lead-name">${lead.nombre_completo}</div>
+                    <div class="lead-prop fw-bold text-primary" style="font-size: 0.75rem;">Consumo: ${lead.consumo_mensual || 'N/A'}</div>
+                    <div class="small text-muted mb-2"><i class="bi bi-geo-alt"></i> ${lead.comuna}</div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                        <div class="dropdown">
+                            <button class="btn btn-sm p-0 text-muted" data-bs-toggle="dropdown">⋮ Menú</button>
+                            <ul class="dropdown-menu shadow">
+                                <li><a class="dropdown-item" href="#" onclick="moverLead(${lead.id}, 'CONTACTADO')">Mover a Contactado</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="moverLead(${lead.id}, 'VISITA')">Mover a Visita</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="moverLead(${lead.id}, 'OFERTA')">Mover a Oferta</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="moverLead(${lead.id}, 'CERRADO')">Finalizar Negocio</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item fw-bold text-primary" href="#" onclick="abrirModalDocs(${lead.id})"><i class="bi bi-file-earmark-arrow-up me-2"></i>Gestionar Papeles</a></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="eliminarLead(${lead.id})"><i class="bi bi-trash"></i> Eliminar</a></li>
+                            </ul>
+                        </div>
+                        <div class="lead-actions m-0 p-0 border-0">
+                            <a href="https://wa.me/${lead.telefono.replace(/\+/g, '').replace(/\s/g, '')}" target="_blank" class="btn-icon whatsapp me-2">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="mailto:${lead.email}" class="btn-icon email"><i class="bi bi-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>`;
+
+                const columna = document.querySelector(config.col);
+                if (columna) {
+                    columna.insertAdjacentHTML('beforeend', html);
+                }
+            }
+            async function guardarLead() {
+                const nombre = document.getElementById('leadNombre').value;
+                const telefono = document.getElementById('leadTelefono').value;
+                const email = document.getElementById('leadEmail').value;
+                const comuna = document.getElementById('leadComuna').value;
+                const consumo = document.getElementById('leadConsumo').value;
+
+                if (!nombre || !comuna) {
+                    alert("Complete los campos obligatorios");
+                    return;
+                }
+
+                const datos = { nombre, telefono, email, comuna, consumo };
+
+                try {
+                    const res = await fetch('http://localhost:3000/api/leads', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(datos)
+                    });
+
+                    const json = await res.json();
+
+                    if (json.success) {
+                        // Cerrar modal
+                        const modalEl = document.getElementById('modalNuevoLead');
+                        const modal = bootstrap.Modal.getInstance(modalEl);
+                        modal.hide();
+                        document.getElementById('formNuevoLead').reset();
+
+                        // Dibujar la tarjeta nueva inmediatamente (sin recargar)
+                        renderizarTarjeta(json.lead);
+                        actualizarContadores();
+
+                        alert("✅ Guardado en base de datos correctamente");
+                    } else {
+                        alert("Error al guardar: " + json.error);
+                    }
+
+                } catch (e) {
+                    console.error(e);
+                    alert("Error de conexión");
+                }
+            }
+
+            // --- 4. FUNCIÓN PARA MOVER DE ETAPA (SIMULACIÓN DE DRAG & DROP) ---
+            async function moverLead(id, nuevoEstado) {
+                if (!confirm("¿Mover este cliente a la etapa " + nuevoEstado + "?")) return;
+
+                try {
+                    const res = await fetch(`http://localhost:3000/api/leads/${id}/estado`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nuevoEstado })
+                    });
+
+                    if (res.ok) {
+                        // Recargar todo el tablero para ver el cambio
+                        cargarLeadsDesdeBD();
+                    }
+                } catch (e) {
+                    alert("Error al mover");
+                }
+            }
+
+            function actualizarContadores() {
+                // Actualiza el numerito al lado del título de cada columna (opcional)
+                document.querySelectorAll('.kanban-column').forEach(col => {
+                    const count = col.querySelectorAll('.lead-card').length;
+                    const badge = col.querySelector('.column-count');
+                    if (badge) badge.innerText = count;
+                });
+            }
+
+            // --- FUNCIONES DE DRAG & DROP ---
+
+            function allowDrop(ev) {
+                ev.preventDefault(); // Permite que el elemento sea soltado
+            }
+
+            function drag(ev, id) {
+                ev.dataTransfer.setData("leadId", id); // Guarda el ID del lead que estamos moviendo
+            }
+
+            async function drop(ev, nuevoEstado) {
+                ev.preventDefault();
+                const id = ev.dataTransfer.getData("leadId");
+
+                // Llamamos a la función que ya tienes para actualizar la base de datos
+                // Usamos 'await' para esperar que la base de datos responda antes de refrescar la vista
+                try {
+                    const res = await fetch(`http://localhost:3000/api/leads/${id}/estado`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ nuevoEstado })
+                    });
+
+                    if (res.ok) {
+                        cargarLeadsDesdeBD(); // Recargamos el tablero para ver el cambio real
+                    }
+                } catch (e) {
+                    console.error("Error al mover lead:", e);
+                }
+            }
+
+            // --- FUNCIÓN PARA ELIMINAR LEAD ---
+            async function eliminarLead(id) {
+                if (!confirm("¿Estás seguro de eliminar este prospecto? Esta acción no se puede deshacer.")) return;
+
+                try {
+                    const res = await fetch(`http://localhost:3000/api/leads/${id}`, { method: 'DELETE' });
+                    if (res.ok) {
+                        cargarLeadsDesdeBD();
+                    }
+                } catch (e) {
+                    alert("Error al eliminar");
+                }
+            }
+
+            // ... tus otras funciones (eliminarLead, drop, etc) ...
+
+            // --- LÓGICA DE DOCUMENTACIÓN (PEGAR AL FINAL) ---
+
+            async function abrirModalDocs(id) {
+                document.getElementById('docLeadId').value = id;
+                const modal = new bootstrap.Modal(document.getElementById('modalDocumentos'));
+                modal.show();
+                cargarDocumentosLead(id);
+            }
+
+            async function cargarDocumentosLead(id) {
+                const contenedor = document.getElementById('lista-documentos-lead');
+                contenedor.innerHTML = '<div class="text-center p-3"><div class="spinner-border spinner-border-sm text-primary"></div></div>';
+
+                try {
+                    const res = await fetch(`http://localhost:3000/api/leads/${id}/documentos`);
+                    const json = await res.json();
+
+                    contenedor.innerHTML = '';
+                    if (json.data.length === 0) {
+                        contenedor.innerHTML = '<p class="text-center text-muted my-3">No hay documentos cargados.</p>';
+                        return;
+                    }
+
+                    json.data.forEach(doc => {
+                        contenedor.innerHTML += `
+                <div class="list-group-item d-flex justify-content-between align-items-center p-2">
+                    <div>
+                        <span class="badge bg-secondary me-2">${doc.tipo_documento}</span>
+                        <a href="http://localhost:3000${doc.url_archivo}" target="_blank" class="text-decoration-none small text-dark">${doc.nombre_archivo}</a>
+                    </div>
+                    <button class="btn btn-sm text-danger" onclick="borrarDocumentoLead(${doc.id})"><i class="bi bi-trash"></i></button>
+                </div>`;
+                    });
+                } catch (e) { contenedor.innerHTML = 'Error al cargar'; }
+            }
+
+            async function subirDocumentoLead() {
+                const id = document.getElementById('docLeadId').value;
+                const tipo = document.getElementById('docTipo').value;
+                const fileInput = document.getElementById('docFile');
+
+                if (fileInput.files.length === 0) { alert("Selecciona un archivo"); return; }
+
+                const formData = new FormData();
+                formData.append('archivos', fileInput.files[0]);
+                formData.append('tipo', tipo);
+
+                try {
+                    const res = await fetch(`http://localhost:3000/api/leads/${id}/documentos`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (res.ok) {
+                        fileInput.value = '';
+                        cargarDocumentosLead(id);
+                    }
+                } catch (e) { alert("Error al subir"); }
+            }
+
+            async function borrarDocumentoLead(docId) {
+                if (!confirm("¿Borrar este documento?")) return;
+                try {
+                    await fetch(`http://localhost:3000/api/documentos-lead/${docId}`, { method: 'DELETE' });
+                    cargarDocumentosLead(document.getElementById('docLeadId').value);
+                } catch (e) { alert("Error al borrar"); }
+            }
+        </script>
+</body>
+
+</html>

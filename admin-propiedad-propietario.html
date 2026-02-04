@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propietario - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 0;
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* --- TARJETA DE DATOS --- */
+        .card-propietario {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: white;
+            border-radius: 4px;
+            padding: 30px;
+        }
+
+        .prop-name {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .prop-link {
+            color: #0d6efd;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .prop-link:hover {
+            text-decoration: underline;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: #333;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .badge-activo {
+            background-color: #17a2b8;
+            /* Color Calipso */
+            color: white;
+            font-weight: normal;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        /* --- TARJETAS DE ESTADÍSTICAS (AZULES) --- */
+        .stat-card {
+            background-color: #5b9bd5;
+            /* Azul claro estilo Nexxos */
+            color: white;
+            border-radius: 4px;
+            padding: 20px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decoración de fondo de las tarjetas */
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            position: absolute;
+            left: 20px;
+        }
+
+        /* --- BOTONES --- */
+        .btn-ficha {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-ficha:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+
+        .btn-cambiar {
+            background-color: #f0ad4e;
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-cambiar:hover {
+            background-color: #ec971f;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
+            <div class="mb-2 position-relative d-inline-block">
+                <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
+            </div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
+            <div class="mt-2">
+                <span class="badge bg-primary" id="sidebar_operacion">-</span>
+            </div>
+            <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
+        </div>
+
+        <div class="py-2">
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
+            <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
+                Editar</a>
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
+                y videos</a>
+            <a href="#" id="link_documentos" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i>
+                Documentos</a>
+            <a href="#" id="link_estado" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado /
+                Config.</a>
+            <a href="#" id="link_bitacora" class="d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i>
+                Bitácora</a>
+
+            <a href="#" class="active d-flex align-items-center"><i class="bi bi-person me-2"></i> Propietario</a>
+
+            <hr class="border-secondary mx-3">
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+                listado</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <h5 class="fw-bold text-secondary mb-4">
+            <i class="bi bi-house-door-fill"></i> DATOS DEL PROPIETARIO
+            <span class="fw-normal text-muted" id="header_titulo" style="font-size: 0.9rem;">Cargando...</span>
+        </h5>
+
+        <div class="card card-propietario">
+
+            <div class="row mb-5">
+                <div class="col-md-8">
+                    <h2 class="prop-name">Cristobal Reinaldo Araya Catalán</h2>
+                    <a href="#" class="prop-link mb-3 d-inline-block">Cristobal Reinaldo Araya Catalán</a>
+
+                    <div class="d-flex align-items-center text-muted mb-2">
+                        <i class="bi bi-envelope me-2"></i>
+                        <span>Sin email registrado</span>
+                    </div>
+                    <div class="d-flex align-items-center text-muted mb-2">
+                        <i class="bi bi-card-heading me-2"></i>
+                        <span>RUT: 16645457-3</span>
+                    </div>
+                    <div class="d-flex align-items-center text-muted mb-3">
+                        <i class="bi bi-telephone me-2"></i>
+                        <span>+56 9 5228 6689</span>
+                    </div>
+
+                    <h6 class="fw-bold"><i class="bi bi-search"></i> Perfil de búsqueda actual</h6>
+                    <p class="text-muted small">Sin Perfil de búsqueda definido</p>
+
+                    <ul class="list-unstyled small text-muted mt-3">
+                        <li>• ¿Está firmada la declaración de Personas Expuestas Políticamente?: No</li>
+                        <li>• ¿Está revisado en las listas de resoluciones ONU?: No</li>
+                        <li>• ¿Están revisadas las listas de Países No Cooperantes?: No</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 border-start ps-4">
+                    <div class="mb-3">
+                        <span class="info-label">Ejecutivo/a</span>
+                        <div class="text-muted">Marlen Teresita Guzman</div>
+                    </div>
+                    <div class="mb-3">
+                        <span class="info-label">Estado del cliente</span>
+                        <span class="badge-activo">Activo</span>
+                    </div>
+                    <div class="mb-3">
+                        <span class="info-label">Tipo</span>
+                        <div class="text-muted">Vendedor</div>
+                    </div>
+                    <div class="mb-3">
+                        <span class="info-label">Ingresado el</span>
+                        <div class="text-muted">12/01/2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <h6 class="fw-normal text-secondary mb-3">Resumen de acciones</h6>
+            <div class="row g-3 mb-5">
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <i class="bi bi-send stat-icon"></i>
+                        <div class="ms-auto text-end">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Listados enviados</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <i class="bi bi-book stat-icon"></i>
+                        <div class="ms-auto text-end">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Órdenes de visita</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <i class="bi bi-person-lines-fill stat-icon"></i>
+                        <div class="ms-auto text-end">
+                            <div class="stat-number">0</div>
+                            <div class="stat-label">Contactos registrados</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h6 class="fw-normal text-secondary mb-3">Detalle de acciones</h6>
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-ficha px-3">
+                    <i class="bi bi-person-fill"></i> Ir a ficha del propietario actual
+                </button>
+                <button class="btn btn-cambiar px-3">
+                    <i class="bi bi-arrow-repeat"></i> Cambiar la propiedad de propietario
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        // ⚠️ DEJAR VACÍO para compatibilidad total
+        const API_URL = 'https://discounted-timely-holiday-jessica.trycloudflare.com';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (propId) {
+                cargarDatosGenerales(propId); // Carga sidebar y título
+                cargarDatosPropietario(propId); // Carga la ficha central
+            } else {
+                alert("Error: Faltan datos.");
+                window.location.href = 'admin-propiedades.html';
+            }
+        });
+
+        // 1. Cargar Sidebar y Cabecera
+        async function cargarDatosGenerales(id) {
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades2/${id}`);
+                const json = await res.json();
+
+                if (json.success) {
+                    const p = json.data;
+                    // Sidebar
+                    document.getElementById('sidebar_cod').textContent = `Cód: ${p.id}`;
+                    document.getElementById('sidebar_tipo').textContent = p.tipo_propiedad;
+                    document.getElementById('sidebar_comuna').textContent = p.comuna;
+                    const op = p.operacion_venta ? 'VENTA' : 'ARRIENDO';
+                    document.getElementById('sidebar_operacion').textContent = op;
+
+                    // Título de la página
+                    const titulo = `Cód.: ${p.id} - ${p.tipo_propiedad} - ${op} - ${p.comuna}`;
+                    document.getElementById('header_titulo').textContent = titulo;
+
+                    // Configurar enlaces sidebar
+                    document.getElementById('link_editar').href = `admin-editar-propiedad.html?id=${id}`;
+                    document.getElementById('link_imagenes').href = `admin-propiedad-imagenes.html?id=${id}`;
+                    document.getElementById('link_documentos').href = `admin-propiedad-documentos.html?id=${id}`;
+                    document.getElementById('link_estado').href = `admin-propiedad-estado.html?id=${id}`;
+                    document.getElementById('link_bitacora').href = `admin-propiedad-bitacora.html?id=${id}`;
+
+                    // Foto Sidebar
+                    if (p.imagen_principal && !p.imagen_principal.includes('placeholder')) {
+                        document.getElementById('sidebar_foto').src = p.imagen_principal;
+                    }
+                }
+            } catch (e) { console.error("Error sidebar:", e); }
+        }
+
+        // 2. Cargar Datos del Dueño
+        async function cargarDatosPropietario(id) {
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades/${id}/propietario`);
+
+                // Verificamos si la respuesta es OK antes de intentar leer JSON
+                if (!res.ok) {
+                    throw new Error(`Error del servidor: ${res.status}`);
+                }
+
+                const json = await res.json();
+
+                if (json.success) {
+                    const p = json.data;
+                    const stats = json.stats;
+
+                    // Nombre y Enlace
+                    document.querySelector('.prop-name').textContent = p.nombre_completo;
+                    const linkProp = document.querySelector('.prop-link');
+                    linkProp.textContent = p.nombre_completo;
+                    // Ajuste de URL para que vaya a la página de cliente correcta (usando el ID del propietario)
+                    linkProp.href = `admin-cliente-ficha.html?id=${p.id}`;
+
+                    // Datos de contacto
+                    const items = document.querySelectorAll('.col-md-8 .d-flex span');
+                    items[0].textContent = p.email || 'Sin email registrado';
+                    items[1].textContent = `RUT: ${p.rut}`;
+                    items[2].textContent = p.telefono || 'Sin teléfono';
+
+                    // Columna Derecha (Info Estado)
+                    const rightCol = document.querySelector('.col-md-4');
+                    const divs = rightCol.querySelectorAll('.mb-3');
+
+                    // Ejecutivo
+                    divs[0].querySelector('.text-muted').textContent = p.ejecutivo_asignado || 'Sin asignar';
+
+                    // Estado (Badge)
+                    const badge = divs[1].querySelector('.badge-activo');
+                    if (p.es_activo) {
+                        badge.className = 'badge-activo bg-info text-white';
+                        badge.textContent = 'Activo';
+                    } else {
+                        badge.className = 'badge-activo bg-secondary text-white';
+                        badge.textContent = 'Inactivo';
+                    }
+
+                    // Tipo
+                    divs[2].querySelector('.text-muted').textContent = 'Vendedor / Propietario';
+
+                    // Fecha Ingreso (CORREGIDO: Usamos fecha_creacion que viene del SELECT alias en server.js)
+                    // Asegúrate que en server.js pusiste "pr.fecha_registro as fecha_creacion"
+                    const fechaRaw = p.fecha_creacion || p.fecha_registro || new Date();
+                    const fecha = new Date(fechaRaw).toLocaleDateString('es-CL');
+                    divs[3].querySelector('.text-muted').textContent = fecha;
+
+                    // Estadísticas
+                    const statNumbers = document.querySelectorAll('.stat-number');
+                    statNumbers[0].textContent = stats.listados_enviados;
+                    statNumbers[1].textContent = stats.ordenes_visita;
+                    statNumbers[2].textContent = stats.contactos;
+
+                    // Botones de acción inferiores
+                    const botones = document.querySelectorAll('.btn-ficha, .btn-cambiar');
+                    // Botón "Ir a ficha"
+                    // En admin-propiedad-propietario.html
+                    botones[0].onclick = () => window.location.href = `admin-cliente-ficha.html?id=${p.id}`;
+                    // Botón 2: Cambiar/Editar
+                    // IMPORTANTE: Pasamos 'propId' porque la nueva página lo necesita para saber qué casa actualizar
+                    botones[1].onclick = () => window.location.href = `admin-cambiar-propietario.html?propId=${propId}`;
+
+                } else {
+                    document.querySelector('.card-propietario').innerHTML = `<div class="alert alert-warning">⚠️ ${json.message}</div>`;
+                }
+            } catch (e) {
+                console.error("Error cargando propietario:", e);
+                document.querySelector('.card-propietario').innerHTML = `<div class="alert alert-danger">Error: No se pudieron cargar los datos del propietario. Verifique que la propiedad tenga un dueño asignado.</div>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

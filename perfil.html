@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+//hola
+
+<body data-page="profile">
+
+    <nav class="navbar scrolled">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="Logo_MG.jpeg" alt="Marlen Guzmán Logo" class="nav-logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Inicio</a>
+                <a href="#" class="nav-link" id="logout-btn">Cerrar Sesión</a>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section class="section bg-light" style="padding-top: 120px; min-height: 80vh;">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="overline">Cuenta</span>
+                <h2 class="section-title">Mi Perfil</h2>
+            </div>
+
+            <div class="contact-form"
+                style="max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-circle" style="font-size: 4rem; color: var(--gold);"></i>
+                    <h3 id="profile-name" style="margin-top: 1rem;">Cargando...</h3>
+                    <p id="profile-username" class="text-muted">@usuario</p>
+                </div>
+
+                <form id="profile-form">
+                    <input type="hidden" id="profile-id">
+
+                    <div class="form-group">
+                        <label>Nombre Completo</label>
+                        <input type="text" id="p-nombre" disabled style="background: #f9f9f9;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" id="p-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" id="p-telefono" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Actualizar Datos</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('user');
+            if (!userStr) {
+                window.location.href = 'index.html';
+                return;
+            }
+            const user = JSON.parse(userStr);
+
+            document.getElementById('profile-name').innerText = user.nombre_completo || 'Usuario';
+            document.getElementById('profile-username').innerText = '@' + user.username;
+            document.getElementById('profile-id').value = user.id;
+            document.getElementById('p-nombre').value = user.nombre_completo || '';
+            document.getElementById('p-email').value = user.email || '';
+            document.getElementById('p-telefono').value = user.telefono || '';
+
+            document.getElementById('logout-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            });
+
+            const form = document.getElementById('profile-form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('profile-id').value;
+                const email = document.getElementById('p-email').value;
+                const telefono = document.getElementById('p-telefono').value;
+
+                try {
+                    const res = await fetch(`http://localhost:3000/api/users/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, telefono })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        alert('Perfil actualizado correctamente');
+                        // Update local storage
+                        user.email = email;
+                        user.telefono = telefono;
+                        localStorage.setItem('user', JSON.stringify(user));
+                    } else {
+                        alert('Error al actualizar');
+                    }
+                } catch (err) {
+                    alert('Error de conexión');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

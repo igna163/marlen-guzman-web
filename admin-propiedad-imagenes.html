@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imágenes - Nexxos Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Open Sans', sans-serif;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        /* --- SIDEBAR (Igual al de Edición) --- */
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 0;
+            z-index: 1000;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #adb5bd;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: #495057;
+            color: white;
+            border-left: 4px solid #0d6efd;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        /* --- ZONA DE CARGA (DROPZONE) --- */
+        .upload-area {
+            border: 2px dashed #0d6efd;
+            border-radius: 10px;
+            background-color: #f8faff;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover {
+            background-color: #e9f0ff;
+            border-color: #0a58ca;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #0d6efd;
+            margin-bottom: 10px;
+        }
+
+        /* --- GALERÍA DE FOTOS --- */
+        .photo-card {
+            position: relative;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            transition: transform 0.2s;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-img {
+            height: 160px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Etiqueta de Portada */
+        .badge-portada {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #ffc107;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: none;
+            /* Oculto si no es portada */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .is-portada .badge-portada {
+            display: block;
+        }
+
+        .is-portada {
+            border: 2px solid #ffc107;
+        }
+
+        /* Botones de Acción en la Foto */
+        .photo-actions {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-star {
+            color: #ccc;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1.2rem;
+        }
+
+        .btn-star:hover {
+            color: #ffc107;
+        }
+
+        .is-portada .btn-star {
+            color: #ffc107;
+        }
+
+        /* Estrella amarilla si es portada */
+
+        .btn-delete {
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-delete:hover {
+            color: #b02a37;
+        }
+
+        /* Input archivo oculto */
+        #fileInput {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
+            <div class="mb-2 position-relative d-inline-block">
+                <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
+            </div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
+            <div class="mt-2">
+                <span class="badge bg-primary" id="sidebar_operacion">-</span>
+            </div>
+            <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
+        </div>
+
+        <div class="py-2">
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
+            <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
+                Editar</a>
+
+            <a href="#" class="active d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes y videos</a>
+
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i> Documentos</a>
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado / Config.</a>
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i> Bitácora</a>
+            <a href="#" class="d-flex align-items-center"><i class="bi bi-person me-2"></i> Propietario</a>
+
+            <hr class="border-secondary mx-3">
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+                listado</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold m-0"><i class="bi bi-images text-primary"></i> Imágenes y Videos</h4>
+                <p class="text-muted small m-0">Gestiona la galería multimedia de la propiedad.</p>
+            </div>
+            <button class="btn btn-success px-4 fw-bold" onclick="guardarOrden()">
+                <i class="bi bi-check-lg"></i> GUARDAR CAMBIOS
+            </button>
+        </div>
+
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" multiple accept="image/*" onchange="manejarArchivos(this.files)">
+            <i class="bi bi-cloud-arrow-up-fill upload-icon"></i>
+            <h5 class="fw-bold">Arrastra tus fotos aquí o haz clic para subir</h5>
+            <p class="text-muted small mb-0">Soporta JPG, PNG, WEBP. Máximo 10MB por archivo.</p>
+        </div>
+
+        <div class="row g-3" id="galeriaFotos">
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 1. OBTENER ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const propId = urlParams.get('id');
+
+        // ⚠️ DEJAR VACÍO para compatibilidad Cloudflare/Localhost
+        const API_URL = 'https://oscar-pointing-massachusetts-comp.trycloudflare.com';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (propId) {
+                cargarInfoPropiedad(propId);
+                document.getElementById('link_editar').href = `admin-editar-propiedad.html?id=${propId}`;
+                cargarGaleria();
+            } else {
+                alert("No se especificó ninguna propiedad.");
+                window.location.href = 'admin-propiedades.html';
+            }
+        });
+
+        // 2. CARGAR SIDEBAR (CORREGIDO PARA LEER imagen_principal)
+        async function cargarInfoPropiedad(id) {
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades2/${id}`);
+                const json = await res.json();
+                if (json.success) {
+                    const p = json.data;
+                    document.getElementById('sidebar_cod').textContent = `Cód: ${p.id}`;
+                    document.getElementById('sidebar_tipo').textContent = p.tipo_propiedad;
+                    document.getElementById('sidebar_comuna').textContent = p.comuna;
+                    document.getElementById('sidebar_operacion').textContent = p.operacion_venta ? 'VENTA' : 'ARRIENDO';
+
+                    // Usamos la propiedad correcta: imagen_principal
+                    if (p.imagen_principal && !p.imagen_principal.includes('placeholder')) {
+                        document.getElementById('sidebar_foto').src = p.imagen_principal;
+                    }
+                }
+            } catch (e) { console.error("Error sidebar:", e); }
+        }
+
+        // 3. CARGAR GALERÍA
+        async function cargarGaleria() {
+            const contenedor = document.getElementById('galeriaFotos');
+            contenedor.innerHTML = '<div class="text-center w-100 py-4"><div class="spinner-border text-primary"></div></div>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades/${propId}/imagenes`);
+                const json = await res.json();
+
+                contenedor.innerHTML = '';
+
+                if (json.success && json.data.length > 0) {
+                    json.data.forEach((img, index) => {
+                        const esPortada = img.es_portada ? 'is-portada' : '';
+                        const iconoEstrella = img.es_portada ? 'bi-star-fill text-warning' : 'bi-star';
+                        const textoPortada = img.es_portada ? '<div class="badge-portada"><i class="bi bi-star-fill"></i> PORTADA</div>' : '';
+
+                        const html = `
+                        <div class="col-6 col-md-4 col-lg-3 fade-in">
+                            <div class="photo-card ${esPortada}">
+                                ${textoPortada}
+                                <img src="${img.url_imagen}" class="photo-img">
+                                
+                                <div class="photo-actions bg-light">
+                                    <div class="text-muted small">Foto ${index + 1}</div>
+                                    <div>
+                                        <i class="bi ${iconoEstrella} btn-star me-3" onclick="hacerPortada(${img.id})" title="Portada" style="cursor: pointer; font-size: 1.2rem;"></i>
+                                        <i class="bi bi-trash3 btn-delete" onclick="eliminarFoto(${img.id})" title="Eliminar" style="cursor: pointer; font-size: 1.2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                        contenedor.innerHTML += html;
+                    });
+                } else {
+                    contenedor.innerHTML = '<div class="text-center w-100 text-muted py-4">No hay imágenes. ¡Arrastra fotos para subir!</div>';
+                }
+            } catch (error) {
+                console.error(error);
+                contenedor.innerHTML = '<div class="text-danger text-center w-100">Error al cargar imágenes</div>';
+            }
+        }
+
+        // 4. SUBIR
+        async function manejarArchivos(files) {
+            if (files.length === 0) return;
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('fotos', files[i]);
+            }
+
+            const uploadArea = document.querySelector('.upload-area');
+            const originalContent = uploadArea.innerHTML;
+            uploadArea.innerHTML = '<div class="py-3"><div class="spinner-border text-primary"></div><h5 class="mt-2">Subiendo...</h5></div>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/propiedades/${propId}/imagenes`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const json = await res.json();
+
+                if (json.success) {
+                    setTimeout(() => {
+                        cargarGaleria();
+                        cargarInfoPropiedad(propId);
+                    }, 500);
+                } else {
+                    alert("Error al subir: " + (json.message || json.error));
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error de conexión.");
+            } finally {
+                uploadArea.innerHTML = originalContent;
+            }
+        }
+
+        // 5. ACCIONES
+        async function hacerPortada(imgId) {
+            try {
+                const res = await fetch(`${API_URL}/api/imagenes/${imgId}/portada`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ propId: propId })
+                });
+                const json = await res.json();
+                if (json.success) {
+                    cargarGaleria();
+                    cargarInfoPropiedad(propId);
+                }
+            } catch (error) { console.error(error); }
+        }
+
+        async function eliminarFoto(imgId) {
+            if (!confirm("¿Eliminar imagen?")) return;
+            try {
+                const res = await fetch(`${API_URL}/api/imagenes/${imgId}`, { method: 'DELETE' });
+                const json = await res.json();
+                if (json.success) cargarGaleria();
+            } catch (error) { console.error(error); }
+        }
+
+        function guardarOrden() {
+            alert("✅ Las imágenes ya están guardadas en el servidor.");
+            window.location.href = `admin-editar-propiedad.html?id=${propId}`;
+        }
+    </script>
+</body>
+
+</html>

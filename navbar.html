@@ -1,0 +1,185 @@
+<nav class="navbar">
+    <div class="container nav-container" style="position: relative;">
+        <a href="index.html" class="logo">
+            <img src="Logo_MG.jpeg" alt="Marlen Guzmán Logo" class="nav-logo-img">
+        </a>
+
+        <div class="nav-links">
+
+            <a href="index.html" class="nav-link">Inicio</a>
+
+            <div class="dropdown">
+                <a href="#" class="nav-link">Nosotros <i class="fas fa-chevron-down"
+                        style="font-size: 0.8em; margin-left:3px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="nosotros.html">Quiénes Somos</a>
+                    <a href="convenios.html">Convenios</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="nav-link">Propiedades <i class="fas fa-chevron-down"
+                        style="font-size: 0.8em; margin-left:3px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="propiedades.html?op=venta">Venta</a>
+                    <a href="propiedades.html?op=arriendo">Arriendo</a>
+                    <a href="propiedades.html?op=temporal">Arriendo Temporal</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#" class="nav-link">Servicios <i class="fas fa-chevron-down"
+                        style="font-size: 0.8em; margin-left:3px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="instalador_paneles_solares.html">Instalador de paneles solares</a>
+                    <a href="reparacion-propiedad.html">Remodelación de propiedades</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#" class="nav-link" style="text-align: center; line-height: 1.2;">
+                    <span id="nav-uf-valor" style="font-weight: 800; color: #bfa378;">UF...</span><br>
+                    <span style="font-size: 0.75em; font-weight: normal;">Indicadores <i class="fas fa-chevron-down"
+                            style="font-size: 0.8em;"></i></span>
+                </a>
+
+                <div class="dropdown-content" style="min-width: 260px; cursor: default; padding: 15px;">
+                    <div style="font-size: 0.9em; line-height: 1.8;">
+                        <div style="display: flex; justify-content: space-between;"><span>Dólar:</span> <strong
+                                id="nav-dolar">...</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>Euro:</span> <strong
+                                id="nav-euro">...</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>UTM:</span> <strong
+                                id="nav-utm">...</strong></div>
+                        <div style="display: flex; justify-content: space-between;"><span>IPC:</span> <strong
+                                id="nav-ipc">...</strong></div>
+                    </div>
+                    <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+                    <small style="display: block; color: #999; font-size: 0.8em; text-align: right;">
+                        Actualizado: <span id="nav-fecha">...</span>
+                    </small>
+                </div>
+            </div>
+
+            <a href="tasacion.html" class="nav-link"
+                style="color: #bfa378; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                <i class="fas fa-magic"></i> Tasación IA
+            </a>
+
+            <a href="favoritos.html" class="nav-link active" style="color: #e74c3c;" title="Mis Favoritos">
+                <i class="fas fa-heart"></i>
+            </a>
+
+            <a href="index.html#contact" class="nav-link">Contacto</a>
+            <a href="index.html#faq" class="nav-link">Preguntas frecuentes</a>
+
+            <a href="#" id="nav-search-trigger" class="nav-link"><i class="fas fa-search"></i></a>
+            <a href="#" id="login-btn" class="nav-link btn-contact">Login</a>
+        </div>
+
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div id="nav-search-overlay" class="nav-search-bar" style="display: none;">
+            <div class="container" style="display: flex; align-items: center; width: 100%;">
+                <button id="nav-search-back" class="btn-search-back"><i class="fas fa-arrow-left"></i></button>
+                <input type="text" id="nav-search-input" placeholder="Buscar propiedad por código o comuna..."
+                    autocomplete="off">
+                <button id="nav-search-submit" class="btn-search-submit"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <div id="login-modal" class="modal">
+        <div class="modal-content login-modal-content">
+            <span class="close-modal" onclick="document.getElementById('login-modal').style.display='none'"
+                style="position:absolute; top:15px; right:20px; z-index:100; cursor:pointer; font-size:2rem; color:#666;">&times;</span>
+
+            <div class="login-grid">
+                <div class="login-info-panel">
+                    <img src="Logo_MG.jpeg" alt="Logo" class="login-brand-logo">
+                    <h3 class="login-welcome-title">Bienvenido</h3>
+                    <p class="login-desc">Accede a herramientas exclusivas para la gestión de tu futura propiedad.</p>
+                </div>
+
+                <div class="login-form-panel">
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" id="tab-login"
+                            onclick="switchAuthMode('login')">Ingresar</button>
+                        <button class="auth-tab" id="tab-register"
+                            onclick="switchAuthMode('register')">Registrarse</button>
+                    </div>
+
+                    <form id="login-form" class="auth-form active">
+                        <div class="input-group-icon">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="email" placeholder="Correo electrónico" required>
+                        </div>
+                        <div class="input-group-icon">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="password" placeholder="Contraseña" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block"
+                            style="padding:12px; font-size:1rem; margin-top:10px;">INICIAR SESIÓN</button>
+
+                        <div style="text-align:center; margin-top:15px;">
+                            <a href="#" class="forgot-pass-trigger"
+                                style="color:#888; font-size:0.9rem; text-decoration:none;">¿Olvidaste tu
+                                contraseña?</a>
+                        </div>
+                    </form>
+
+                    <form id="register-form" class="auth-form" style="display:none;">
+                        <div class="input-group-icon"><i class="fas fa-id-card input-icon"></i><input type="text"
+                                id="reg-name" placeholder="Nombre Completo" required></div>
+                        <div class="input-group-icon"><i class="fas fa-user input-icon"></i><input type="text"
+                                id="reg-username" placeholder="Usuario" required></div>
+                        <div class="input-group-icon"><i class="fas fa-envelope input-icon"></i><input type="email"
+                                id="reg-email" placeholder="Correo Electrónico" required></div>
+                        <div class="input-group-icon"><i class="fas fa-phone input-icon"></i><input type="tel"
+                                id="reg-phone" placeholder="Teléfono" required></div>
+                        <div class="input-group-icon"><i class="fas fa-lock input-icon"></i><input type="password"
+                                id="reg-password" placeholder="Contraseña" required></div>
+                        <div class="input-group-icon"><i class="fas fa-check-circle input-icon"></i><input
+                                type="password" id="reg-confirm-password" placeholder="Repetir Contraseña" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block"
+                            style="padding:12px; font-size:1rem; margin-top:10px;">CREAR CUENTA</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="recovery-modal" class="modal">
+        <div class="modal-content login-modal-content" style="max-width: 400px;">
+            <span class="close-modal" onclick="document.getElementById('recovery-modal').style.display='none'"
+                style="position:absolute; top:15px; right:20px; z-index:100; cursor:pointer; font-size:2rem; color:#666;">&times;</span>
+
+            <div class="login-info-panel" style="width:100%; min-height:100px; padding:20px; text-align:center;">
+                <h3 class="login-welcome-title">Recuperar Contraseña</h3>
+                <p class="login-desc">Ingresa tu correo para recibir una nueva clave temporal.</p>
+            </div>
+
+            <div class="login-form-panel" style="width:100%; padding:20px;">
+                <form id="recovery-form" class="auth-form active">
+                    <div class="input-group-icon">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="recovery-email" placeholder="Tu Correo Registrado" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block"
+                        style="padding:12px; font-size:1rem; margin-top:20px;">ENVIAR CLAVE</button>
+
+                    <div style="text-align:center; margin-top:15px;">
+                        <a href="#"
+                            onclick="document.getElementById('recovery-modal').style.display='none'; document.getElementById('login-modal').style.display='block'; return false;"
+                            style="color:#888; font-size:0.9rem; text-decoration:none;">
+                            <i class="fas fa-arrow-left"></i> Volver al Login
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>

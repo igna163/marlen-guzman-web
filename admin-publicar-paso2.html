@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Propiedad - Paso 2</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Pasos */
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+
+        .step {
+            z-index: 2;
+            background: #fff;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            border: 2px solid #e9ecef;
+            font-weight: bold;
+        }
+
+        .step.active {
+            background: #3b82f6;
+            color: #fff;
+            border-color: #3b82f6;
+        }
+
+        .step.completed {
+            background: #198754;
+            color: #fff;
+            border-color: #198754;
+            cursor: pointer;
+        }
+
+        .step-label {
+            position: absolute;
+            top: 40px;
+            font-size: 12px;
+            color: #adb5bd;
+            width: 100px;
+            text-align: center;
+            margin-left: -32px;
+        }
+
+        .step.active+.step-label {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
+        .btn-toggle {
+            border: 1px solid #ced4da;
+            color: #6c757d;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .btn-toggle.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .map-container {
+            height: 350px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <small class="text-muted">Panel de Control • Agregar propiedad</small>
+                        <h4 class="text-primary mt-1"><i class="bi bi-geo-alt"></i> AGREGAR PROPIEDAD - PASO 2 DE 6</h4>
+                    </div>
+                    <small class="text-success fw-bold" id="borradorText">
+                        <i class="bi bi-check-circle"></i> Editando...
+                    </small>
+                </div>
+
+                <div class="step-indicator px-4">
+                    <div class="text-center">
+                        <div class="step completed" onclick="location.href='admin-publicar-3.html'"><i
+                                class="bi bi-check"></i></div><span class="step-label text-success">Tipo</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="step active">2</div><span class="step-label">Ubicación</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="step">3</div><span class="step-label">Características</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="step">4</div><span class="step-label">Observaciones</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="step">5</div><span class="step-label">Propietario</span>
+                    </div>
+                    <div class="text-center">
+                        <div class="step">6</div><span class="step-label">Confirmar</span>
+                    </div>
+                </div>
+                <div class="progress mb-4" style="height: 5px;">
+                    <div class="progress-bar" style="width: 33%;"></div>
+                </div>
+
+                <div class="card p-4">
+                    <form id="formPaso2">
+
+                        <h5 class="section-title mb-3">Ubicación</h5>
+
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label">Región <span class="text-danger">*</span></label>
+                                <select class="form-select required-field" id="selectRegion" onchange="cargarComunas()">
+                                    <option value="">Seleccione...</option>
+                                    <option value="Metropolitana">Región Metropolitana</option>
+                                    <option value="Valparaíso">Región de Valparaíso</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Comuna <span class="text-danger">*</span></label>
+                                <select class="form-select required-field" id="selectComuna" disabled>
+                                    <option value="">Primero seleccione región...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Sector</label>
+                                <input type="text" class="form-control" id="inputSector"
+                                    placeholder="Ej: Centro, Precordillera...">
+                            </div>
+                        </div>
+
+                        <hr class="text-muted opacity-25">
+
+                        <div class="mb-4">
+                            <h6 class="mb-0">Dirección exacta</h6>
+                            <small class="text-muted d-block mb-3">No se envía a portales ni aparece en sitio
+                                web.</small>
+
+                            <div class="row mb-3">
+                                <div class="col-md-9">
+                                    <label class="form-label small">Calle <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="inputCalle"
+                                        placeholder="Ej: Fermín Vivaceta">
+                                </div>
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button type="button" class="btn btn-outline-primary w-100"
+                                        onclick="actualizarMapaPorDireccion()">
+                                        <i class="bi bi-geo-alt-fill"></i> Ubicar en Mapa
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label small">Nº de calle <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="inputNumero" placeholder="Ej: 1702">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">Unidad (Depto/Of)</label>
+                                    <input type="text" class="form-control" id="inputUnidad" placeholder="Ej: 304">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">Letra</label>
+                                    <input type="text" class="form-control" id="inputLetra" placeholder="Ej: A">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small">Etapa</label>
+                                    <input type="text" class="form-control" id="inputEtapa" placeholder="Ej: II">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="mb-3 text-dark border-bottom pb-2">
+                                Dirección referencial
+                                <small class="text-muted fw-light ms-1" style="font-size: 0.8rem">
+                                    Es la que se envía a portales y sí aparece en sitio web
+                                </small>
+                            </h5>
+
+                            <label class="form-label small">Dirección referencial <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control required-field" id="inputReferencia"
+                                placeholder="Ej: Metro Santa Isabel o Cerca de la Plaza">
+                        </div>
+                        <h5 class="section-title mb-3">Mapa</h5>
+                        <div class="row">
+                            <div class="col-md-3">
+
+                                <div class="mb-3">
+                                    <label class="form-label small d-block fw-bold">Mostrar mapa en la ficha</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="mostrarMapa" id="mapaSi" value="Si"
+                                            checked>
+                                        <label class="btn btn-outline-success btn-sm" for="mapaSi">Sí</label>
+
+                                        <input type="radio" class="btn-check" name="mostrarMapa" id="mapaNo" value="No">
+                                        <label class="btn btn-outline-danger btn-sm" for="mapaNo">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small d-block fw-bold">Enviar coordenadas a
+                                        portales</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="enviarCoord" id="coordSi" value="Si"
+                                            checked>
+                                        <label class="btn btn-outline-success btn-sm" for="coordSi">Sí</label>
+
+                                        <input type="radio" class="btn-check" name="enviarCoord" id="coordNo"
+                                            value="No">
+                                        <label class="btn btn-outline-danger btn-sm" for="coordNo">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info mt-3 small p-2">
+                                    <i class="bi bi-info-circle"></i> Usa el botón "Ubicar" para posicionar el mapa.
+                                </div>
+
+                                <div class="d-grid gap-1">
+                                    <a href="#" class="text-decoration-none small text-muted"
+                                        onclick="actualizarMapaPorDireccion(); return false;">
+                                        <i class="bi bi-crosshair"></i> Centrar mapa según dirección
+                                    </a>
+
+                                    <a href="#" class="text-decoration-none small text-danger"
+                                        onclick="limpiarGeoreferenciacion(); return false;">
+                                        <i class="bi bi-trash"></i> Limpiar georeferenciación
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-9">
+                                <div class="map-container">
+                                    <iframe id="googleMapFrame" width="100%" height="100%" frameborder="0"
+                                        style="border:0"
+                                        src="https://maps.google.com/maps?q=-33.4372,-70.6506&hl=es&z=14&output=embed"
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                            <button type="button" class="btn btn-secondary px-4"
+                                onclick="location.href='admin-publicar-3.html'">
+                                <i class="bi bi-arrow-left"></i> Anterior
+                            </button>
+                            <button type="button" class="btn btn-primary px-5 shadow" onclick="validarPaso2()">
+                                Siguiente <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Reloj
+        function actualizarHoraBorrador() {
+            const ahora = new Date();
+            const horaStr = ahora.getHours().toString().padStart(2, '0') + ':' + ahora.getMinutes().toString().padStart(2, '0');
+            document.getElementById('borradorText').innerHTML = `<i class="bi bi-check-circle"></i> BORRADOR GUARDADO A LAS ${horaStr}`;
+        }
+        setInterval(actualizarHoraBorrador, 30000);
+
+        // 2. Botones Toggle
+        function toggleBtn(btn) {
+            let siblings = btn.parentNode.children;
+            for (let i = 0; i < siblings.length; i++) {
+                siblings[i].classList.remove('active');
+                siblings[i].classList.add('btn-toggle');
+            }
+            btn.classList.add('active');
+            btn.classList.remove('btn-toggle');
+        }
+
+        // 3. DATOS DE COMUNAS
+        const comunasPorRegion = {
+            "Metropolitana": ["Independencia"],
+            "Valparaíso": ["Reñaca Alto", "Los Andes", "San Felipe", "Catemu", "Putaendo", "Rinconada", "Calle Larga"]
+        };
+
+        function cargarComunas() {
+            const regionSelect = document.getElementById('selectRegion');
+            const comunaSelect = document.getElementById('selectComuna');
+            const region = regionSelect.value;
+
+            comunaSelect.innerHTML = '<option value="">Seleccione...</option>';
+
+            if (region && comunasPorRegion[region]) {
+                comunaSelect.disabled = false;
+                comunasPorRegion[region].forEach(comuna => {
+                    let option = document.createElement('option');
+                    option.value = comuna;
+                    option.text = comuna;
+                    comunaSelect.appendChild(option);
+                });
+            } else {
+                comunaSelect.disabled = true;
+            }
+        }
+
+        // 4. MAPA
+        function actualizarMapaPorDireccion() {
+            const calle = document.getElementById('inputCalle').value;
+            const numero = document.getElementById('inputNumero').value;
+            const comuna = document.getElementById('selectComuna').value;
+            const region = document.getElementById('selectRegion').value;
+
+            if (!calle || !numero || !comuna || !region) {
+                alert("Completa Calle, Número y Comuna para ubicar.");
+                return;
+            }
+
+            const direccionCompleta = `${calle} ${numero}, ${comuna}, ${region}, Chile`;
+            const nuevaUrl = `https://maps.google.com/maps?q=${encodeURIComponent(direccionCompleta)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+            document.getElementById('googleMapFrame').src = nuevaUrl;
+        }
+
+        // 5. VALIDACIÓN Y GUARDADO
+        function validarPaso2() {
+            let inputs = document.querySelectorAll('.required-field');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.value.trim() === "") {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (isValid) {
+                const datos = {
+                    region: document.getElementById('selectRegion').value,
+                    comuna: document.getElementById('selectComuna').value,
+                    sector: document.getElementById('inputSector').value,
+                    calle: document.getElementById('inputCalle').value,
+                    numero: document.getElementById('inputNumero').value,
+                    unidad: document.getElementById('inputUnidad').value, // ANTES DEPTO
+                    letra: document.getElementById('inputLetra').value,   // NUEVO
+                    etapa: document.getElementById('inputEtapa').value,   // NUEVO
+                    referencia: document.getElementById('inputReferencia').value
+                };
+                localStorage.setItem('propiedad_paso2', JSON.stringify(datos));
+                window.location.href = 'admin-publicar-paso3.html';
+            } else {
+                alert("Faltan campos obligatorios.");
+            }
+        }
+
+        // 6. RECUPERAR DATOS AL CARGAR
+        document.addEventListener('DOMContentLoaded', () => {
+            const datosGuardados = localStorage.getItem('propiedad_paso2');
+
+            if (datosGuardados) {
+                const data = JSON.parse(datosGuardados);
+
+                // Rellenar campos de texto
+                if (data.calle) document.getElementById('inputCalle').value = data.calle;
+                if (data.numero) document.getElementById('inputNumero').value = data.numero;
+                if (data.unidad) document.getElementById('inputUnidad').value = data.unidad;
+                if (data.letra) document.getElementById('inputLetra').value = data.letra;
+                if (data.etapa) document.getElementById('inputEtapa').value = data.etapa;
+                if (data.sector) document.getElementById('inputSector').value = data.sector;
+                if (data.referencia) document.getElementById('inputReferencia').value = data.referencia;
+
+                // Rellenar Selects en cascada
+                if (data.region) {
+                    document.getElementById('selectRegion').value = data.region;
+                    cargarComunas();
+                    if (data.comuna) {
+                        document.getElementById('selectComuna').value = data.comuna;
+                    }
+                }
+
+                // Cargar Mapa
+                if (data.calle && data.numero && data.comuna) {
+                    actualizarMapaPorDireccion();
+                }
+            }
+        });
+        // Función para "Borrar" el pin rojo
+        function limpiarGeoreferenciacion() {
+            const confirmacion = confirm("¿Estás seguro de quitar la ubicación exacta del mapa?");
+
+            if (confirmacion) {
+                // URL genérica de Google Maps (Centrada en Santiago/Chile, sin búsqueda específica)
+                // Esto hace que el pin rojo desaparezca visualmente
+                const urlLimpia = "https://www.google.com/maps/embed?pb=$3";
+                document.getElementById('googleMapFrame').src = urlLimpia;
+
+                // Opcional: Podrías querer borrar los campos de texto también, pero
+                // en Nexxos generalmente solo limpia el mapa visual, no los datos escritos.
+                // Si quieres borrar datos, descomenta esto:
+                // document.getElementById('inputCalle').value = '';
+                // document.getElementById('inputNumero').value = '';
+            }
+        }
+    </script>
+
+</body>
+
+</html>

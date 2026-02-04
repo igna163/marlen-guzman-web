@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración | Admin</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Segoe UI', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="admin-dashboard.html">NEXXOS ADMIN</a>
+            <div class="d-flex">
+                <a href="admin-dashboard.html" class="btn btn-outline-light btn-sm">Volver al Panel</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-secondary">Configuración de Cuenta</h2>
+            <p class="text-muted">Gestiona tu contraseña y usuarios del sistema.</p>
+        </div>
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4 text-primary"><i class="fa fa-lock"></i> Cambiar Contraseña</h4>
+
+                        <form id="change-password-form">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Contraseña Actual</label>
+                                <input type="password" id="current-password" class="form-control" required
+                                    placeholder="Tu clave actual" autocomplete="current-password">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Nueva Contraseña</label>
+                                <input type="password" id="new-password" class="form-control" required
+                                    placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold">Confirmar Nueva Contraseña</label>
+                                <input type="password" id="confirm-password" class="form-control" required
+                                    placeholder="Repite la nueva clave" autocomplete="new-password">
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Actualizar Contraseña</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4 text-secondary"><i class="fa fa-users"></i> Usuarios Registrados</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover small">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Usuario</th>
+                                        <th>Rol</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">Cargando...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+
+            // 1. VALIDAR QUE HAYAS INICIADO SESIÓN
+            const user = JSON.parse(localStorage.getItem('usuario_logueado'));
+
+            if (!user || !user.id) {
+                alert("Debes iniciar sesión primero.");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            console.log("Usuario activo:", user.username);
+
+            // 2. CARGAR LISTA DE USUARIOS (Para la tabla)
+            try {
+                const res = await fetch('http://localhost:3000/api/users');
+                const users = await res.json();
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = '';
+
+                users.forEach(u => {
+                    tbody.innerHTML += `<tr><td>${u.nombre_completo}</td><td>${u.username}</td><td><span class="badge bg-info text-dark">${u.rol}</span></td></tr>`;
+                });
+            } catch (err) { console.error("Error cargando usuarios:", err); }
+
+            // 3. CAMBIO DE CONTRASEÑA (Lógica corregida)
+            const form = document.getElementById('change-password-form');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const currentPass = document.getElementById('current-password').value;
+                const newPass = document.getElementById('new-password').value;
+                const confirmPass = document.getElementById('confirm-password').value;
+
+                if (newPass.length < 6) { alert("La contraseña es muy corta."); return; }
+                if (newPass !== confirmPass) { alert("Las contraseñas no coinciden."); return; }
+
+                const btn = form.querySelector('button');
+                const originalText = btn.innerText;
+                btn.innerText = "Guardando...";
+                btn.disabled = true;
+
+                try {
+                    // AQUÍ ESTÁ EL ARREGLO:
+                    // Enviamos 'currentPassword', 'email' y 'telefono' porque el servidor los pide en el UPDATE
+                    const payload = {
+                        password: newPass,
+                        currentPassword: currentPass,
+                        email: user.email,
+                        telefono: user.telefono
+                    };
+
+                    const response = await fetch(`http://localhost:3000/api/users/${user.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        alert("✅ Contraseña actualizada con éxito.");
+                        form.reset();
+                    } else {
+                        alert("❌ Error: " + data.message);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    alert("Error de conexión con el servidor.");
+                } finally {
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -60,11 +60,18 @@ pool.connect((err) => {
 });
 
 // 4. CONFIGURACIÓN EMAIL
+// 4. CONFIGURACIÓN EMAIL (Blindada para la Nube)
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // Forzamos conexión SSL segura
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
         pass: 'sdclbrxurniioorx'
+    },
+    tls: {
+        // Esto evita que Render rechace la conexión si el certificado varía un poco
+        rejectUnauthorized: false
     }
 });
 

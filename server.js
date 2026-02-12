@@ -60,16 +60,12 @@ pool.connect((err) => {
 });
 
 // 4. CONFIGURACIÓN EMAIL (Modo STARTTLS - Puerto 587)
+// 4. CONFIGURACIÓN EMAIL (Modo Automático "Service: Gmail")
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587, // <--- CAMBIO CLAVE: Usamos 587 en lugar de 465
-    secure: false, // <--- CAMBIO CLAVE: false para 587 (usa STARTTLS después)
+    service: 'gmail', // <--- ESTO ES EL SECRETO: Nodemailer elige el mejor puerto solo.
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
-        pass: 'sdclbrxurniioorx'
-    },
-    tls: {
-        rejectUnauthorized: false
+        pass: 'sdclbrxurniioorx' // Tu contraseña de aplicación (NO la cambies)
     }
 });
 

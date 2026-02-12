@@ -59,18 +59,16 @@ pool.connect((err) => {
     }
 });
 
-// 4. CONFIGURACIÓN EMAIL
-// 4. CONFIGURACIÓN EMAIL (Blindada para la Nube)
+// 4. CONFIGURACIÓN EMAIL (Modo STARTTLS - Puerto 587)
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // Forzamos conexión SSL segura
+    port: 587, // <--- CAMBIO CLAVE: Usamos 587 en lugar de 465
+    secure: false, // <--- CAMBIO CLAVE: false para 587 (usa STARTTLS después)
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
         pass: 'sdclbrxurniioorx'
     },
     tls: {
-        // Esto evita que Render rechace la conexión si el certificado varía un poco
         rejectUnauthorized: false
     }
 });

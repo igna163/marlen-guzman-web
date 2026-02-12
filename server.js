@@ -59,22 +59,23 @@ pool.connect((err) => {
     }
 });
 
-// 4. CONFIGURACIÓN EMAIL (Modo STARTTLS - Puerto 587)
-// 4. CONFIGURACIÓN EMAIL (Modo Automático "Service: Gmail")
+// 4. CONFIGURACIÓN EMAIL (Modo Automático y Verificación)
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // <--- ESTO ES EL SECRETO: Nodemailer elige el mejor puerto solo.
+    service: 'gmail', // <--- Nodemailer elige el mejor puerto automáticamente
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
-        pass: 'sdclbrxurniioorx' // Tu contraseña de aplicación (NO la cambies)
+        pass: 'sdclbrxurniioorx'
     }
 });
 
 // VERIFICAR CONEXIÓN EMAIL AL INICIAR
 transporter.verify((error, success) => {
     if (error) {
-        console.error('❌ ERROR CRÍTICO EMAIL:', error);
+        console.error('------------------------------------------------');
+        console.error('❌ ERROR CRÍTICO EMAIL (Al iniciar):', error);
+        console.error('------------------------------------------------');
     } else {
-        console.log('✅ Servidor de correos listo para enviar mensajes.');
+        console.log('✅ Servidor de correos listo para enviar mensajes.'); // <--- EL MENSAJE QUE TÚ QUIERES
     }
 });
 

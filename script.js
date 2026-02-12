@@ -923,12 +923,27 @@ function openDetail(id) {
 function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
 
 function setupNavigation() {
-    // Delegación para el menú móvil
     document.addEventListener('click', (e) => {
+        const nav = document.querySelector('.nav-links');
         const btn = e.target.closest('.mobile-menu-btn');
+
+        // 1. Toggle Button
         if (btn) {
-            const nav = document.querySelector('.nav-links');
             if (nav) nav.classList.toggle('active');
+            return;
+        }
+
+        // 2. Logic to Close Menu (Only if active)
+        if (nav && nav.classList.contains('active')) {
+            const isLink = e.target.closest('.nav-links a');
+            const isCheckId = e.target.closest('.nav-links'); // If click is inside nav container
+
+            // Close if:
+            // A) Click is OUTSIDE the nav container
+            // B) Click is INSIDE a link (to navigate)
+            if (!isCheckId || isLink) {
+                nav.classList.remove('active');
+            }
         }
     });
 }

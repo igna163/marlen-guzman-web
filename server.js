@@ -59,17 +59,34 @@ pool.connect((err) => {
     }
 });
 
-// 4. CONFIGURACIÓN EMAIL (Modo Automático y Verificación)
-// 4. CONFIGURACIÓN EMAIL (Sin verificación de inicio para evitar Timeout)
+// 4. CONFIGURACIÓN EMAIL (Corrección para Render: SMTP Explícito + Timeouts + Logs)
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465, // Puerto seguro SSL
+    secure: true, // Usar SSL
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
         pass: 'sdclbrxurniioorx'
-    }
+    },
+    tls: {
+        rejectUnauthorized: false // Ayuda a evitar errores de certificados en algunos entornos
+    },
+    // Le damos más tiempo para que no se rinda a los 2 segundos (Sugerencia del usuario)
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
+    debug: true, // Mostrar depuración completa en logs
+    logger: true // Mostrar logs en consola
 });
 
-console.log("✅ Configuración de correo cargada (La conexión se probará al enviar).");
+// VERIFICAR CONEXIÓN EMAIL AL INICIAR (Opcional, pero útil para log)
+transporter.verify((error, success) => {
+    if (error) {
+        console.error('⚠️ Advertencia: No se pudo conectar al servidor de correos al iniciar (se reintentará al enviar):', error.message);
+    } else {
+        console.log('✅ Servidor de correos listo y conectado (SMTP 465).');
+    }
+});
 
 async function enviarCorreo(destinatario, asunto, mensajeHTML) {
     try {

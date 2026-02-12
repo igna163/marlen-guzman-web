@@ -59,32 +59,32 @@ pool.connect((err) => {
     }
 });
 
-// 4. CONFIGURACIÓN EMAIL (Corrección para Render: SMTP Explícito + Timeouts + Logs)
+// 4. CONFIGURACIÓN EMAIL (Corrección para Render: Puerto 587 STARTTLS - Más compatible en Nube)
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465, // Puerto seguro SSL
-    secure: true, // Usar SSL
+    port: 587, // Puerto estándar para STARTTLS
+    secure: false, // false para 587 (usa STARTTLS), true para 465
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
         pass: 'sdclbrxurniioorx'
     },
     tls: {
-        rejectUnauthorized: false // Ayuda a evitar errores de certificados en algunos entornos
+        rejectUnauthorized: false // Ignorar errores de certificado
     },
-    // Le damos más tiempo para que no se rinda a los 2 segundos (Sugerencia del usuario)
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 10000,
-    debug: true, // Mostrar depuración completa en logs
-    logger: true // Mostrar logs en consola
+    // Timeouts ajustados para redes lentas
+    connectionTimeout: 20000, // 20 segundos
+    greetingTimeout: 20000,
+    socketTimeout: 30000, // Un poco más largo para el socket
+    debug: true, // Seguir mostrando logs
+    logger: true
 });
 
-// VERIFICAR CONEXIÓN EMAIL AL INICIAR (Opcional, pero útil para log)
+// VERIFICAR CONEXIÓN EMAIL AL INICIAR
 transporter.verify((error, success) => {
     if (error) {
-        console.error('⚠️ Advertencia: No se pudo conectar al servidor de correos al iniciar (se reintentará al enviar):', error.message);
+        console.error('⚠️ Error verifying connection (Trying Port 587):', error.message);
     } else {
-        console.log('✅ Servidor de correos listo y conectado (SMTP 465).');
+        console.log('✅ Servidor de correos listo y conectado (SMTP 587 STARTTLS).');
     }
 });
 

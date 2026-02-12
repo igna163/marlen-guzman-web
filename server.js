@@ -39,6 +39,15 @@ const pool = new Pool({
     }
 });
 
+// Eventos de monitoreo (ESTO ES LO QUE NECESITAS AQUÍ)
+pool.on('connect', () => {
+    console.log("✅ ¡CONECTADO A LA BASE DE DATOS DE RENDER! 🚀");
+});
+
+pool.on('error', (err) => {
+    console.error('❌ ERROR CRÍTICO EN EL POOL:', err.message);
+});
+
 pool.connect((err) => {
     if (err) {
         console.error('------------------------------------------------');

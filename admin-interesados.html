@@ -378,7 +378,7 @@
             // --- 1. CARGAR LEADS Y DISTRIBUIR EN COLUMNAS ---
             async function cargarLeadsDesdeBD() {
                 try {
-                    const res = await fetch('http://localhost:3000/api/leads');
+                    const res = await fetch('https://marlen-guzman-web.onrender.com/api/leads');
                     const json = await res.json();
 
                     if (json.success) {
@@ -490,7 +490,7 @@
                 const datos = { nombre, telefono, email, comuna, consumo };
 
                 try {
-                    const res = await fetch('http://localhost:3000/api/leads', {
+                    const res = await fetch('https://marlen-guzman-web.onrender.com/api/leads', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(datos)
@@ -525,7 +525,7 @@
                 if (!confirm("¿Mover este cliente a la etapa " + nuevoEstado + "?")) return;
 
                 try {
-                    const res = await fetch(`http://localhost:3000/api/leads/${id}/estado`, {
+                    const res = await fetch(`https://marlen-guzman-web.onrender.com/api/leads/${id}/estado`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ nuevoEstado })
@@ -566,7 +566,7 @@
                 // Llamamos a la función que ya tienes para actualizar la base de datos
                 // Usamos 'await' para esperar que la base de datos responda antes de refrescar la vista
                 try {
-                    const res = await fetch(`http://localhost:3000/api/leads/${id}/estado`, {
+                    const res = await fetch(`https://marlen-guzman-web.onrender.com/api/leads/${id}/estado`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ nuevoEstado })
@@ -585,7 +585,7 @@
                 if (!confirm("¿Estás seguro de eliminar este prospecto? Esta acción no se puede deshacer.")) return;
 
                 try {
-                    const res = await fetch(`http://localhost:3000/api/leads/${id}`, { method: 'DELETE' });
+                    const res = await fetch(`https://marlen-guzman-web.onrender.com/api/leads/${id}`, { method: 'DELETE' });
                     if (res.ok) {
                         cargarLeadsDesdeBD();
                     }
@@ -610,7 +610,7 @@
                 contenedor.innerHTML = '<div class="text-center p-3"><div class="spinner-border spinner-border-sm text-primary"></div></div>';
 
                 try {
-                    const res = await fetch(`http://localhost:3000/api/leads/${id}/documentos`);
+                    const res = await fetch(`https://marlen-guzman-web.onrender.com/api/leads/${id}/documentos`);
                     const json = await res.json();
 
                     contenedor.innerHTML = '';
@@ -624,7 +624,7 @@
                 <div class="list-group-item d-flex justify-content-between align-items-center p-2">
                     <div>
                         <span class="badge bg-secondary me-2">${doc.tipo_documento}</span>
-                        <a href="http://localhost:3000${doc.url_archivo}" target="_blank" class="text-decoration-none small text-dark">${doc.nombre_archivo}</a>
+                        <a href="https://marlen-guzman-web.onrender.com${doc.url_archivo}" target="_blank" class="text-decoration-none small text-dark">${doc.nombre_archivo}</a>
                     </div>
                     <button class="btn btn-sm text-danger" onclick="borrarDocumentoLead(${doc.id})"><i class="bi bi-trash"></i></button>
                 </div>`;
@@ -644,7 +644,7 @@
                 formData.append('tipo', tipo);
 
                 try {
-                    const res = await fetch(`http://localhost:3000/api/leads/${id}/documentos`, {
+                    const res = await fetch(`https://marlen-guzman-web.onrender.com/api/leads/${id}/documentos`, {
                         method: 'POST',
                         body: formData
                     });
@@ -658,7 +658,7 @@
             async function borrarDocumentoLead(docId) {
                 if (!confirm("¿Borrar este documento?")) return;
                 try {
-                    await fetch(`http://localhost:3000/api/documentos-lead/${docId}`, { method: 'DELETE' });
+                    await fetch(`https://marlen-guzman-web.onrender.com/api/documentos-lead/${docId}`, { method: 'DELETE' });
                     cargarDocumentosLead(document.getElementById('docLeadId').value);
                 } catch (e) { alert("Error al borrar"); }
             }

@@ -240,7 +240,7 @@ app.post('/api/forgot-password', async (req, res) => {
             [hashedTempPassword, email]
         );
 
-        const currentUrl = req.get('origin') || req.get('referer') || 'http://localhost:3000';
+        const currentUrl = req.get('origin') || req.get('referer') || 'https://marlen-guzman-web.onrender.com';
         const html = `
             <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center; border: 1px solid #eee; border-radius: 8px;">
                 <h2 style="color: #2c3e50;">Recuperación de Clave</h2>
@@ -329,7 +329,7 @@ app.post('/api/register', async (req, res) => {
         const query = 'INSERT INTO usuarios (nombre_completo, username, email, password, telefono, rol) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, username, rol, email, telefono';
         const result = await pool.query(query, [nombre_completo, username, email, hashedPassword, telefono, 'cliente']);
 
-        const currentUrl = req.get('origin') || req.get('referer') || 'http://localhost:3000';
+        const currentUrl = req.get('origin') || req.get('referer') || 'https://marlen-guzman-web.onrender.com';
         const htmlBienvenida = `<h1>¡Bienvenido ${nombre_completo}!</h1><p>Gracias por registrarte.</p><a href="${currentUrl}">Ir a la web</a>`;
 
         enviarCorreo(email, "¡Bienvenido a Marlen Guzmán! 🏠", htmlBienvenida);
@@ -1647,7 +1647,7 @@ app.get('/api/test-publicacion/:id', async (req, res) => {
             dormitorios: p.dormitorios,
             banos: p.banos,
             superficie: p.superficie_util,
-            imagen_url: `http://localhost:3000${p.imagen_principal}`
+            imagen_url: `https://marlen-guzman-web.onrender.com${p.imagen_principal}`
         };
 
         // 3. Devolvemos el JSON para que tú lo veas en Postman

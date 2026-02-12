@@ -1,6 +1,6 @@
 // Native fetch is used in Node 18+
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'https://marlen-guzman-web.onrender.com/api';
 const EMAIL_BASE = 'test.case' + Math.floor(Math.random() * 10000) + '@example.com';
 const PASSWORD = 'password123';
 

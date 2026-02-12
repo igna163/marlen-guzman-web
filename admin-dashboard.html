@@ -280,7 +280,7 @@
 
             // 3. Cargar Números de las Tarjetas (Stats)
             try {
-                const res = await fetch('http://localhost:3000/api/admin/stats');
+                const res = await fetch('https://marlen-guzman-web.onrender.com/api/admin/stats');
                 const data = await res.json();
 
                 if (data.success) {
@@ -306,7 +306,7 @@
         async function cargarGraficoReal() {
             const ctx = document.getElementById('trafficChart').getContext('2d');
             try {
-                const res = await fetch('http://localhost:3000/api/admin/visitas-semana');
+                const res = await fetch('https://marlen-guzman-web.onrender.com/api/admin/visitas-semana');
                 const json = await res.json();
 
                 if (json.success) {

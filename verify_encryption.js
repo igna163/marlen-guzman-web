@@ -1,6 +1,6 @@
 const fetch = require('fs').existsSync('node_modules/node-fetch') ? require('node-fetch') : global.fetch;
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'https://marlen-guzman-web.onrender.com/api';
 const RANDOM = Math.floor(Math.random() * 100000);
 const EMAIL_PLAIN = `PLAIN.USER.${RANDOM}@EXAMPLE.COM`;
 const EMAIL_HASH = `HASH.USER.${RANDOM}@EXAMPLE.COM`;

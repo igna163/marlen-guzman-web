@@ -161,7 +161,7 @@
         async function cargarDatosReales() {
             try {
                 // 1. Pedir datos al servidor
-                const res = await fetch('http://localhost:3000/api/admin/reporte-mensual');
+                const res = await fetch('https://marlen-guzman-web.onrender.com/api/admin/reporte-mensual');
                 const data = await res.json();
 
                 if (!data.success) throw new Error("Error en datos");

@@ -2308,7 +2308,7 @@
         // 1. CARGAR DATOS DESDE BASE DE DATOS (CORREGIDO)
         async function cargarDatos(id) {
             try {
-                const res = await fetch(`http://localhost:3000/api/propiedades2/${id}`);
+                const res = await fetch(`https://marlen-guzman-web.onrender.com/api/propiedades2/${id}`);
                 const json = await res.json();
 
                 if (json.success) {
@@ -2540,7 +2540,7 @@
             };
 
             try {
-                const res = await fetch(`http://localhost:3000/api/propiedades2/${propId}`, {
+                const res = await fetch(`https://marlen-guzman-web.onrender.com/api/propiedades2/${propId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

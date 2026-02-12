@@ -1185,10 +1185,7 @@ app.put('/api/leads/:id/estado', async (req, res) => {
 /* ======================================================= */
 /* NUEVAS RUTAS: GESTIÓN DE IMÁGENES (GALERÍA)             */
 /* ======================================================= */
-const fs = require('fs');
 
-// 1. SUBIR FOTOS 
-// 1. SUBIR FOTOS (Límite aumentado a 50)
 app.post('/api/propiedades/:id/imagenes', upload.array('fotos', 50), async (req, res) => { // <--- CAMBIO AQUÍ: 50
     const propId = req.params.id;
     const files = req.files;

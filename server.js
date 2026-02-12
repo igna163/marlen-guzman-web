@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const multer = require('multer');
 const path = require('path');
 const bcrypt = require('bcryptjs'); // <--- NUEVA DEPENDENCIA PARA ENCRIPTAR
-// const { google } = require('googleapis'); <--- ELIMINADO (Ya no lo necesitamos)
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
@@ -2004,6 +2004,57 @@ app.post('/api/chat', async (req, res) => {
 });
 
 
+
+// --- RUTA QUE FALTABA: LISTADO PAGINADO DE PROPIEDADES ---
+app.get('/api/propiedades-list', async (req, res) => {
+    try {
+        const { page = 1, limit = 15 } = req.query;
+        const offset = (page - 1) * limit;
+
+        // Asumimos que la tabla se llama 'propiedades2' como en el admin-publicar
+        // Si falla, el usuario verá el error en el DB Test
+        const query = 'SELECT * FROM propiedades2 ORDER BY id DESC LIMIT $1 OFFSET $2';
+        const result = await pool.query(query, [limit, offset]);
+
+        const countQuery = 'SELECT COUNT(*) FROM propiedades2';
+        const countResult = await pool.query(countQuery);
+
+        res.json({
+            success: true,
+            data: result.rows,
+            total: parseInt(countResult.rows[0].count),
+            page: parseInt(page),
+            totalPages: Math.ceil(parseInt(countResult.rows[0].count) / limit)
+        });
+    } catch (err) {
+        console.error('Error en /api/propiedades-list:', err);
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
+// --- RUTA DE PRUEBA DE CONEXIÓN A BASE DE DATOS ---
+app.get('/api/db-test', async (req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT NOW()');
+        client.release();
+        res.json({
+            success: true,
+            message: 'Conexión a Base de Datos EXITOSA',
+            time: result.rows[0].now,
+            ssl: pool.options.ssl ? 'Activado' : 'Desactivado',
+            env_db_url: process.env.DATABASE_URL ? 'Configurado' : 'No configurado'
+        });
+    } catch (err) {
+        console.error('Error de prueba DB:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Error de conexión a BD',
+            error: err.message,
+            detail: err.stack
+        });
+    }
+});
 
 app.listen(port, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${port}`);

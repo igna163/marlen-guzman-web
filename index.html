@@ -702,7 +702,7 @@
         });
 
         // --- 2. REGISTRO DE VISITAS (Mantenida intacta) ---
-        fetch('https://marlen-guzman-web.onrender.com/api/visitas/registrar', { method: 'POST' })
+        fetch('/api/visitas/registrar', { method: 'POST' })
             .catch(err => console.error("Error visita:", err));
 
 

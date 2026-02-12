@@ -101,7 +101,7 @@
                 const telefono = document.getElementById('p-telefono').value;
 
                 try {
-                    const res = await fetch(`https://marlen-guzman-web.onrender.com/api/users/${id}`, {
+                    const res = await fetch(`/api/users/${id}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email, telefono })

@@ -407,7 +407,7 @@
 
                     try {
                         // Enviamos a la API (Endpoint V2)
-                        const respuesta = await fetch('https://marlen-guzman-web.onrender.com/api/publicar-v2', {
+                        const respuesta = await fetch('/api/publicar-v2', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(paqueteDatos)

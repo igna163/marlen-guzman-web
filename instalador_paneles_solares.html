@@ -407,7 +407,7 @@
 
             try {
                 // 4. Enviar al Servidor (API que creamos antes)
-                const res = await fetch('https://marlen-guzman-web.onrender.com/api/leads', {
+                const res = await fetch('/api/leads', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datos)

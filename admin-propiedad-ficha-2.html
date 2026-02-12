@@ -338,7 +338,7 @@
         async function cargarDatos(id) {
             try {
                 // 1. Conexión Real a la API
-                const res = await fetch(`https://marlen-guzman-web.onrender.com/api/propiedades2/${id}`);
+                const res = await fetch(`/api/propiedades2/${id}`);
                 const json = await res.json();
 
                 if (json.success) {
@@ -394,7 +394,7 @@
 
                     // --- IMAGEN PRINCIPAL (SIDEBAR) ---
                     if (p.imagen_principal) {
-                        document.getElementById('sidebar_foto').src = `https://marlen-guzman-web.onrender.com${p.imagen_principal}`;
+                        document.getElementById('sidebar_foto').src = `${p.imagen_principal}`;
                     }
 
                     // --- LISTAS DE CARACTERÍSTICAS (Extracción del JSON real) ---
@@ -448,7 +448,7 @@
 
                     // --- GALERÍA DE FOTOS REALES ---
                     // Necesitamos llamar a la API de imágenes para traer todas
-                    const resImg = await fetch(`https://marlen-guzman-web.onrender.com/api/propiedades/${id}/imagenes`);
+                    const resImg = await fetch(`/api/propiedades/${id}/imagenes`);
                     const jsonImg = await resImg.json();
 
                     const galeriaDiv = document.getElementById('galeria-real');
@@ -460,7 +460,7 @@
                         // Mostramos solo las primeras 2 para el preview (como en el diseño original)
                         jsonImg.data.slice(0, 2).forEach(img => {
                             galeriaDiv.innerHTML += `
-                                <img src="https://marlen-guzman-web.onrender.com${img.url_imagen}" class="gallery-img">
+                                <img src="${img.url_imagen}" class="gallery-img">
                             `;
                         });
                     } else {

@@ -60,24 +60,16 @@ pool.connect((err) => {
 });
 
 // 4. CONFIGURACIÓN EMAIL (Modo Automático y Verificación)
+// 4. CONFIGURACIÓN EMAIL (Sin verificación de inicio para evitar Timeout)
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // <--- Nodemailer elige el mejor puerto automáticamente
+    service: 'gmail',
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
         pass: 'sdclbrxurniioorx'
     }
 });
 
-// VERIFICAR CONEXIÓN EMAIL AL INICIAR
-transporter.verify((error, success) => {
-    if (error) {
-        console.error('------------------------------------------------');
-        console.error('❌ ERROR CRÍTICO EMAIL (Al iniciar):', error);
-        console.error('------------------------------------------------');
-    } else {
-        console.log('✅ Servidor de correos listo para enviar mensajes.'); // <--- EL MENSAJE QUE TÚ QUIERES
-    }
-});
+console.log("✅ Configuración de correo cargada (La conexión se probará al enviar).");
 
 async function enviarCorreo(destinatario, asunto, mensajeHTML) {
     try {

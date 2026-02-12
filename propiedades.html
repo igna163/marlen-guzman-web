@@ -269,7 +269,7 @@
                                 <label>Tipo de Propiedad</label>
                                 <select id="filter-tipo" class="form-control">
                                     <option value="">Seleccione...</option>
-                                    <option value="Casa" selected>Casa</option>
+                                    <option value="Casa">Casa</option>
                                     <option value="Departamento">Departamento</option>
                                     <option value="Oficina">Oficina</option>
                                     <option value="Sitio">Sitio</option>
@@ -330,10 +330,25 @@
 
                 <main>
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="section-title mb-0" style="font-size: 1.8rem;" id="page-title">Todas las Propiedades
-                        </h2>
-                        <span class="text-muted small"><strong id="total-props">0</strong> propiedades
-                            encontradas</span>
+                        <div>
+                            <h2 class="section-title mb-0" style="font-size: 1.8rem;" id="page-title">Todas las
+                                Propiedades</h2>
+                            <span class="text-muted small"><strong id="total-props">0</strong> propiedades
+                                encontradas</span>
+                        </div>
+
+                        <!-- SELECTOR DE ITEMS POR PÁGINA -->
+                        <div class="d-flex align-items-center">
+                            <label for="items-per-page" class="me-2 small fw-bold text-muted">Mostrar:</label>
+                            <select id="items-per-page" class="form-select form-select-sm" style="width: auto;"
+                                onchange="cambiarItemsPorPagina()">
+                                <option value="6">6</option>
+                                <option value="9">9</option>
+                                <option value="12">12</option>
+                                <option value="15">15</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div id="loading-spinner" class="text-center py-5" style="display: none;">
@@ -344,11 +359,9 @@
                     <div id="properties-grid" class="row">
                     </div>
 
-                    <div class="text-center mt-5">
-                        <button class="btn btn-outline-secondary btn-sm me-2" disabled>Anterior</button>
-                        <button class="btn btn-outline-secondary btn-sm active">1</button>
-                        <button class="btn btn-outline-secondary btn-sm">2</button>
-                        <button class="btn btn-outline-secondary btn-sm ms-2">Siguiente</button>
+                    <!-- CONTENEDOR DE PAGINACIÓN DINÁMICA -->
+                    <div id="pagination-controls" class="text-center mt-5">
+                        <!-- Aquí se inyectan los botones vía JS -->
                     </div>
                 </main>
 
@@ -364,19 +377,49 @@
     <script>
         // --- LÓGICA DEL CATÁLOGO ---
         let allProperties = [];
+        let filteredProperties = [];
+        let currentPage = 1;
+        let itemsPerPage = 6;
 
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Detectar si viene con filtro desde el menú (?op=venta)
+            // 1. LEER PARÁMETROS DE LA URL (Vienen del Home)
             const urlParams = new URLSearchParams(window.location.search);
-            const opParam = urlParams.get('op'); // venta, arriendo, temporal
+
+            const opParam = urlParams.get('op');
+            const tipoParam = urlParams.get('tipo');
+            const ubicacionParam = urlParams.get('ubicacion');
+
+            // 2. PRE-LLENAR LOS INPUTS DEL FILTRO LATERAL
+            // Esto es vital para que el usuario vea qué está filtrando
 
             if (opParam) {
-                document.getElementById('filter-operacion').value = opParam;
-                const titulos = { 'venta': 'Propiedades en Venta', 'arriendo': 'Propiedades en Arriendo', 'temporal': 'Arriendo Temporal' };
-                if (titulos[opParam]) document.getElementById('page-title').innerText = titulos[opParam];
+                // decodificamos por si acaso
+                document.getElementById('filter-operacion').value = decodeURIComponent(opParam);
+
+                // Actualizar título de la página
+                const titulos = {
+                    'venta': 'Propiedades en Venta',
+                    'arriendo': 'Propiedades en Arriendo',
+                    'temporal': 'Arriendo Temporal'
+                };
+                if (titulos[opParam]) {
+                    document.getElementById('page-title').innerText = titulos[opParam];
+                }
             }
 
-            // 2. Cargar datos
+            if (tipoParam) {
+                // Selecciona "Casa", "Departamento", etc.
+                document.getElementById('filter-tipo').value = decodeURIComponent(tipoParam);
+            }
+
+            if (ubicacionParam) {
+                // Escribe "Los Andes" en el campo de texto del filtro
+                document.getElementById('filter-comuna').value = decodeURIComponent(ubicacionParam);
+            }
+
+            // 3. CARGAR DATOS
+            // Al terminar de cargar, la función fetchPropiedades llamará a aplicarFiltros()
+            // Como ya llenamos los inputs arriba con los datos de la URL, el filtro funcionará automático.
             fetchPropiedades();
         });
 
@@ -385,13 +428,13 @@
             document.getElementById('properties-grid').innerHTML = '';
 
             try {
-                // LLAMADA A TU API (Simulada o Real)
-                const res = await fetch('http://localhost:3000/api/propiedades-list?limit=100');
+                // LLAMADA A TU API
+                const res = await fetch('/api/propiedades-list?limit=500'); // Traemos más para paginar en cliente
                 const json = await res.json();
 
                 if (json.success) {
                     allProperties = json.data;
-                    aplicarFiltros(); // Renderizar
+                    aplicarFiltros();
                 } else {
                     console.error("Error API:", json.message);
                 }
@@ -410,7 +453,7 @@
             const dorms = parseInt(document.getElementById('filter-dorm').value) || 0;
             const banos = parseInt(document.getElementById('filter-banos').value) || 0;
 
-            const filtrados = allProperties.filter(p => {
+            filteredProperties = allProperties.filter(p => {
                 // Filtro Operación
                 if (op === 'venta' && !p.operacion_venta) return false;
                 if (op === 'arriendo' && !p.operacion_arriendo) return false;
@@ -425,18 +468,93 @@
                 return true;
             });
 
-            document.getElementById('total-props').innerText = filtrados.length;
-            renderizarPropiedades(filtrados);
+            // Ordenar por ID descendente (más nuevas primero) si no vienen ordenadas
+            filteredProperties.sort((a, b) => b.id - a.id);
+
+            document.getElementById('total-props').innerText = filteredProperties.length;
+
+            // Resetear a página 1 y renderizar
+            currentPage = 1;
+            renderPaginated();
+        }
+
+        function cambiarItemsPorPagina() {
+            const select = document.getElementById('items-per-page');
+            itemsPerPage = parseInt(select.value);
+            currentPage = 1; // Volver a la primera página
+            renderPaginated();
+        }
+
+        function renderPaginated() {
+            const grid = document.getElementById('properties-grid');
+            grid.innerHTML = '';
+
+            if (filteredProperties.length === 0) {
+                grid.innerHTML = '<div class="col-12 text-center py-5"><h3>No encontramos propiedades</h3><p>Prueba con otros criterios de búsqueda.</p></div>';
+                document.getElementById('pagination-controls').style.display = 'none';
+                return;
+            }
+
+            // Calcular índices
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageItems = filteredProperties.slice(startIndex, endIndex);
+
+            // Renderizar items
+            renderizarPropiedades(pageItems);
+
+            // Renderizar controles de paginación
+            renderPaginationControls();
+        }
+
+        function renderPaginationControls() {
+            const container = document.getElementById('pagination-controls');
+            container.style.display = 'block';
+
+            const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
+            let html = '';
+
+            // Botón Anterior
+            html += `<button class="btn btn-outline-secondary btn-sm me-2" 
+                     onclick="cambiarPagina(${currentPage - 1})" 
+                     ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>`;
+
+            // Números de página
+            // Mostramos un rango limitado para no saturar si hay muchas páginas
+            const maxPagesToShow = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+            let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+            if (endPage - startPage + 1 < maxPagesToShow) {
+                startPage = Math.max(1, endPage - maxPagesToShow + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button class="btn btn-outline-secondary btn-sm ${i === currentPage ? 'active' : ''}" 
+                         onclick="cambiarPagina(${i})">${i}</button>`;
+            }
+
+            // Botón Siguiente
+            html += `<button class="btn btn-outline-secondary btn-sm ms-2" 
+                     onclick="cambiarPagina(${currentPage + 1})" 
+                     ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>`;
+
+            container.innerHTML = html;
+        }
+
+        function cambiarPagina(pageNum) {
+            const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
+            if (pageNum < 1 || pageNum > totalPages) return;
+
+            currentPage = pageNum;
+            renderPaginated();
+            // Scroll suave hacia arriba para ver los nuevos resultados
+            document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
         }
 
         function renderizarPropiedades(lista) {
             const grid = document.getElementById('properties-grid');
-            grid.innerHTML = '';
-
-            if (lista.length === 0) {
-                grid.innerHTML = '<div class="col-12 text-center py-5"><h3>No encontramos propiedades</h3><p>Prueba con otros criterios de búsqueda.</p></div>';
-                return;
-            }
+            // Nota: grid.innerHTML = '' ya se hace en renderPaginated
 
             lista.forEach(p => {
                 // Lógica Precio
@@ -451,8 +569,13 @@
                     badgeHtml = `<span class="badge-status bg-arriendo">ARRIENDO</span>`;
                 }
 
-                // Imagen por defecto si no hay
-                const imgUrl = p.imagen_principal || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'; // Foto genérica bonita
+                // Imagen por defecto y manejo de ruta relativa vs absoluta
+                let imgUrl = p.imagen_principal || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80';
+
+                // Si la imagen viene de uploads/ y no tiene slash inicial, agregarlo
+                if (imgUrl.startsWith('uploads/')) {
+                    imgUrl = '/' + imgUrl;
+                }
 
                 // Construcción de la Tarjeta
                 const html = `
@@ -461,7 +584,7 @@
                         <div class="card-img-wrapper">
                             ${badgeHtml}
                             <span class="badge-code">COD: ${p.id}</span>
-                            <img src="${imgUrl}" alt="${p.tipo_propiedad}">
+                            <img src="${imgUrl}" alt="${p.tipo_propiedad}" loading="lazy">
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">${p.tipo_propiedad} en ${p.comuna}</h5>
@@ -470,9 +593,9 @@
                             <div class="card-price">${precioDisplay}</div>
                             
                             <div class="card-features">
-                                <div class="feature-item"><i class="fas fa-bed"></i> ${p.dormitorios}</div>
-                                <div class="feature-item"><i class="fas fa-bath"></i> ${p.banos}</div>
-                                <div class="feature-item"><i class="fas fa-ruler-combined"></i> ${p.superficie_util} m²</div>
+                                <div class="feature-item"><i class="fas fa-bed"></i> ${p.dormitorios || 0}</div>
+                                <div class="feature-item"><i class="fas fa-bath"></i> ${p.banos || 0}</div>
+                                <div class="feature-item"><i class="fas fa-ruler-combined"></i> ${p.superficie_util || 0} m²</div>
                             </div>
 
                             <a href="web-ficha.html?id=${p.id}" class="btn-detail">VER DETALLES</a>

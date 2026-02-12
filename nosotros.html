@@ -114,6 +114,45 @@
                 order: -1;
             }
         }
+
+        /* NUEVA SECCIÓN: Galería para clientes y empresa solicitada por Marlen */
+        .team-clients-section {
+            padding: 80px 0;
+            background: #f9f9f9;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .gallery-caption {
+            padding: 15px 5px 5px;
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 500;
+        }
     </style>
 </head>
 
@@ -175,6 +214,39 @@
 
             <div class="about-image animate-up delay-1">
                 <img src="Marlen.jpeg" alt="Marlen Guzmán" class="about-photo">
+            </div>
+        </div>
+    </section>
+
+    <section class="team-clients-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="overline">Nuestra Comunidad</span>
+                <h2 class="section-title">Historias de éxito y nuestro equipo</h2>
+                <p class="text-muted mx-auto" style="max-width: 700px;">
+                    Detrás de cada propiedad hay un esfuerzo de años y un nuevo comienzo.
+                    Aquí compartimos algunos de los sueños que hemos ayudado a construir.
+                </p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item animate-up">
+                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80"
+                        alt="Equipo Gestión Inmobiliaria Guzmán">
+                    <div class="gallery-caption text-center">Nuestra oficina y equipo profesional</div>
+                </div>
+
+                <div class="gallery-item animate-up delay-1">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80"
+                        alt="Familia recibiendo llaves">
+                    <div class="gallery-caption text-center">Acompañando nuevos sueños</div>
+                </div>
+
+                <div class="gallery-item animate-up delay-2">
+                    <img src="https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&q=80"
+                        alt="Inversionista en Los Andes">
+                    <div class="gallery-caption text-center">Tu futuro, nuestra responsabilidad</div>
+                </div>
             </div>
         </div>
     </section>

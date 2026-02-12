@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
     <style>
         body {
             background-color: #f4f6f9;
@@ -102,328 +103,347 @@
 
 <body>
 
-    <div class="container mt-5 mb-5">
-        <div class="row justify-content-center">
-            <div class="col-md-10">
+    <div class="sidebar"></div>
 
-                <div class="d-flex justify-content-between align-items-end mb-4">
-                    <div>
-                        <small class="text-muted">Panel de Control • Agregar propiedad</small>
-                        <h4 class="text-primary mt-1"><i class="fa fa-home"></i> AGREGAR PROPIEDAD - PASO 1 DE 6</h4>
-                    </div>
-                    <small class="text-success fw-bold" id="borradorText">
-                        <i class="bi bi-circle-fill" style="font-size: 8px;"></i> Editando...
-                    </small>
-                </div>
+    <div class="main-content">
 
-                <div class="step-indicator px-4">
-                    <div class="text-center">
-                        <div class="step active">1</div><span class="step-label">Tipo</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">2</div><span class="step-label">Ubicación</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">3</div><span class="step-label">Características</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">4</div><span class="step-label">Observaciones</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">5</div><span class="step-label">Propietario</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">6</div><span class="step-label">Confirmar</span>
-                    </div>
-                </div>
+        <div class="container mt-5 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
 
-                <div class="progress mb-4" style="height: 5px;">
-                    <div class="progress-bar" style="width: 16%;"></div>
-                </div>
-
-                <div class="card p-4">
-                    <form id="formPaso1">
-
-                        <h5 class="mb-3 text-dark border-bottom pb-2">Tipo, rol y exclusividad</h5>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Tipo de propiedad <span class="text-danger">*</span></label>
-                                <select class="form-select required-field" id="tipoPropiedad">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Casa" selected>Casa</option>
-                                    <option value="Departamento">Departamento</option>
-                                    <option value="Oficina">Oficina</option>
-                                    <option value="Sitio">Sitio</option>
-                                    <option value="Local Comercial">Local Comercial</option>
-                                    <option value="Industrial">Industrial</option>
-                                    <option value="Agrícola">Agrícola</option>
-                                    <option value="Parcela">Parcela</option>
-                                    <option value="Estacionamiento">Estacionamiento</option>
-                                    <option value="Terreno Construccion">Terreno Construccion</option>
-                                    <option value="Bodega">Bodega</option>
-                                    <option value="Negocio/Patentes/Derechos de llave">Negocio/Patentes/Derechos de
-                                        llave</option>
-                                    <option value="Residencial/Pieza">Residencial/Pieza</option>
-                                    <option value="Hotel/Apart Hotel">Hotel/Apart Hotel</option>
-                                    <option value="Complejos Turísticos">Complejos Turísticos</option>
-                                    <option value="Departamento Amoblado">Departamento Amoblado</option>
-                                </select>
-                                <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 5px;">
-                                    Seleccione al menos un tipo de propiedad. El primero que seleccione será el tipo
-                                    principal.
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="rolSii" class="form-label">Rol<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control required-field" id="rolSii"
-                                    placeholder="Ej: 00161-00032">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">
-                                    Exclusividad
-                                    <i class="bi bi-info-circle-fill text-primary" data-bs-toggle="tooltip"
-                                        title="Información sobre exclusividad"></i>
-                                </label>
-                                <div class="btn-group w-100" role="group">
-                                    <input type="radio" class="btn-check" name="exclusividad" id="excSi" value="Si">
-                                    <label class="btn btn-outline-primary" for="excSi">Sí</label>
-
-                                    <input type="radio" class="btn-check" name="exclusividad" id="excNo" value="No"
-                                        checked>
-                                    <label class="btn btn-outline-primary" for="excNo">No</label>
-                                </div>
-                            </div>
+                    <div class="d-flex justify-content-between align-items-end mb-4">
+                        <div>
+                            <small class="text-muted">Panel de Control • Agregar propiedad</small>
+                            <h4 class="text-primary mt-1"><i class="fa fa-home"></i> AGREGAR PROPIEDAD - PASO 1 DE 6
+                            </h4>
                         </div>
+                        <small class="text-success fw-bold" id="borradorText">
+                            <i class="bi bi-circle-fill" style="font-size: 8px;"></i> Editando...
+                        </small>
+                    </div>
 
-                        <h5 class="mb-3 mt-4 text-dark border-bottom pb-2">Operación <small class="text-muted fw-light"
-                                style="font-size: 0.8rem">Seleccione al menos una</small></h5>
+                    <div class="step-indicator px-4">
+                        <div class="text-center">
+                            <div class="step active">1</div><span class="step-label">Tipo</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">2</div><span class="step-label">Ubicación</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">3</div><span class="step-label">Características</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">4</div><span class="step-label">Observaciones</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">5</div><span class="step-label">Propietario</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">6</div><span class="step-label">Confirmar</span>
+                        </div>
+                    </div>
 
-                        <div class="row">
+                    <div class="progress mb-4" style="height: 5px;">
+                        <div class="progress-bar" style="width: 16%;"></div>
+                    </div>
 
-                            <div class="col-md-6">
-                                <div class="p-4 bg-light rounded border h-100">
-                                    <h6 class="text-uppercase text-muted fw-bold mb-3">Venta</h6>
+                    <div class="card p-4">
+                        <form id="formPaso1">
 
-                                    <div class="mb-3">
-                                        <div class="btn-group" role="group">
-                                            <input type="radio" class="btn-check" name="opVenta" id="ventaSi"
-                                                autocomplete="off" onchange="toggleOperacion('Venta', true)">
-                                            <label class="btn btn-outline-success btn-sm px-3 fw-bold"
-                                                for="ventaSi">Sí</label>
-
-                                            <input type="radio" class="btn-check" name="opVenta" id="ventaNo"
-                                                autocomplete="off" checked onchange="toggleOperacion('Venta', false)">
-                                            <label class="btn btn-outline-danger btn-sm px-3 fw-bold"
-                                                for="ventaNo">No</label>
-                                        </div>
+                            <h5 class="mb-3 text-dark border-bottom pb-2">Tipo, rol y exclusividad</h5>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Tipo de propiedad <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select required-field" id="tipoPropiedad">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Casa" selected>Casa</option>
+                                        <option value="Departamento">Departamento</option>
+                                        <option value="Oficina">Oficina</option>
+                                        <option value="Sitio">Sitio</option>
+                                        <option value="Local Comercial">Local Comercial</option>
+                                        <option value="Industrial">Industrial</option>
+                                        <option value="Agrícola">Agrícola</option>
+                                        <option value="Parcela">Parcela</option>
+                                        <option value="Estacionamiento">Estacionamiento</option>
+                                        <option value="Terreno Construccion">Terreno Construccion</option>
+                                        <option value="Bodega">Bodega</option>
+                                        <option value="Negocio/Patentes/Derechos de llave">Negocio/Patentes/Derechos de
+                                            llave</option>
+                                        <option value="Residencial/Pieza">Residencial/Pieza</option>
+                                        <option value="Hotel/Apart Hotel">Hotel/Apart Hotel</option>
+                                        <option value="Complejos Turísticos">Complejos Turísticos</option>
+                                        <option value="Departamento Amoblado">Departamento Amoblado</option>
+                                    </select>
+                                    <div class="form-text text-muted" style="font-size: 0.75rem; margin-top: 5px;">
+                                        Seleccione al menos un tipo de propiedad. El primero que seleccione será el tipo
+                                        principal.
                                     </div>
+                                </div>
 
-                                    <div id="fieldsVenta" style="opacity: 0.5; pointer-events: none;">
-                                        <div class="row g-2 align-items-center mb-2">
-                                            <div class="col-7">
-                                                <label class="form-label small fw-bold text-muted">Precio <i
-                                                        class="bi bi-info-circle-fill text-primary"></i></label>
-                                                <input type="number" class="form-control" id="precioVenta" disabled>
+                                <div class="col-md-3">
+                                    <label for="rolSii" class="form-label">Rol<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control required-field" id="rolSii"
+                                        placeholder="Ej: 00161-00032">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">
+                                        Exclusividad
+                                        <i class="bi bi-info-circle-fill text-primary" data-bs-toggle="tooltip"
+                                            title="Información sobre exclusividad"></i>
+                                    </label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="exclusividad" id="excSi" value="Si">
+                                        <label class="btn btn-outline-primary" for="excSi">Sí</label>
+
+                                        <input type="radio" class="btn-check" name="exclusividad" id="excNo" value="No"
+                                            checked>
+                                        <label class="btn btn-outline-primary" for="excNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 mt-4 text-dark border-bottom pb-2">Operación <small
+                                    class="text-muted fw-light" style="font-size: 0.8rem">Seleccione al menos
+                                    una</small></h5>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="p-4 bg-light rounded border h-100">
+                                        <h6 class="text-uppercase text-muted fw-bold mb-3">Venta</h6>
+
+                                        <div class="mb-3">
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" name="opVenta" id="ventaSi"
+                                                    autocomplete="off" onchange="toggleOperacion('Venta', true)">
+                                                <label class="btn btn-outline-success btn-sm px-3 fw-bold"
+                                                    for="ventaSi">Sí</label>
+
+                                                <input type="radio" class="btn-check" name="opVenta" id="ventaNo"
+                                                    autocomplete="off" checked
+                                                    onchange="toggleOperacion('Venta', false)">
+                                                <label class="btn btn-outline-danger btn-sm px-3 fw-bold"
+                                                    for="ventaNo">No</label>
                                             </div>
-                                            <div class="col-5">
-                                                <div class="form-check mt-4">
-                                                    <input class="form-check-input" type="checkbox" id="vValorM2"
-                                                        disabled>
-                                                    <label class="form-check-label small text-muted"
-                                                        for="vValorM2">Valor por m²</label>
+                                        </div>
+
+                                        <div id="fieldsVenta" style="opacity: 0.5; pointer-events: none;">
+                                            <div class="row g-2 align-items-center mb-2">
+                                                <div class="col-7">
+                                                    <label class="form-label small fw-bold text-muted">Precio <i
+                                                            class="bi bi-info-circle-fill text-primary"></i></label>
+                                                    <input type="number" class="form-control" id="precioVenta" disabled>
+                                                </div>
+                                                <div class="col-5">
+                                                    <div class="form-check mt-4">
+                                                        <input class="form-check-input" type="checkbox" id="vValorM2"
+                                                            disabled>
+                                                        <label class="form-check-label small text-muted"
+                                                            for="vValorM2">Valor por m²</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="monedaVenta"
-                                                    id="vPeso" value="$" disabled>
-                                                <label class="form-check-label small text-muted" for="vPeso">$</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="monedaVenta" id="vUF"
-                                                    value="UF" checked disabled>
-                                                <label class="form-check-label small text-muted" for="vUF">UF</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="monedaVenta"
-                                                    id="vUSD" value="USD" disabled>
-                                                <label class="form-check-label small text-muted" for="vUSD">USD
-                                                    $</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-7">
-                                            <label class="form-label small fw-bold text-muted">Precio tasación <i
-                                                    class="bi bi-info-circle-fill text-primary"></i></label>
-                                            <input type="number" class="form-control" id="tasacionVenta" disabled>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="p-4 bg-light rounded border h-100">
-                                    <h6 class="text-uppercase text-muted fw-bold mb-3">Arriendo</h6>
-
-                                    <div class="d-flex align-items-center mb-3 gap-3">
-                                        <div class="btn-group" role="group">
-                                            <input type="radio" class="btn-check" name="opArriendo" id="arriendoSi"
-                                                autocomplete="off" onchange="toggleOperacion('Arriendo', true)">
-                                            <label class="btn btn-outline-success btn-sm px-3 fw-bold"
-                                                for="arriendoSi">Sí</label>
-
-                                            <input type="radio" class="btn-check" name="opArriendo" id="arriendoNo"
-                                                autocomplete="off" checked
-                                                onchange="toggleOperacion('Arriendo', false)">
-                                            <label class="btn btn-outline-danger btn-sm px-3 fw-bold"
-                                                for="arriendoNo">No</label>
-                                        </div>
-                                        <div class="form-check pt-1">
-                                            <input class="form-check-input" type="checkbox" id="esTemporada">
-                                            <label class="form-check-label small text-muted" for="esTemporada">Es por
-                                                temporada</label>
-                                        </div>
-                                    </div>
-
-                                    <div id="fieldsArriendo" style="opacity: 0.5; pointer-events: none;">
-                                        <div class="row g-2 align-items-center mb-2">
-                                            <div class="col-7">
-                                                <label class="form-label small fw-bold text-muted">Precio <i
-                                                        class="bi bi-info-circle-fill text-primary"></i></label>
-                                                <input type="number" class="form-control" id="precioArriendo" disabled>
-                                            </div>
-                                            <div class="col-5">
-                                                <div class="form-check mt-4">
-                                                    <input class="form-check-input" type="checkbox" id="aValorM2"
-                                                        disabled>
+                                            <div class="mb-3">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="monedaVenta"
+                                                        id="vPeso" value="$" disabled>
                                                     <label class="form-check-label small text-muted"
-                                                        for="aValorM2">Valor por m²</label>
+                                                        for="vPeso">$</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="monedaVenta"
+                                                        id="vUF" value="UF" checked disabled>
+                                                    <label class="form-check-label small text-muted"
+                                                        for="vUF">UF</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="monedaVenta"
+                                                        id="vUSD" value="USD" disabled>
+                                                    <label class="form-check-label small text-muted" for="vUSD">USD
+                                                        $</label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="monedaArriendo"
-                                                    id="aPeso" value="$" checked disabled>
-                                                <label class="form-check-label small text-muted" for="aPeso">$</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="monedaArriendo"
-                                                    id="aUF" value="UF" disabled>
-                                                <label class="form-check-label small text-muted" for="aUF">UF</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="monedaArriendo"
-                                                    id="aUSD" value="USD" disabled>
-                                                <label class="form-check-label small text-muted" for="aUSD">USD
-                                                    $</label>
+                                            <div class="col-7">
+                                                <label class="form-label small fw-bold text-muted">Precio tasación <i
+                                                        class="bi bi-info-circle-fill text-primary"></i></label>
+                                                <input type="number" class="form-control" id="tasacionVenta" disabled>
                                             </div>
                                         </div>
-                                        <div class="col-7">
-                                            <label class="form-label small fw-bold text-muted">Precio tasación <i
-                                                    class="bi bi-info-circle-fill text-primary"></i></label>
-                                            <input type="number" class="form-control" id="tasacionArriendo" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="p-4 bg-light rounded border h-100">
+                                        <h6 class="text-uppercase text-muted fw-bold mb-3">Arriendo</h6>
+
+                                        <div class="d-flex align-items-center mb-3 gap-3">
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" name="opArriendo" id="arriendoSi"
+                                                    autocomplete="off" onchange="toggleOperacion('Arriendo', true)">
+                                                <label class="btn btn-outline-success btn-sm px-3 fw-bold"
+                                                    for="arriendoSi">Sí</label>
+
+                                                <input type="radio" class="btn-check" name="opArriendo" id="arriendoNo"
+                                                    autocomplete="off" checked
+                                                    onchange="toggleOperacion('Arriendo', false)">
+                                                <label class="btn btn-outline-danger btn-sm px-3 fw-bold"
+                                                    for="arriendoNo">No</label>
+                                            </div>
+                                            <div class="form-check pt-1">
+                                                <input class="form-check-input" type="checkbox" id="esTemporada">
+                                                <label class="form-check-label small text-muted" for="esTemporada">Es
+                                                    por
+                                                    temporada</label>
+                                            </div>
+                                        </div>
+
+                                        <div id="fieldsArriendo" style="opacity: 0.5; pointer-events: none;">
+                                            <div class="row g-2 align-items-center mb-2">
+                                                <div class="col-7">
+                                                    <label class="form-label small fw-bold text-muted">Precio <i
+                                                            class="bi bi-info-circle-fill text-primary"></i></label>
+                                                    <input type="number" class="form-control" id="precioArriendo"
+                                                        disabled>
+                                                </div>
+                                                <div class="col-5">
+                                                    <div class="form-check mt-4">
+                                                        <input class="form-check-input" type="checkbox" id="aValorM2"
+                                                            disabled>
+                                                        <label class="form-check-label small text-muted"
+                                                            for="aValorM2">Valor por m²</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="monedaArriendo"
+                                                        id="aPeso" value="$" checked disabled>
+                                                    <label class="form-check-label small text-muted"
+                                                        for="aPeso">$</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="monedaArriendo"
+                                                        id="aUF" value="UF" disabled>
+                                                    <label class="form-check-label small text-muted"
+                                                        for="aUF">UF</label>
+                                                </div>
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="monedaArriendo"
+                                                        id="aUSD" value="USD" disabled>
+                                                    <label class="form-check-label small text-muted" for="aUSD">USD
+                                                        $</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-7">
+                                                <label class="form-label small fw-bold text-muted">Precio tasación <i
+                                                        class="bi bi-info-circle-fill text-primary"></i></label>
+                                                <input type="number" class="form-control" id="tasacionArriendo"
+                                                    disabled>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mt-4 align-items-end">
+                            <div class="row mt-4 align-items-end">
 
-                            <div class="col-md-2">
-                                <label class="form-label fw-bold small">Canje <span class="text-danger">*</span></label>
-                                <div class="btn-group w-100" role="group">
-                                    <input type="radio" class="btn-check" name="canje" id="canjeSi" value="Si">
-                                    <label class="btn btn-outline-secondary btn-sm" for="canjeSi">Sí</label>
+                                <div class="col-md-2">
+                                    <label class="form-label fw-bold small">Canje <span
+                                            class="text-danger">*</span></label>
+                                    <div class="btn-group w-100" role="group">
+                                        <input type="radio" class="btn-check" name="canje" id="canjeSi" value="Si">
+                                        <label class="btn btn-outline-secondary btn-sm" for="canjeSi">Sí</label>
 
-                                    <input type="radio" class="btn-check" name="canje" id="canjeNo" value="No" checked>
-                                    <label class="btn btn-outline-secondary btn-sm" for="canjeNo">No</label>
+                                        <input type="radio" class="btn-check" name="canje" id="canjeNo" value="No"
+                                            checked>
+                                        <label class="btn btn-outline-secondary btn-sm" for="canjeNo">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label fw-bold small">
+                                        Gastos Comunes
+                                        <i class="fas fa-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Valor mensual aproximado"></i>
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text bg-light">$</span>
+                                        <input type="number" class="form-control" id="gastosComunes" placeholder="0">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label class="form-label fw-bold small">
+                                        Contribuciones
+                                        <i class="fas fa-info-circle text-primary ms-1" data-bs-toggle="tooltip"
+                                            title="Valor cuota trimestral"></i>
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text bg-light">$</span>
+                                        <input type="number" class="form-control" id="contribuciones" placeholder="0">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-5">
-                                <label class="form-label fw-bold small">
-                                    Gastos Comunes
-                                    <i class="fas fa-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                        title="Valor mensual aproximado"></i>
-                                </label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light">$</span>
-                                    <input type="number" class="form-control" id="gastosComunes" placeholder="0">
+                            <div class="row mt-3">
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold small">Deuda</label>
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text bg-light">$</span>
+                                        <input type="number" class="form-control" id="deuda" placeholder="0">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold small">Hipoteca</label>
+                                    <input type="text" class="form-control form-control-sm" id="hipoteca"
+                                        placeholder="Nº o Detalle">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold small">Banco</label>
+                                    <select class="form-select form-select-sm" id="banco">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Banco BBVA">Banco BBVA</option>
+                                        <option value="Banco BICE">Banco BICE</option>
+                                        <option value="Banco Consorcio">Banco Consorcio</option>
+                                        <option value="Banco de Chile">Banco de Chile</option>
+                                        <option value="Banco de la Nación Argentina">Banco de la Nación Argentina
+                                        </option>
+                                        <option value="Banco do Brasil">Banco do Brasil</option>
+                                        <option value="Banco Edwards">Banco Edwards</option>
+                                        <option value="Banco Estado">Banco Estado</option>
+                                        <option value="Banco Falabella">Banco Falabella</option>
+                                        <option value="Banco Itau">Banco Itau</option>
+                                        <option value="Banco París">Banco París</option>
+                                        <option value="Banco Penta">Banco Penta</option>
+                                        <option value="Banco Ripley">Banco Ripley</option>
+                                        <option value="Banco Santander">Banco Santander</option>
+                                        <option value="Banco Security">Banco Security</option>
+                                        <option value="Bank Of Tokyo">Bank Of Tokyo</option>
+                                        <option value="BCI">BCI</option>
+                                        <option value="CorpBanca">CorpBanca</option>
+                                        <option value="Deutsche Bank">Deutsche Bank</option>
+                                        <option value="HSBC">HSBC</option>
+                                        <option value="JP Morgan Chase Bank">JP Morgan Chase Bank</option>
+                                        <option value="RaboBank">RaboBank</option>
+                                        <option value="ScotiaBank">ScotiaBank</option>
+                                    </select>
                                 </div>
                             </div>
+                            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                                <a href="admin-dashboard.html" class="btn btn-outline-secondary px-4">
+                                    <i class="bi bi-x-circle"></i> Cancelar / Volver
+                                </a>
 
-                            <div class="col-md-5">
-                                <label class="form-label fw-bold small">
-                                    Contribuciones
-                                    <i class="fas fa-info-circle text-primary ms-1" data-bs-toggle="tooltip"
-                                        title="Valor cuota trimestral"></i>
-                                </label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light">$</span>
-                                    <input type="number" class="form-control" id="contribuciones" placeholder="0">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold small">Deuda</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-light">$</span>
-                                    <input type="number" class="form-control" id="deuda" placeholder="0">
-                                </div>
+                                <button type="button" class="btn btn-primary px-5 shadow" onclick="guardarYContinuar()">
+                                    Siguiente <i class="bi bi-arrow-right"></i>
+                                </button>
                             </div>
 
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold small">Hipoteca</label>
-                                <input type="text" class="form-control form-control-sm" id="hipoteca"
-                                    placeholder="Nº o Detalle">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label fw-bold small">Banco</label>
-                                <select class="form-select form-select-sm" id="banco">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Banco BBVA">Banco BBVA</option>
-                                    <option value="Banco BICE">Banco BICE</option>
-                                    <option value="Banco Consorcio">Banco Consorcio</option>
-                                    <option value="Banco de Chile">Banco de Chile</option>
-                                    <option value="Banco de la Nación Argentina">Banco de la Nación Argentina</option>
-                                    <option value="Banco do Brasil">Banco do Brasil</option>
-                                    <option value="Banco Edwards">Banco Edwards</option>
-                                    <option value="Banco Estado">Banco Estado</option>
-                                    <option value="Banco Falabella">Banco Falabella</option>
-                                    <option value="Banco Itau">Banco Itau</option>
-                                    <option value="Banco París">Banco París</option>
-                                    <option value="Banco Penta">Banco Penta</option>
-                                    <option value="Banco Ripley">Banco Ripley</option>
-                                    <option value="Banco Santander">Banco Santander</option>
-                                    <option value="Banco Security">Banco Security</option>
-                                    <option value="Bank Of Tokyo">Bank Of Tokyo</option>
-                                    <option value="BCI">BCI</option>
-                                    <option value="CorpBanca">CorpBanca</option>
-                                    <option value="Deutsche Bank">Deutsche Bank</option>
-                                    <option value="HSBC">HSBC</option>
-                                    <option value="JP Morgan Chase Bank">JP Morgan Chase Bank</option>
-                                    <option value="RaboBank">RaboBank</option>
-                                    <option value="ScotiaBank">ScotiaBank</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between mt-5 pt-3 border-top">
-                            <a href="admin-dashboard.html" class="btn btn-outline-secondary px-4">
-                                <i class="bi bi-x-circle"></i> Cancelar / Volver
-                            </a>
-
-                            <button type="button" class="btn btn-primary px-5 shadow" onclick="guardarYContinuar()">
-                                Siguiente <i class="bi bi-arrow-right"></i>
-                            </button>
-                        </div>
-
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -591,6 +611,8 @@
         }
     </script>
 
+    <script src="admin-auth.js"></script>
+    <script src="js/admin-sidebar.js"></script>
 </body>
 
 </html>

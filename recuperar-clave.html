@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .recovery-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .recovery-header {
+            margin-bottom: 2rem;
+        }
+
+        .recovery-header img {
+            width: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .recovery-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #bfa378;
+            outline: none;
+        }
+
+        .btn-recovery {
+            background-color: #bfa378;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-recovery:hover {
+            background-color: #a88d63;
+        }
+
+        .btn-recovery:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 1.5rem;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="recovery-card">
+        <div class="recovery-header">
+            <img src="Logo_MG.jpeg" alt="Logo">
+            <h2>Recuperación de Clave</h2>
+            <p class="text-muted">Ingresa tu clave temporal y crea una nueva</p>
+        </div>
+
+        <form id="recovery-form">
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="email" class="form-control" readonly
+                    style="background-color: #f0f0f0; cursor: not-allowed;">
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña Temporal (recibida por email)</label>
+                <input type="text" id="temp-password" class="form-control" required placeholder="Ej: MG-1234">
+            </div>
+
+            <div class="form-group">
+                <label>Nueva Contraseña</label>
+                <input type="password" id="new-password" class="form-control" required
+                    placeholder="Mínimo 6 caracteres">
+            </div>
+
+            <div class="form-group">
+                <label>Confirmar Nueva Contraseña</label>
+                <input type="password" id="confirm-password" class="form-control" required
+                    placeholder="Repite la nueva contraseña">
+            </div>
+
+            <button type="submit" class="btn-recovery">Cambiar Contraseña</button>
+        </form>
+
+        <a href="index.html" class="back-link">Volver al inicio</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Obtener email de la URL
+            const params = new URLSearchParams(window.location.search);
+            const emailParam = params.get('email');
+
+            if (emailParam) {
+                document.getElementById('email').value = emailParam;
+            } else {
+                alert("No se ha especificado un correo electrónico.");
+                window.location.href = 'index.html';
+            }
+
+            // 2. Manejar envío del formulario
+            const form = document.getElementById('recovery-form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const tempPass = document.getElementById('temp-password').value;
+                const newPass = document.getElementById('new-password').value;
+                const confirmPass = document.getElementById('confirm-password').value;
+
+                if (newPass !== confirmPass) {
+                    alert("Las nuevas contraseñas no coinciden.");
+                    return;
+                }
+
+                if (newPass.length < 6) {
+                    alert("La nueva contraseña debe tener al menos 6 caracteres.");
+                    return;
+                }
+
+                const btn = form.querySelector('button');
+                const originalText = btn.textContent;
+                btn.textContent = "Procesando...";
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch('/api/confirm-recovery', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email,
+                            tempPassword: tempPass,
+                            newPassword: newPass
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        alert("✅ ¡Contraseña cambiada con éxito!\nAhora puedes iniciar sesión con tu nueva clave.");
+                        window.location.href = 'index.html?action=login';
+                    } else {
+                        alert("❌ Error: " + data.message);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    alert("Error de conexión con el servidor.");
+                } finally {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

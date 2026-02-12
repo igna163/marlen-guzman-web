@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
 
     <style>
         body {
@@ -18,44 +19,7 @@
             color: #555;
         }
 
-        /* --- SIDEBAR --- */
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            background: #343a40;
-            color: white;
-            padding-top: 0;
-            z-index: 1000;
-        }
-
-        .sidebar a {
-            padding: 12px 20px;
-            text-decoration: none;
-            color: #adb5bd;
-            display: block;
-            border-left: 4px solid transparent;
-            transition: 0.2s;
-        }
-
-        .sidebar a:hover {
-            background: #495057;
-            color: white;
-        }
-
-        .sidebar a.active {
-            background: #495057;
-            color: white;
-            border-left: 4px solid #0d6efd;
-            font-weight: 600;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
-        }
+        /* --- PESTAÑAS SUPERIORES --- */
 
         /* --- PESTAÑAS SUPERIORES --- */
         .nav-tabs-custom {
@@ -133,6 +97,10 @@
 <body>
 
     <div class="sidebar">
+        <div class="sidebar-brand">
+            <img src="Logo_MG.jpeg" alt="Logo MG">
+            <div>ADMIN</div>
+        </div>
         <div class="text-center p-3 border-bottom border-secondary pt-4">
             <div class="mb-2 position-relative d-inline-block">
                 <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
@@ -150,7 +118,8 @@
             <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
             <a href="#" id="link_editar" class="d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i>
                 Editar</a>
-            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i>
+                Imágenes
                 y videos</a>
 
             <a href="#" class="active d-flex align-items-center"><i class="bi bi-folder me-2"></i> Documentos</a>
@@ -160,7 +129,8 @@
             <a href="#" class="d-flex align-items-center"><i class="bi bi-person me-2"></i> Propietario</a>
 
             <hr class="border-secondary mx-3">
-            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
+            <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver
+                al
                 listado</a>
         </div>
     </div>
@@ -240,7 +210,7 @@
         const propId = urlParams.get('id');
 
         // ⚠️ DEJAR VACÍO para compatibilidad con Cloudflare
-        const API_URL = 'https://talented-outlet-mold-classified.trycloudflare.com';
+        const API_URL = 'https://janet-finished-related-mae.trycloudflare.com';
 
         document.addEventListener('DOMContentLoaded', () => {
             if (propId) {
@@ -399,6 +369,8 @@
             } catch (error) { console.error(error); }
         }
     </script>
+    <script src="admin-auth.js"></script>
 </body>
 
 </html>
+```

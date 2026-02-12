@@ -10,89 +10,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <link rel="stylesheet" href="css/admin-sidebar.css">
     <style>
-        /* --- PALETA DE COLORES MARLEN GUZMÁN --- */
-        :root {
-            --color-primary: #bfa378;
-            /* Dorado del Logo */
-            --color-secondary: #3e3632;
-            /* Café oscuro corporativo */
-            --color-bg: #f9f7f2;
-            /* Crema suave fondo */
-            --color-text: #594a42;
-            /* Texto café grisáceo */
-        }
-
-        body {
-            background-color: var(--color-bg);
-            font-family: 'Playfair Display', 'Segoe UI', serif;
-            /* Tipografía más elegante */
-            color: var(--color-text);
-        }
-
-        /* Sidebar (Barra Lateral) - Ahora Café Oscuro */
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            background: var(--color-secondary);
-            color: white;
-            padding-top: 20px;
-            z-index: 1000;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar-brand {
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            font-size: 1.2rem;
-            color: var(--color-primary);
-            /* Texto dorado */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 15px;
-        }
-
-        .sidebar a {
-            padding: 12px 20px;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.7);
-            display: block;
-            border-left: 4px solid transparent;
-            transition: 0.3s;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-        }
-
-        .sidebar a:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            padding-left: 25px;
-            /* Efecto movimiento */
-        }
-
-        .sidebar a.active {
-            background: rgba(191, 163, 120, 0.15);
-            /* Fondo dorado transparente */
-            color: var(--color-primary);
-            border-left-color: var(--color-primary);
-        }
-
-        .sidebar i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Contenido Principal */
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
-        }
-
         /* Tarjetas de Estadísticas */
         .stat-card {
             border: none;
@@ -176,22 +95,7 @@
             color: white;
         }
 
-        /* Sidebar (Barra Lateral) - Ahora con Scroll */
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            background: var(--color-secondary);
-            color: white;
-            padding-top: 20px;
-            z-index: 1000;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
 
-            /* --- ESTA ES LA LÍNEA MÁGICA QUE FALTA --- */
-            overflow-y: auto;
-        }
 
         /* Limitar la altura del contenedor del gráfico */
         .chart-container {
@@ -205,48 +109,7 @@
 
 <body>
 
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <i class="bi bi-building"></i> NEXXOS ADMIN
-        </div>
-
-        <div class="text-center mb-3 d-flex align-items-center justify-content-center px-3">
-            <i class="bi bi-person-circle fs-4 me-2"></i>
-            <span class="small fw-bold text-white" id="sidebar-user">Cargando...</span>
-        </div>
-
-        <a href="#" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
-
-        <div class="small text-uppercase fw-bold text-white-50 px-3 mt-3 mb-1" style="font-size: 0.7rem;">
-            Inmobiliaria
-        </div>
-        <a href="admin-propiedades.html"><i class="bi bi-house-door"></i> Mis Propiedades</a>
-        <a href="admin-publicar-3.html"><i class="bi bi-plus-circle"></i> Publicar Propiedad</a>
-        <a href="admin-interesados.html"><i class="bi bi-people"></i> Interesados (CRM)</a>
-        <a href="admin-agenda.html">
-            <i class="bi bi-calendar-check"></i> Agenda Visitas
-            <span class="badge bg-danger ms-2 rounded-pill" style="font-size: 0.6rem;">2</span>
-        </a>
-
-        <div class="small text-uppercase fw-bold text-white-50 px-3 mt-3 mb-1" style="font-size: 0.7rem;">
-            Energía Solar
-        </div>
-        <a href="admin-solar.html"><i class="bi bi-sun"></i> Cotizaciones Solares</a>
-
-        <div class="small text-uppercase fw-bold text-white-50 px-3 mt-3 mb-1" style="font-size: 0.7rem;">
-            Herramientas
-        </div>
-        <a href="admin-marketing-ai.html"><i class="bi bi-robot"></i> Marketing IA</a>
-        <a href="admin-reportes.html"><i class="bi bi-bar-chart-line"></i> Reportes y Metas</a>
-
-        <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
-
-        <a href="admin-status.html"><i class="bi bi-activity"></i> Estado Sistema</a>
-        <a href="admin-config.html"><i class="bi bi-gear"></i> Configuración</a>
-        <a href="index.html" class="text-danger" onclick="logout()">
-            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-        </a>
-    </div>
+    <div class="sidebar"></div>
 
     <div class="main-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -407,20 +270,10 @@
         </div>
     </div>
 
+    <script src="admin-auth.js"></script>
+    <script src="js/admin-sidebar.js"></script>
     <script>
-        function logout() {
-            localStorage.removeItem('usuario_logueado');
-            window.location.href = 'index.html';
-        }
-
         document.addEventListener('DOMContentLoaded', async () => {
-            // 1. Datos de Usuario
-            const user = JSON.parse(localStorage.getItem('usuario_logueado'));
-            if (user && user.nombre_completo) {
-                document.getElementById('welcome-msg').innerText = `Hola, ${user.nombre_completo} 👋`;
-                document.getElementById('sidebar-user').innerText = user.nombre_completo;
-            }
-
             // 2. Fecha Actual
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('fecha-hoy').innerText = new Date().toLocaleDateString('es-ES', options);

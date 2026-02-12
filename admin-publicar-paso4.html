@@ -8,6 +8,7 @@
     <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
     <style>
         body {
             background-color: #f4f6f9;
@@ -114,307 +115,335 @@
 
 <body>
 
-    <div class="container mt-4 mb-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-11">
-
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div>
-                        <small class="text-muted">Panel de Control • Agregar propiedad</small>
-                        <h5 class="text-primary fw-bold mt-1"><i class="bi bi-pencil-square"></i> AGREGAR PROPIEDAD -
-                            PASO 4 DE 6</h5>
-                    </div>
-                    <div class="text-success fw-bold small" id="borradorInfo"><i class="bi bi-check-circle-fill"></i>
-                        BORRADOR GUARDADO...</div>
-                </div>
-
-                <div class="step-indicator">
-                    <div class="step-item completed" onclick="location.href='admin-publicar-1.html'">
-                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
-                            class="step-label">Tipo</span>
-                    </div>
-                    <div class="step-item completed" onclick="location.href='admin-publicar-2.html'">
-                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
-                            class="step-label">Ubicación</span>
-                    </div>
-                    <div class="step-item completed" onclick="location.href='admin-publicar-paso3.html'">
-                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
-                            class="step-label">Características</span>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-circle">4</div><span class="step-label">Observaciones</span>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-circle">5</div><span class="step-label">Propietario</span>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-circle">6</div><span class="step-label">Confirmar</span>
-                    </div>
-                </div>
-
-                <div class="progress" style="height: 6px; margin-bottom: 25px;">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                        style="width: 66%;"></div>
-                </div>
-
-                <div class="card p-4">
-                    <form id="formPaso4">
-
-                        <h5 class="mb-4 text-dark border-bottom pb-2">Observaciones</h5>
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <label class="form-label text-muted small">Descripción de la propiedad <span
-                                        class="fw-light">Se muestra en la web y se envía a los portales</span></label>
-                                <textarea class="form-control" id="descPropiedad" rows="12"
-                                    placeholder="Presiona 'Generar Descripción' para redactar automáticamente basándose en los datos REALES de los pasos anteriores..."></textarea>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label small fw-bold text-dark">Prop360 Copilot</label>
-                                <div class="copilot-box">
-                                    <label class="form-label small fw-bold">Redactar con datos ingresados (Pasos
-                                        1-3)</label>
-
-                                    <select class="form-select form-select-sm mb-2" id="tonoIA">
-                                        <option value="neutro">Tono Neutro (Informativo)</option>
-                                        <option value="persuasivo">Tono Persuasivo (Venta)</option>
-                                        <option value="formal">Tono Formal (Corporativo)</option>
-                                    </select>
-
-                                    <button type="button" class="btn btn-primary btn-sm w-100 mb-2" id="btnGenerar"
-                                        onclick="generarTextoReal()">
-                                        <i class="bi bi-magic"></i> Generar Descripción
-                                    </button>
-
-                                    <div class="text-end">
-                                        <small class="text-muted" style="font-size: 0.75rem;">
-                                            Basado en tus datos <i class="bi bi-database-check text-success"></i>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small required">Forma de visitar <span
-                                        class="fw-light">Solo interno.</span></label>
-                                <textarea class="form-control" id="formaVisita" rows="3"
-                                    placeholder="Ej: Coordinar con 24hrs de anticipación. Llaves en conserjería..."></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small">Observaciones internas</label>
-                                <textarea class="form-control" id="obsInternas" rows="3"
-                                    placeholder="Notas privadas sobre la propiedad o el dueño..."></textarea>
-                            </div>
-                        </div>
-
-                        <div class="mt-5 pt-3 border-top">
-                            <h5 class="text-dark d-inline-block">Título <span class="badge bg-secondary align-top"
-                                    style="font-size: 0.6rem; margin-top: 5px;">Nuevo</span></h5>
-                            <small class="text-muted ms-2">Se aplica solo en Mercado Libre / Portal Inmobiliario</small>
-
-                            <div class="alert alert-recommendation mt-2 p-3">
-                                <strong class="d-block mb-1 text-dark">Recomendaciones:</strong>
-                                <ul class="mb-0 ps-3" style="font-size: 0.85rem;">
-                                    <li>Evite usar adjetivos y abreviaciones (Penalización de portales).</li>
-                                    <li>Formato ideal: <strong>Operación + Tipo + Comuna + (Sector opcional)</strong>.
-                                    </li>
-                                    <li>Ejemplo: <i>Venta Casa Los Andes Condominio El Valle</i></li>
-                                </ul>
-                            </div>
-
-                            <input type="text" class="form-control mt-2" id="tituloPublicacion"
-                                placeholder="Ej: Venta Casa en Los Andes">
-                            <div class="d-flex justify-content-end mt-1">
-                                <button type="button" class="btn btn-sm btn-outline-primary"
-                                    onclick="generarTituloAuto()">
-                                    <i class="bi bi-lightning-charge"></i> Generar Título Automático
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between mt-5 pt-3">
-                            <button type="button" class="btn btn-secondary px-4"
-                                onclick="location.href='admin-publicar-paso3.html'">
-                                <i class="bi bi-arrow-left"></i> Anterior
-                            </button>
-                            <button type="button" class="btn btn-primary px-5 shadow" onclick="guardarYContinuar()">
-                                Siguiente <i class="bi bi-arrow-right"></i>
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <img src="Logo_MG.jpeg" alt="Logo MG">
+            <div>ADMIN</div>
+        </div>
+        <a href="admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a href="admin-propiedades.html"><i class="bi bi-house-door me-2"></i> Propiedades</a>
+        <a href="admin-publicar-3.html" class="active"><i class="bi bi-plus-circle me-2"></i> Publicar</a>
+        <a href="admin-interesados.html"><i class="bi bi-people me-2"></i> Interesados / Leads</a>
+        <a href="admin-agenda-2.html"><i class="bi bi-calendar-check me-2"></i> Agenda</a>
+        <a href="admin-reportes.html"><i class="bi bi-bar-chart me-2"></i> Reportes</a>
+        <a href="admin-marketing-ai.html"><i class="bi bi-stars me-2"></i> Marketing IA</a>
+        <div class="mt-auto p-3">
+            <a href="index.html" class="d-flex align-items-center text-white-50 text-decoration-none">
+                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+            </a>
         </div>
     </div>
 
-    <script>
-        // 1. Reloj
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('borradorInfo').innerHTML = `<i class="bi bi-check-circle-fill"></i> BORRADOR GUARDADO A LAS ${now.toLocaleTimeString('es-CL')}`;
-        }, 30000);
+    <div class="main-content">
 
-        // 2. RECUPERAR DATOS AL CARGAR
-        document.addEventListener('DOMContentLoaded', () => {
-            const datos = JSON.parse(localStorage.getItem('propiedad_paso4'));
-            if (datos) {
-                if (datos.descripcion) document.getElementById('descPropiedad').value = datos.descripcion;
-                if (datos.formaVisita) document.getElementById('formaVisita').value = datos.formaVisita;
-                if (datos.obsInternas) document.getElementById('obsInternas').value = datos.obsInternas;
-                if (datos.titulo) document.getElementById('tituloPublicacion').value = datos.titulo;
+        <div class="container mt-4 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-11">
+
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <small class="text-muted">Panel de Control • Agregar propiedad</small>
+                            <h5 class="text-primary fw-bold mt-1"><i class="bi bi-pencil-square"></i> AGREGAR PROPIEDAD
+                                -
+                                PASO 4 DE 6</h5>
+                        </div>
+                        <div class="text-success fw-bold small" id="borradorInfo"><i
+                                class="bi bi-check-circle-fill"></i>
+                            BORRADOR GUARDADO...</div>
+                    </div>
+
+                    <div class="step-indicator">
+                        <div class="step-item completed" onclick="location.href='admin-publicar-1.html'">
+                            <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                                class="step-label">Tipo</span>
+                        </div>
+                        <div class="step-item completed" onclick="location.href='admin-publicar-2.html'">
+                            <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                                class="step-label">Ubicación</span>
+                        </div>
+                        <div class="step-item completed" onclick="location.href='admin-publicar-paso3.html'">
+                            <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                                class="step-label">Características</span>
+                        </div>
+                        <div class="step-item active">
+                            <div class="step-circle">4</div><span class="step-label">Observaciones</span>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle">5</div><span class="step-label">Propietario</span>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle">6</div><span class="step-label">Confirmar</span>
+                        </div>
+                    </div>
+
+                    <div class="progress" style="height: 6px; margin-bottom: 25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            style="width: 66%;"></div>
+                    </div>
+
+                    <div class="card p-4">
+                        <form id="formPaso4">
+
+                            <h5 class="mb-4 text-dark border-bottom pb-2">Observaciones</h5>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label class="form-label text-muted small">Descripción de la propiedad <span
+                                            class="fw-light">Se muestra en la web y se envía a los
+                                            portales</span></label>
+                                    <textarea class="form-control" id="descPropiedad" rows="12"
+                                        placeholder="Presiona 'Generar Descripción' para redactar automáticamente basándose en los datos REALES de los pasos anteriores..."></textarea>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold text-dark">Prop360 Copilot</label>
+                                    <div class="copilot-box">
+                                        <label class="form-label small fw-bold">Redactar con datos ingresados (Pasos
+                                            1-3)</label>
+
+                                        <select class="form-select form-select-sm mb-2" id="tonoIA">
+                                            <option value="neutro">Tono Neutro (Informativo)</option>
+                                            <option value="persuasivo">Tono Persuasivo (Venta)</option>
+                                            <option value="formal">Tono Formal (Corporativo)</option>
+                                        </select>
+
+                                        <button type="button" class="btn btn-primary btn-sm w-100 mb-2" id="btnGenerar"
+                                            onclick="generarTextoReal()">
+                                            <i class="bi bi-magic"></i> Generar Descripción
+                                        </button>
+
+                                        <div class="text-end">
+                                            <small class="text-muted" style="font-size: 0.75rem;">
+                                                Basado en tus datos <i class="bi bi-database-check text-success"></i>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small required">Forma de visitar <span
+                                            class="fw-light">Solo interno.</span></label>
+                                    <textarea class="form-control" id="formaVisita" rows="3"
+                                        placeholder="Ej: Coordinar con 24hrs de anticipación. Llaves en conserjería..."></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small">Observaciones internas</label>
+                                    <textarea class="form-control" id="obsInternas" rows="3"
+                                        placeholder="Notas privadas sobre la propiedad o el dueño..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 pt-3 border-top">
+                                <h5 class="text-dark d-inline-block">Título <span class="badge bg-secondary align-top"
+                                        style="font-size: 0.6rem; margin-top: 5px;">Nuevo</span></h5>
+                                <small class="text-muted ms-2">Se aplica solo en Mercado Libre / Portal
+                                    Inmobiliario</small>
+
+                                <div class="alert alert-recommendation mt-2 p-3">
+                                    <strong class="d-block mb-1 text-dark">Recomendaciones:</strong>
+                                    <ul class="mb-0 ps-3" style="font-size: 0.85rem;">
+                                        <li>Evite usar adjetivos y abreviaciones (Penalización de portales).</li>
+                                        <li>Formato ideal: <strong>Operación + Tipo + Comuna + (Sector
+                                                opcional)</strong>.
+                                        </li>
+                                        <li>Ejemplo: <i>Venta Casa Los Andes Condominio El Valle</i></li>
+                                    </ul>
+                                </div>
+
+                                <input type="text" class="form-control mt-2" id="tituloPublicacion"
+                                    placeholder="Ej: Venta Casa en Los Andes">
+                                <div class="d-flex justify-content-end mt-1">
+                                    <button type="button" class="btn btn-sm btn-outline-primary"
+                                        onclick="generarTituloAuto()">
+                                        <i class="bi bi-lightning-charge"></i> Generar Título Automático
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-5 pt-3">
+                                <button type="button" class="btn btn-secondary px-4"
+                                    onclick="location.href='admin-publicar-paso3.html'">
+                                    <i class="bi bi-arrow-left"></i> Anterior
+                                </button>
+                                <button type="button" class="btn btn-primary px-5 shadow" onclick="guardarYContinuar()">
+                                    Siguiente <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // 1. Reloj
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('borradorInfo').innerHTML = `<i class="bi bi-check-circle-fill"></i> BORRADOR GUARDADO A LAS ${now.toLocaleTimeString('es-CL')}`;
+            }, 30000);
+
+            // 2. RECUPERAR DATOS AL CARGAR
+            document.addEventListener('DOMContentLoaded', () => {
+                const datos = JSON.parse(localStorage.getItem('propiedad_paso4'));
+                if (datos) {
+                    if (datos.descripcion) document.getElementById('descPropiedad').value = datos.descripcion;
+                    if (datos.formaVisita) document.getElementById('formaVisita').value = datos.formaVisita;
+                    if (datos.obsInternas) document.getElementById('obsInternas').value = datos.obsInternas;
+                    if (datos.titulo) document.getElementById('tituloPublicacion').value = datos.titulo;
+                }
+            });
+
+            // 3. --- MOTOR DE REDACCIÓN QUE NO INVENTA DATOS ---
+            function generarTextoReal() {
+                const btn = document.getElementById('btnGenerar');
+                const textArea = document.getElementById('descPropiedad');
+                const tono = document.getElementById('tonoIA').value;
+
+                // RECUPERAR DATOS DE PASOS 1, 2 y 3 (LocalStorage)
+                const p1 = JSON.parse(localStorage.getItem('nuevaPropiedad_Paso1')) || {};
+                const p2 = JSON.parse(localStorage.getItem('propiedad_paso2')) || {};
+                const p3 = JSON.parse(localStorage.getItem('propiedad_paso3')) || {};
+
+                // Validación de seguridad
+                if (!p1.tipo || !p2.comuna) {
+                    alert("Para generar la descripción, primero debes completar los Pasos 1, 2 y 3.");
+                    return;
+                }
+
+                // --- EXTRACCIÓN DE DATOS REALES ---
+                const tipo = p1.tipo; // Ej: Casa
+                const operacion = p1.operacion && p1.operacion.venta ? 'Venta' : 'Arriendo';
+                const comuna = p2.comuna; // Ej: Los Andes
+                const sector = p2.sector ? `en el sector de ${p2.sector}` : '';
+
+                // Datos del Paso 3 (Si están vacíos, poner 'no especificado')
+                const dorms = p3.num_dormitorios || '?';
+                const banos = p3.num_banos || '?';
+                const m2Const = p3.sup_construida ? `${p3.sup_construida} m² construidos` : '';
+                const m2Terr = p3.sup_terreno ? `${p3.sup_terreno} m² de terreno` : '';
+
+                // Construir frase de estacionamiento solo si hay datos
+                let estacionamientos = "";
+                if (p3.estac_cub > 0 || p3.estac_des > 0) {
+                    const totalEst = (parseInt(p3.estac_cub) || 0) + (parseInt(p3.estac_des) || 0);
+                    estacionamientos = `Cuenta con estacionamiento para ${totalEst} vehículo(s).`;
+                }
+
+                // --- DETECCIÓN DE AMENITIES (Solo lo que es "Sí") ---
+                let extras = [];
+                if (p3.piscina === 'Si') extras.push("piscina");
+                if (p3.quincho === 'Si' || p3.barbecue === 'Si') extras.push("quincho");
+                if (p3.bano_servicio === 'Si') extras.push("baño de servicio");
+                if (p3.pieza_servicio === 'Si') extras.push("pieza de servicio");
+                if (p3.loggia === 'Si') extras.push("loggia");
+                if (p3.terraza_amb === 'Si') extras.push("terraza");
+                if (p3.riego_auto === 'Si') extras.push("riego automático");
+                if (p3.porton_auto === 'Si') extras.push("portón automático");
+                if (p3.calefaccion && p3.calefaccion !== 'Seleccione...') extras.push(`calefacción por ${p3.calefaccion}`);
+
+                // Unir los extras con comas
+                const textoExtras = extras.length > 0 ? `Además, la propiedad cuenta con: ${extras.join(', ')}.` : '';
+
+                // --- REDACCIÓN SEGÚN TONO ---
+                let textoFinal = "";
+
+                if (tono === 'neutro') {
+                    // Tono informativo, seco.
+                    textoFinal = `Se ofrece ${tipo} en ${operacion}, ubicada en ${comuna} ${sector}.\n\n` +
+                        `La propiedad consta de ${dorms} dormitorios y ${banos} baños. ` +
+                        `Posee ${m2Const} y ${m2Terr}. ${estacionamientos}\n\n` +
+                        `${textoExtras}\n\n` +
+                        `Excelente conectividad y ubicación.`;
+
+                } else if (tono === 'persuasivo') {
+                    // Tono de venta, emocional.
+                    textoFinal = `¡Gran Oportunidad en ${comuna}! ${operacion} de ${tipo}.\n\n` +
+                        `Disfruta de vivir ${sector}, en una propiedad pensada para tu familia. ` +
+                        `Esta excelente unidad cuenta con ${dorms} amplios dormitorios y ${banos} baños, ideal para la comodidad que buscas. ` +
+                        `Son ${m2Const} perfectamente distribuidos.\n\n` +
+                        `¿Buscas calidad de vida? ${textoExtras.replace('Además, la propiedad cuenta con:', 'Aquí podrás disfrutar de:')} ` +
+                        `\n\n¡No dejes pasar esta oportunidad! Contáctanos hoy mismo para agendar tu visita.`;
+
+                } else if (tono === 'formal') {
+                    // Tono técnico/corporativo.
+                    textoFinal = `DISPONIBILIDAD INMEDIATA - ${operacion.toUpperCase()} ${tipo.toUpperCase()} EN ${comuna.toUpperCase()}.\n\n` +
+                        `Ubicación: Emplazada ${sector}, zona de alta plusvalía y servicios.\n\n` +
+                        `Programa Arquitectónico:\n` +
+                        `- ${dorms} Dormitorios.\n` +
+                        `- ${banos} Baños.\n` +
+                        `- Superficie: ${m2Const} / ${m2Terr}.\n` +
+                        `- ${estacionamientos}\n\n` +
+                        `Especificaciones Técnicas y Equipamiento:\n` +
+                        `${textoExtras}\n\n` +
+                        `Solicite orden de visita y antecedentes técnicos a nuestros ejecutivos.`;
+                }
+
+                // Simulación visual de escritura
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Redactando...';
+                btn.disabled = true;
+                textArea.value = "";
+
+                let i = 0;
+                function escribir() {
+                    if (i < textoFinal.length) {
+                        textArea.value += textoFinal.charAt(i);
+                        i++;
+                        setTimeout(escribir, 5); // Velocidad de escritura
+                    } else {
+                        btn.innerHTML = '<i class="bi bi-magic"></i> Generar Descripción';
+                        btn.disabled = false;
+                    }
+                }
+                // Pequeño delay para realismo
+                setTimeout(escribir, 800);
             }
-        });
 
-        // 3. --- MOTOR DE REDACCIÓN QUE NO INVENTA DATOS ---
-        function generarTextoReal() {
-            const btn = document.getElementById('btnGenerar');
-            const textArea = document.getElementById('descPropiedad');
-            const tono = document.getElementById('tonoIA').value;
+            // 4. GENERAR TÍTULO AUTOMÁTICO (Basado en datos reales)
+            function generarTituloAuto() {
+                const p1 = JSON.parse(localStorage.getItem('nuevaPropiedad_Paso1')) || {};
+                const p2 = JSON.parse(localStorage.getItem('propiedad_paso2')) || {};
+                const p3 = JSON.parse(localStorage.getItem('propiedad_paso3')) || {};
 
-            // RECUPERAR DATOS DE PASOS 1, 2 y 3 (LocalStorage)
-            const p1 = JSON.parse(localStorage.getItem('nuevaPropiedad_Paso1')) || {};
-            const p2 = JSON.parse(localStorage.getItem('propiedad_paso2')) || {};
-            const p3 = JSON.parse(localStorage.getItem('propiedad_paso3')) || {};
+                if (p1.tipo && p2.comuna) {
+                    const operacion = p1.operacion && p1.operacion.venta ? 'Venta' : 'Arriendo';
+                    const dorms = p3.num_dormitorios ? `${p3.num_dormitorios}D` : '';
+                    const banos = p3.num_banos ? `${p3.num_banos}B` : '';
+                    const sector = p2.sector ? ` ${p2.sector}` : '';
 
-            // Validación de seguridad
-            if (!p1.tipo || !p2.comuna) {
-                alert("Para generar la descripción, primero debes completar los Pasos 1, 2 y 3.");
-                return;
-            }
-
-            // --- EXTRACCIÓN DE DATOS REALES ---
-            const tipo = p1.tipo; // Ej: Casa
-            const operacion = p1.operacion && p1.operacion.venta ? 'Venta' : 'Arriendo';
-            const comuna = p2.comuna; // Ej: Los Andes
-            const sector = p2.sector ? `en el sector de ${p2.sector}` : '';
-
-            // Datos del Paso 3 (Si están vacíos, poner 'no especificado')
-            const dorms = p3.num_dormitorios || '?';
-            const banos = p3.num_banos || '?';
-            const m2Const = p3.sup_construida ? `${p3.sup_construida} m² construidos` : '';
-            const m2Terr = p3.sup_terreno ? `${p3.sup_terreno} m² de terreno` : '';
-
-            // Construir frase de estacionamiento solo si hay datos
-            let estacionamientos = "";
-            if (p3.estac_cub > 0 || p3.estac_des > 0) {
-                const totalEst = (parseInt(p3.estac_cub) || 0) + (parseInt(p3.estac_des) || 0);
-                estacionamientos = `Cuenta con estacionamiento para ${totalEst} vehículo(s).`;
-            }
-
-            // --- DETECCIÓN DE AMENITIES (Solo lo que es "Sí") ---
-            let extras = [];
-            if (p3.piscina === 'Si') extras.push("piscina");
-            if (p3.quincho === 'Si' || p3.barbecue === 'Si') extras.push("quincho");
-            if (p3.bano_servicio === 'Si') extras.push("baño de servicio");
-            if (p3.pieza_servicio === 'Si') extras.push("pieza de servicio");
-            if (p3.loggia === 'Si') extras.push("loggia");
-            if (p3.terraza_amb === 'Si') extras.push("terraza");
-            if (p3.riego_auto === 'Si') extras.push("riego automático");
-            if (p3.porton_auto === 'Si') extras.push("portón automático");
-            if (p3.calefaccion && p3.calefaccion !== 'Seleccione...') extras.push(`calefacción por ${p3.calefaccion}`);
-
-            // Unir los extras con comas
-            const textoExtras = extras.length > 0 ? `Además, la propiedad cuenta con: ${extras.join(', ')}.` : '';
-
-            // --- REDACCIÓN SEGÚN TONO ---
-            let textoFinal = "";
-
-            if (tono === 'neutro') {
-                // Tono informativo, seco.
-                textoFinal = `Se ofrece ${tipo} en ${operacion}, ubicada en ${comuna} ${sector}.\n\n` +
-                    `La propiedad consta de ${dorms} dormitorios y ${banos} baños. ` +
-                    `Posee ${m2Const} y ${m2Terr}. ${estacionamientos}\n\n` +
-                    `${textoExtras}\n\n` +
-                    `Excelente conectividad y ubicación.`;
-
-            } else if (tono === 'persuasivo') {
-                // Tono de venta, emocional.
-                textoFinal = `¡Gran Oportunidad en ${comuna}! ${operacion} de ${tipo}.\n\n` +
-                    `Disfruta de vivir ${sector}, en una propiedad pensada para tu familia. ` +
-                    `Esta excelente unidad cuenta con ${dorms} amplios dormitorios y ${banos} baños, ideal para la comodidad que buscas. ` +
-                    `Son ${m2Const} perfectamente distribuidos.\n\n` +
-                    `¿Buscas calidad de vida? ${textoExtras.replace('Además, la propiedad cuenta con:', 'Aquí podrás disfrutar de:')} ` +
-                    `\n\n¡No dejes pasar esta oportunidad! Contáctanos hoy mismo para agendar tu visita.`;
-
-            } else if (tono === 'formal') {
-                // Tono técnico/corporativo.
-                textoFinal = `DISPONIBILIDAD INMEDIATA - ${operacion.toUpperCase()} ${tipo.toUpperCase()} EN ${comuna.toUpperCase()}.\n\n` +
-                    `Ubicación: Emplazada ${sector}, zona de alta plusvalía y servicios.\n\n` +
-                    `Programa Arquitectónico:\n` +
-                    `- ${dorms} Dormitorios.\n` +
-                    `- ${banos} Baños.\n` +
-                    `- Superficie: ${m2Const} / ${m2Terr}.\n` +
-                    `- ${estacionamientos}\n\n` +
-                    `Especificaciones Técnicas y Equipamiento:\n` +
-                    `${textoExtras}\n\n` +
-                    `Solicite orden de visita y antecedentes técnicos a nuestros ejecutivos.`;
-            }
-
-            // Simulación visual de escritura
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Redactando...';
-            btn.disabled = true;
-            textArea.value = "";
-
-            let i = 0;
-            function escribir() {
-                if (i < textoFinal.length) {
-                    textArea.value += textoFinal.charAt(i);
-                    i++;
-                    setTimeout(escribir, 5); // Velocidad de escritura
+                    // Formato: Venta Casa Los Andes 5D 4B Sector Centro
+                    document.getElementById('tituloPublicacion').value = `${operacion} ${p1.tipo} en ${p2.comuna} ${dorms} ${banos}${sector}`;
                 } else {
-                    btn.innerHTML = '<i class="bi bi-magic"></i> Generar Descripción';
-                    btn.disabled = false;
+                    alert("Faltan datos de Tipo o Ubicación para generar el título.");
                 }
             }
-            // Pequeño delay para realismo
-            setTimeout(escribir, 800);
-        }
 
-        // 4. GENERAR TÍTULO AUTOMÁTICO (Basado en datos reales)
-        function generarTituloAuto() {
-            const p1 = JSON.parse(localStorage.getItem('nuevaPropiedad_Paso1')) || {};
-            const p2 = JSON.parse(localStorage.getItem('propiedad_paso2')) || {};
-            const p3 = JSON.parse(localStorage.getItem('propiedad_paso3')) || {};
+            // 5. GUARDAR Y CONTINUAR
+            function guardarYContinuar() {
+                const desc = document.getElementById('descPropiedad').value;
+                const visita = document.getElementById('formaVisita').value;
+                const titulo = document.getElementById('tituloPublicacion').value;
 
-            if (p1.tipo && p2.comuna) {
-                const operacion = p1.operacion && p1.operacion.venta ? 'Venta' : 'Arriendo';
-                const dorms = p3.num_dormitorios ? `${p3.num_dormitorios}D` : '';
-                const banos = p3.num_banos ? `${p3.num_banos}B` : '';
-                const sector = p2.sector ? ` ${p2.sector}` : '';
+                if (desc.trim().length < 5) { alert("Falta la descripción."); return; }
+                if (titulo.trim().length < 5) { alert("Falta el título."); return; }
+                if (visita.trim() === "") { alert("La forma de visitar es obligatoria."); return; }
 
-                // Formato: Venta Casa Los Andes 5D 4B Sector Centro
-                document.getElementById('tituloPublicacion').value = `${operacion} ${p1.tipo} en ${p2.comuna} ${dorms} ${banos}${sector}`;
-            } else {
-                alert("Faltan datos de Tipo o Ubicación para generar el título.");
+                const datosPaso4 = {
+                    descripcion: desc,
+                    formaVisita: visita,
+                    obsInternas: document.getElementById('obsInternas').value,
+                    titulo: titulo
+                };
+
+                localStorage.setItem('propiedad_paso4', JSON.stringify(datosPaso4));
+                window.location.href = 'admin-publicar-paso5.html';
             }
-        }
+        </script>
 
-        // 5. GUARDAR Y CONTINUAR
-        function guardarYContinuar() {
-            const desc = document.getElementById('descPropiedad').value;
-            const visita = document.getElementById('formaVisita').value;
-            const titulo = document.getElementById('tituloPublicacion').value;
-
-            if (desc.trim().length < 5) { alert("Falta la descripción."); return; }
-            if (titulo.trim().length < 5) { alert("Falta el título."); return; }
-            if (visita.trim() === "") { alert("La forma de visitar es obligatoria."); return; }
-
-            const datosPaso4 = {
-                descripcion: desc,
-                formaVisita: visita,
-                obsInternas: document.getElementById('obsInternas').value,
-                titulo: titulo
-            };
-
-            localStorage.setItem('propiedad_paso4', JSON.stringify(datosPaso4));
-            window.location.href = 'admin-publicar-paso5.html';
-        }
-    </script>
-
+        <script src="admin-auth.js"></script>
+    </div>
 </body>
 
 </html>

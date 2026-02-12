@@ -4,11 +4,12 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
 const path = require('path');
+const bcrypt = require('bcryptjs'); // <--- NUEVA DEPENDENCIA PARA ENCRIPTAR
 // const { google } = require('googleapis'); <--- ELIMINADO (Ya no lo necesitamos)
 require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -30,17 +31,25 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // 3. BASE DE DATOS
+// 3. BASE DE DATOS (Configuración Local con tus credenciales)
 const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+    user: process.env.DB_USER,      // Leerá: postgres
+    host: process.env.DB_HOST,      // Leerá: 127.0.0.1
+    database: process.env.DB_NAME,  // Leerá: Datosusuarios
+    password: process.env.DB_PASSWORD, // Leerá: Postgres1234
+    port: process.env.DB_PORT,      // Leerá: 5432
+    ssl: false // <--- ¡ESTO ES CLAVE! Desactiva el SSL para local
 });
 
 pool.connect((err) => {
-    if (err) console.error('❌ Error de conexión de la base de datos', err.stack);
-    else console.log('✅ Correctamente se ha conectado a la base de datos');
+    if (err) {
+        console.error('------------------------------------------------');
+        console.error('❌ ERROR: No se pudo conectar a la base de datos "Datosusuarios"');
+        console.error('Detalle:', err.message);
+        console.error('------------------------------------------------');
+    } else {
+        console.log('✅ ¡CONECTADO A LA BASE DE DATOS LOCAL (Datosusuarios)! 🚀');
+    }
 });
 
 // 4. CONFIGURACIÓN EMAIL
@@ -48,7 +57,16 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'ignacio.ojeda2002@gmail.com',
-        pass: 'uoqxahcwqiibitcr'
+        pass: 'sdclbrxurniioorx'
+    }
+});
+
+// VERIFICAR CONEXIÓN EMAIL AL INICIAR
+transporter.verify((error, success) => {
+    if (error) {
+        console.error('❌ ERROR CRÍTICO EMAIL:', error);
+    } else {
+        console.log('✅ Servidor de correos listo para enviar mensajes.');
     }
 });
 
@@ -134,13 +152,66 @@ async function agendarEnGoogle(fechaStr, horaStr, nombreCliente, telefono, email
 // =======================================================
 
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    // CONVERTIR A MINÚSCULA EL EMAIL P0ARA EVITAR PROBLEMAS "Ignacio" vs "ignacio"
+    if (email) email = email.toLowerCase();
+
     try {
-        const result = await pool.query('SELECT * FROM usuarios WHERE email = $1 AND password = $2', [email, password]);
+        const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+
         if (result.rows.length > 0) {
             const user = result.rows[0];
-            delete user.password;
-            res.json({ success: true, user: user });
+            const storedPassword = user.password;
+            let passwordMatch = false;
+            let forcePasswordChange = false;
+
+            // 1. INTENTAR PRIMERO CON LA CONTRASEÑA PRINCIPAL
+            // Si es un hash bcrypt, usamos compare
+            if (storedPassword.startsWith('$2a$') || storedPassword.startsWith('$2b$')) {
+                passwordMatch = await bcrypt.compare(password, storedPassword);
+            } else {
+                // Si es texto plano (Legacy), comparamos directo
+                if (storedPassword === password) {
+                    passwordMatch = true;
+                    // MIGRACIÓN AUTOMÁTICA: Si la clave era antigua, la encriptamos
+                    console.log(`🔐 Migrando contraseña de usuario ${user.username}...`);
+                    const newHash = await bcrypt.hash(password, 10);
+                    await pool.query('UPDATE usuarios SET password = $1 WHERE id = $2', [newHash, user.id]);
+                }
+            }
+
+            // 2. SI LA PRINCIPAL FALLA, REVISAMOS SI ES CLAVE TEMPORAL VÁLIDA
+            if (!passwordMatch && user.temp_password_hash) {
+                const validTemp = await bcrypt.compare(password, user.temp_password_hash);
+                if (validTemp) {
+                    // Verificar expiración
+                    const now = new Date();
+                    const expires = new Date(user.temp_password_expires);
+
+                    if (now < expires) {
+                        passwordMatch = true;
+                        forcePasswordChange = true;
+                    } else {
+                        return res.status(401).json({ success: false, message: 'La contraseña temporal ha expirado. Solicita una nueva.' });
+                    }
+                }
+            }
+
+            if (passwordMatch) {
+                // Si entró con clave temporal, limpiamos los campos para que no la use de nuevo
+                if (forcePasswordChange) {
+                    await pool.query('UPDATE usuarios SET temp_password_hash = NULL, temp_password_expires = NULL WHERE id = $1', [user.id]);
+                }
+
+                delete user.password;
+                delete user.temp_password_hash;
+                delete user.temp_password_expires;
+
+                res.json({ success: true, user: user, force_password_change: forcePasswordChange });
+            } else {
+                res.status(401).json({ success: false, message: 'Correo electrónico o contraseña incorrectos' });
+            }
+
         } else {
             res.status(401).json({ success: false, message: 'Correo electrónico o contraseña incorrectos' });
         }
@@ -148,23 +219,45 @@ app.post('/api/login', async (req, res) => {
 });
 
 app.post('/api/forgot-password', async (req, res) => {
-    const { email } = req.body;
+    let { email } = req.body;
+    // CONVERTIR A MINÚSCULA
+    if (email) email = email.toLowerCase();
     try {
         const userCheck = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
         if (userCheck.rows.length === 0) {
             return res.status(404).json({ success: false, message: 'Este correo no está registrado.' });
         }
         const tempPass = 'MG-' + Math.floor(1000 + Math.random() * 9000);
-        await pool.query('UPDATE usuarios SET password = $1 WHERE email = $2', [tempPass, email]);
 
+        // ENCRIPTAR LA CLAVE TEMPORAL ANTES DE GUARDAR
+        const hashedTempPassword = await bcrypt.hash(tempPass, 10);
+
+        // FECHA DE EXPIRACIÓN: AHORA + 20 MINUTOS
+        // PostgreSQL interval syntax: NOW() + interval '20 minutes'
+        await pool.query(
+            `UPDATE usuarios 
+             SET temp_password_hash = $1, 
+                 temp_password_expires = NOW() + interval '20 minutes' 
+             WHERE email = $2`,
+            [hashedTempPassword, email]
+        );
+
+        const currentUrl = req.get('origin') || req.get('referer') || 'http://localhost:3000';
         const html = `
-            <div style="font-family: Arial, sans-serif; padding: 20px;">
-                <h2>Recuperación de Clave</h2>
-                <p>Tu nueva contraseña temporal es: <strong>${tempPass}</strong></p>
-                <p>Por favor, cámbiala al ingresar.</p>
+            <div style="font-family: Arial, sans-serif; padding: 20px; text-align: center; border: 1px solid #eee; border-radius: 8px;">
+                <h2 style="color: #2c3e50;">Recuperación de Clave</h2>
+                <p>Tu nueva contraseña temporal es:</p>
+                <div style="font-size: 24px; font-weight: bold; background: #f0f0f0; padding: 10px; display: inline-block; margin: 10px 0; letter-spacing: 2px;">
+                    ${tempPass}
+                </div>
+                <p style="color: #c0392b; font-weight: bold;">Esta clave expirará en 20 minutos.</p>
+                <p>Usa el siguiente botón para crear una nueva clave:</p>
+                <a href="${currentUrl}/recuperar-clave.html?email=${email}" style="display: inline-block; background: #bfa378; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 10px;">
+                    RECUPERA TU CONTRASEÑA
+                </a>
             </div>
         `;
-        await enviarCorreo(email, "🔑 Tu Nueva Contraseña Temporal", html);
+        await enviarCorreo(email, "🔑 Recupera tu Contraseña", html);
         res.json({ success: true, message: 'Correo enviado correctamente' });
     } catch (err) {
         console.error("Error en recuperación:", err);
@@ -172,8 +265,57 @@ app.post('/api/forgot-password', async (req, res) => {
     }
 });
 
+// --- API: CONFIRMAR RECUPERACIÓN (NUEVA) ---
+app.post('/api/confirm-recovery', async (req, res) => {
+    let { email, tempPassword, newPassword } = req.body;
+    if (email) email = email.toLowerCase();
+
+    try {
+        // 1. Buscar usuario
+        const result = await pool.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Usuario no encontrado.' });
+        }
+        const user = result.rows[0];
+
+        // 2. Verificar si tiene clave temporal pendiente
+        if (!user.temp_password_hash) {
+            return res.status(400).json({ success: false, message: 'No hay una solicitud de recuperación pendiente.' });
+        }
+
+        // 3. Verificar expiración
+        const now = new Date();
+        const expires = new Date(user.temp_password_expires);
+        if (now > expires) {
+            return res.status(401).json({ success: false, message: 'La contraseña temporal ha expirado. Solicita una nueva.' });
+        }
+
+        // 4. Verificar clave temporal
+        const validTemp = await bcrypt.compare(tempPassword, user.temp_password_hash);
+        if (!validTemp) {
+            return res.status(401).json({ success: false, message: 'La contraseña temporal es incorrecta.' });
+        }
+
+        // 5. Todo OK: Hashear nueva clave y guardar
+        const newHash = await bcrypt.hash(newPassword, 10);
+        await pool.query(
+            'UPDATE usuarios SET password = $1, temp_password_hash = NULL, temp_password_expires = NULL WHERE id = $2',
+            [newHash, user.id]
+        );
+
+        res.json({ success: true, message: 'Contraseña actualizada correctamente.' });
+
+    } catch (error) {
+        console.error("Error confirmando recuperación:", error);
+        res.status(500).json({ success: false, message: 'Error en el servidor.' });
+    }
+});
+
 app.post('/api/register', async (req, res) => {
-    const { nombre_completo, username, email, password, telefono } = req.body;
+    let { nombre_completo, username, email, password, telefono } = req.body;
+
+    // CONVERTIR A MINÚSCULA EL EMAIL
+    if (email) email = email.toLowerCase();
     if (!nombre_completo || !username || !email || !password) {
         return res.status(400).json({ success: false, message: 'Faltan campos obligatorios' });
     }
@@ -182,8 +324,12 @@ app.post('/api/register', async (req, res) => {
         if (check.rows.length > 0) {
             return res.status(400).json({ success: false, message: 'El usuario o correo ya existe.' });
         }
+
+        // ENCRIPTAR CLAVE
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const query = 'INSERT INTO usuarios (nombre_completo, username, email, password, telefono, rol) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, username, rol, email, telefono';
-        const result = await pool.query(query, [nombre_completo, username, email, password, telefono, 'cliente']);
+        const result = await pool.query(query, [nombre_completo, username, email, hashedPassword, telefono, 'cliente']);
 
         const currentUrl = req.get('origin') || req.get('referer') || 'http://localhost:3000';
         const htmlBienvenida = `<h1>¡Bienvenido ${nombre_completo}!</h1><p>Gracias por registrarte.</p><a href="${currentUrl}">Ir a la web</a>`;
@@ -205,16 +351,34 @@ app.get('/api/users', async (req, res) => {
 
 app.put('/api/users/:id', async (req, res) => {
     const { id } = req.params;
-    const { email, telefono, password, currentPassword } = req.body;
+    let { email, telefono, password, currentPassword } = req.body;
+
+    // CONVERTIR A MINÚSCULA
+    if (email) email = email.toLowerCase();
     try {
         if (password) {
             if (!currentPassword) return res.status(400).json({ success: false, message: 'Falta la contraseña actual.' });
             const userCheck = await pool.query('SELECT * FROM usuarios WHERE id = $1', [id]);
             if (userCheck.rows.length === 0) return res.status(404).json({ success: false, message: 'Usuario no encontrado.' });
-            if (userCheck.rows[0].password !== currentPassword) return res.status(401).json({ success: false, message: 'La contraseña actual es incorrecta.' });
+
+            const user = userCheck.rows[0];
+            const storedPass = user.password;
+
+            // VERIFICAR CONTRASEÑA ACTUAL (Soporte Hashed y Plain)
+            let isMatch = false;
+            if (storedPass.startsWith('$2a$') || storedPass.startsWith('$2b$')) {
+                isMatch = await bcrypt.compare(currentPassword, storedPass);
+            } else {
+                isMatch = (storedPass === currentPassword);
+            }
+
+            if (!isMatch) return res.status(401).json({ success: false, message: 'La contraseña actual es incorrecta.' });
+
+            // ENCRIPTAR NUEVA CONTRASEÑA
+            const newHashedPassword = await bcrypt.hash(password, 10);
 
             const query = 'UPDATE usuarios SET email = $1, telefono = $2, password = $3 WHERE id = $4 RETURNING id, username, email, telefono, rol';
-            const result = await pool.query(query, [email, telefono, password, id]);
+            const result = await pool.query(query, [email, telefono, newHashedPassword, id]);
             return res.json({ success: true, user: result.rows[0] });
         }
         const query = 'UPDATE usuarios SET email = $1, telefono = $2 WHERE id = $3 RETURNING id, username, email, telefono, rol';
@@ -406,7 +570,7 @@ app.post('/api/publicar-v2', async (req, res) => {
             const valuesProp = [
                 p5.rut,
                 nombreFull,
-                p5.email,
+                (p5.email ? p5.email.toLowerCase() : ''), // Email a minúscula
                 p5.celular,
                 p5.tipoDoc || 'rut',
                 (p5.esActivo === 'true' || p5.esActivo === true), // Convertir a booleano
@@ -521,24 +685,20 @@ app.post('/api/publicar-v2', async (req, res) => {
         client.release();
     }
 });
-
 /* ======================================================= */
-/* API: LISTAR PROPIEDADES (LECTURA PARA BACKOFFICE)       */
+/* API: LISTAR PROPIEDADES (CORREGIDO PARA MOSTRAR FOTO)   */
 /* ======================================================= */
-
 app.get('/api/propiedades-list', async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 15;
         const offset = (page - 1) * limit;
 
-        // 1. Contar total de propiedades activas
         const countResult = await pool.query("SELECT COUNT(*) FROM propiedades2 WHERE estado_publicacion = 'PUBLICADA'");
         const totalItems = parseInt(countResult.rows[0].count);
         const totalPages = Math.ceil(totalItems / limit);
 
-        // 2. Obtener las propiedades
-        // Hacemos JOIN con la tabla de propietarios para mostrar el nombre del dueño/captador
+        // 👇 AQUÍ ESTABA EL ERROR: FALTABA PEDIR LA IMAGEN PRINCIPAL 👇
         const query = `
             SELECT 
                 p.id, 
@@ -552,6 +712,15 @@ app.get('/api/propiedades-list', async (req, res) => {
                 p.comuna, p.region,
                 p.estado_publicacion,
                 p.detalles_json,
+                p.imagen_principal,
+                p.dormitorios, 
+                p.banos, 
+                p.superficie_util,
+                p.superficie_total,
+                p.estacionamientos,
+                p.rol_sii,
+                p.contribuciones,
+                p.descripcion_publica,
                 c.nombre_completo as captador_nombre
             FROM propiedades2 p
             LEFT JOIN propietarios c ON p.propietario_id = c.id
@@ -578,14 +747,6 @@ app.get('/api/propiedades-list', async (req, res) => {
         res.status(500).json({ success: false, message: err.message });
     }
 });
-
-/* ======================================================= */
-/* API V2: DESTACADAS (HOME)                               */
-/* ======================================================= */
-
-/* ======================================================= */
-/* API V2: DESTACADAS (HOME)                               */
-/* ======================================================= */
 app.get('/api/destacadas', async (req, res) => {
     try {
         const query = `
@@ -618,8 +779,8 @@ app.get('/api/destacadas', async (req, res) => {
                     m2Util: row.superficie_util || 0
                 },
                 images: {
-                    // CORRECCIÓN: Usar la imagen real de la base de datos
-                    main: row.imagen_principal ? `http://localhost:3000${row.imagen_principal}` : 'https://via.placeholder.com/400'
+                    // CORRECCIÓN: Usar la imagen real de la base de datos (Ruta relativa para evitar Mixed Content)
+                    main: row.imagen_principal || 'https://via.placeholder.com/400'
                 }
             };
         });
@@ -643,8 +804,11 @@ app.get('/api/places', async (req, res) => {
 });
 
 app.post('/api/citas', async (req, res) => {
-    const { Nombre, Teléfono, Fecha, Hora_inicio, Email, Motivo } = req.body;
+    let { Nombre, Teléfono, Fecha, Hora_inicio, Email, Motivo } = req.body;
     console.log("📩 Payload recibido:", req.body);
+
+    // Email a minúscula
+    if (Email) Email = Email.toLowerCase();
 
     try {
         const id_publico = Math.random().toString(36).substr(2, 6).toUpperCase();
@@ -711,7 +875,8 @@ app.delete('/api/citas/:id', async (req, res) => {
 
 app.put('/api/citas/:id', async (req, res) => {
     const { id } = req.params;
-    const { Fecha, Hora_inicio, Email } = req.body;
+    let { Fecha, Hora_inicio, Email } = req.body;
+    if (Email) Email = Email.toLowerCase();
     try {
         const query = `UPDATE citas SET fecha = $1, hora_inicio = $2, hora_fin = $2::time + '1 hour'::interval WHERE id = $3 RETURNING *`;
         const result = await pool.query(query, [Fecha, Hora_inicio, id]);
@@ -730,7 +895,8 @@ app.put('/api/citas/:id', async (req, res) => {
 // =======================================================
 
 app.post('/api/contact', async (req, res) => {
-    const { nombre, email, telefono, mensaje } = req.body;
+    let { nombre, email, telefono, mensaje } = req.body;
+    if (email) email = email.toLowerCase();
     if (!nombre || !email || !mensaje) return res.status(400).json({ success: false, message: 'Faltan datos.' });
 
     try {
@@ -749,7 +915,8 @@ app.post('/api/contact', async (req, res) => {
         res.json({ success: true, message: 'Mensaje enviado.' });
     } catch (err) {
         console.error("Error enviando contacto:", err);
-        res.status(500).json({ success: false, message: 'Error al enviar.' });
+        // Devolvemos el mensaje exacto del error para que el usuario sepa qué pasó (ej: Auth Failed)
+        res.status(500).json({ success: false, message: 'Error del servidor: ' + err.message });
     }
 });
 
@@ -1014,7 +1181,8 @@ app.put('/api/leads/:id/estado', async (req, res) => {
 const fs = require('fs');
 
 // 1. SUBIR FOTOS 
-app.post('/api/propiedades/:id/imagenes', upload.array('fotos', 30), async (req, res) => {
+// 1. SUBIR FOTOS (Límite aumentado a 50)
+app.post('/api/propiedades/:id/imagenes', upload.array('fotos', 50), async (req, res) => { // <--- CAMBIO AQUÍ: 50
     const propId = req.params.id;
     const files = req.files;
 
@@ -1022,58 +1190,49 @@ app.post('/api/propiedades/:id/imagenes', upload.array('fotos', 30), async (req,
         return res.status(400).json({ success: false, message: "No se subieron archivos" });
     }
 
+    const client = await pool.connect(); // Pedimos cliente de la DB
+
     try {
-        const client = await pool.connect();
-        try {
-            await client.query('BEGIN');
+        await client.query('BEGIN'); // Iniciamos transacción
 
-            for (const file of files) {
-                const url = '/uploads/' + file.filename;
+        for (const file of files) {
+            const url = '/uploads/' + file.filename;
 
-                // 1. Guardamos en la tabla de galería (propiedad_imagenes)
-                // Aquí la columna SÍ se llama 'url_imagen' según tu CREATE TABLE
-                await client.query(
-                    "INSERT INTO propiedad_imagenes (propiedad_id, url_imagen) VALUES ($1, $2)",
-                    [propId, url]
-                );
-            }
-
-            // --- LÓGICA DE PORTADA AUTOMÁTICA ---
-            // Verificamos si la propiedad ya tiene una foto principal asignada en PROPIEDADES2
-            // OJO: Aquí usamos 'imagen_principal'
-            const checkMain = await client.query("SELECT imagen_principal FROM propiedades2 WHERE id = $1", [propId]);
-
-            if (checkMain.rows.length > 0) {
-                const currentImg = checkMain.rows[0].imagen_principal;
-
-                // Si está vacía o es placeholder, ponemos la primera foto nueva como portada
-                if (!currentImg || currentImg === '' || currentImg.includes('placeholder')) {
-                    const primeraFoto = '/uploads/' + files[0].filename;
-
-                    // Actualizamos propiedades2 con el nombre correcto de columna
-                    await client.query("UPDATE propiedades2 SET imagen_principal = $1 WHERE id = $2", [primeraFoto, propId]);
-
-                    // Marcamos en la galería
-                    await client.query("UPDATE propiedad_imagenes SET es_portada = TRUE WHERE url_imagen = $1", [primeraFoto]);
-                }
-            }
-
-            await client.query('COMMIT');
-            res.json({ success: true, message: "Imágenes subidas correctamente" });
-
-        } catch (e) {
-            await client.query('ROLLBACK');
-            throw e;
-        } finally {
-            client.release();
+            await client.query(
+                "INSERT INTO propiedad_imagenes (propiedad_id, url_imagen) VALUES ($1, $2)",
+                [propId, url]
+            );
         }
 
-    } catch (err) {
-        console.error("Error subiendo imagen:", err);
-        res.status(500).json({ success: false, message: err.message, error: err.message });
+        // --- LÓGICA DE PORTADA AUTOMÁTICA ---
+        const checkMain = await client.query("SELECT imagen_principal FROM propiedades2 WHERE id = $1", [propId]);
+
+        if (checkMain.rows.length > 0) {
+            const currentImg = checkMain.rows[0].imagen_principal;
+
+            // Si no tiene portada, ponemos la primera que se subió ahora
+            if (!currentImg || currentImg === '' || currentImg.includes('placeholder')) {
+                const primeraFoto = '/uploads/' + files[0].filename;
+
+                // Actualizar propiedad
+                await client.query("UPDATE propiedades2 SET imagen_principal = $1 WHERE id = $2", [primeraFoto, propId]);
+                // Marcar en galería
+                await client.query("UPDATE propiedad_imagenes SET es_portada = TRUE WHERE url_imagen = $1", [primeraFoto]);
+            }
+        }
+
+        await client.query('COMMIT'); // Guardamos cambios
+        res.json({ success: true, message: "Imágenes subidas correctamente" });
+
+    } catch (e) {
+        await client.query('ROLLBACK'); // Si falla, deshacemos todo
+        console.error("❌ Error en transacción:", e);
+        // NO USAR 'throw e', enviamos respuesta de error
+        res.status(500).json({ success: false, message: "Error guardando en base de datos: " + e.message });
+    } finally {
+        client.release(); // Liberamos la conexión SIEMPRE
     }
 });
-
 // 2. OBTENER FOTOS
 app.get('/api/propiedades/:id/imagenes', async (req, res) => {
     try {
@@ -1662,6 +1821,182 @@ app.get('/api/admin/reporte-mensual', async (req, res) => {
         res.status(500).json({ success: false, error: err.message });
     }
 });
+
+/* ======================================================= */
+/* RUTA ESPECIAL: DUPLICAR PROPIEDAD (CLONACIÓN PROFUNDA)  */
+/* ======================================================= */
+app.post('/api/propiedades/:id/duplicar', async (req, res) => {
+    const originalId = req.params.id;
+    const { copias } = req.body; // Array con los datos de los formularios
+
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN'); // Iniciamos la operación segura
+
+        // 1. Obtener datos de la propiedad ORIGINAL
+        const propRes = await client.query("SELECT * FROM propiedades2 WHERE id = $1", [originalId]);
+        if (propRes.rows.length === 0) throw new Error("Propiedad original no encontrada");
+        const original = propRes.rows[0];
+
+        // 2. Obtener las FOTOS originales
+        const imgRes = await client.query("SELECT url_imagen, es_portada FROM propiedad_imagenes WHERE propiedad_id = $1", [originalId]);
+        const galeriaOriginal = imgRes.rows;
+
+        const nuevosIds = [];
+
+        // 3. Bucle para crear cada copia en la Base de Datos
+        for (const copia of copias) {
+
+            // Combinamos Unidad + Letra + Etapa para guardar en la BD
+            let nuevaUnidadTexto = copia.unidad || '';
+            if (copia.letra) nuevaUnidadTexto += ` Letra ${copia.letra}`;
+            if (copia.etapa) nuevaUnidadTexto += ` Etapa ${copia.etapa}`;
+
+            const queryInsert = `
+                INSERT INTO propiedades2 (
+                    propietario_id, tipo_propiedad, rol_sii, exclusividad,
+                    operacion_venta, precio_venta, moneda_venta,
+                    operacion_arriendo, precio_arriendo, moneda_arriendo,
+                    gastos_comunes, contribuciones, canje,
+                    region, comuna, sector, direccion_calle, direccion_numero, 
+                    direccion_unidad, -- AQUI VA LA NUEVA UNIDAD/DEPTO
+                    dormitorios, banos, suites, superficie_util, superficie_total,
+                    estacionamientos, bodegas, detalles_json,
+                    titulo_publicacion, descripcion_publica, observaciones_internas, forma_visita,
+                    estado_publicacion, imagen_principal, ejecutivo_asignado,
+                    es_destacada, es_vendida, es_arrendada
+                ) VALUES (
+                    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, 
+                    $19, -- La variable nuevaUnidadTexto
+                    $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, 
+                    'PUBLICADA', $32, $33, $34, FALSE, FALSE 
+                ) RETURNING id
+            `;
+
+            const values = [
+                original.propietario_id, original.tipo_propiedad, copia.rol, original.exclusividad,
+                copia.en_venta, copia.precio_venta, original.moneda_venta,
+                copia.en_arriendo, copia.precio_arriendo, original.moneda_arriendo,
+                original.gastos_comunes, original.contribuciones, original.canje,
+                original.region, original.comuna, original.sector, original.direccion_calle, original.direccion_numero,
+                nuevaUnidadTexto.trim(), // $19
+                original.dormitorios, original.banos, original.suites, original.superficie_util, original.superficie_total,
+                original.estacionamientos, original.bodegas, original.detalles_json,
+                original.titulo_publicacion, original.descripcion_publica, original.observaciones_internas, original.forma_visita,
+                original.imagen_principal, original.ejecutivo_asignado, original.es_destacada
+            ];
+
+            const insertRes = await client.query(queryInsert, values);
+            const nuevoId = insertRes.rows[0].id;
+            nuevosIds.push(nuevoId);
+
+            // 4. Copiar las FOTOS a la nueva propiedad
+            for (const img of galeriaOriginal) {
+                await client.query(
+                    "INSERT INTO propiedad_imagenes (propiedad_id, url_imagen, es_portada) VALUES ($1, $2, $3)",
+                    [nuevoId, img.url_imagen, img.es_portada]
+                );
+            }
+        }
+
+        await client.query('COMMIT'); // Guardar todo
+        res.json({ success: true, message: `Creadas ${nuevosIds.length} propiedades.`, ids: nuevosIds });
+
+    } catch (e) {
+        await client.query('ROLLBACK'); // Si falla, cancelar todo
+        console.error("Error al duplicar:", e);
+        res.status(500).json({ success: false, error: e.message });
+    } finally {
+        client.release();
+    }
+});
+
+// --- API: OBTENER HISTORIAS (Solo las aprobadas) ---
+app.get('/api/historias', async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM historias_exito WHERE estado = 'aprobado' ORDER BY fecha_creacion DESC");
+        res.json({ success: true, data: result.rows });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Error al cargar historias' });
+    }
+});
+
+// --- API: GUARDAR NUEVA HISTORIA ---
+app.post('/api/historias', async (req, res) => {
+    const { nombre, titulo, servicio, testimonio, valoracion } = req.body;
+    // Nota: Por ahora manejamos foto como NULL, para subir fotos se requiere configuración extra de Multer
+    try {
+        await pool.query(
+            "INSERT INTO historias_exito (nombre_cliente, titulo_historia, servicio_realizado, testimonio, valoracion) VALUES ($1, $2, $3, $4, $5)",
+            [nombre, titulo, servicio, testimonio, valoracion || 5]
+        );
+        res.json({ success: true, message: 'Historia recibida correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Error al guardar historia' });
+    }
+});
+
+// --- API: CHATBOT GROQ (Llama 3) ---
+const GROQ_API_KEY = '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'; // Replaced with actual key in execution
+// const fs = require('fs'); // Removed duplicate declaration causing SyntaxError
+
+app.post('/api/chat', async (req, res) => {
+    const { message } = req.body;
+    const lowerMsg = message.toLowerCase();
+
+    // 1. REGLA DE ORO: SI PREGUNTAN HORARIO, NO USAR IA, RESPONDER DIRECTO
+    // Esto evita cualquier "alucinación" de la IA.
+    if (lowerMsg.includes('horario') || lowerMsg.includes('hora') || lowerMsg.includes('abren') || lowerMsg.includes('cierran')) {
+        return res.json({
+            reply: "🕒 **Nuestro horario de atención es:**\nLunes a Sábado de 08:00 a 19:00 hrs.\nDomingos y festivos: Cerrado.\n\nPara agendar fuera de horario, contáctanos al WhatsApp +56 9 5228 6689."
+        });
+    }
+
+    try {
+        // 2. LEER LA "PÁGINA OCULTA" (Contexto externo)
+        const contextInfo = fs.readFileSync(path.join(__dirname, 'chatbot_info.txt'), 'utf-8');
+
+        const systemPrompt = `
+        Eres el Asistente Virtual de Marlen Guzmán.
+        Usa EXCLUSIVAMENTE la siguiente información para responder:
+        
+        ${contextInfo}
+        
+        Si la respuesta no está en el texto, di que no tienes esa información y sugiere contactar por WhatsApp.
+        `;
+
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${GROQ_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: "llama3-8b-8192",
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: message }
+                ],
+                temperature: 0.1, // Mínima creatividad
+                max_tokens: 300
+            })
+        });
+
+        const data = await response.json();
+        const botReply = data.choices?.[0]?.message?.content || "Lo siento, tuve un problema pensando mi respuesta.";
+
+        res.json({ reply: botReply });
+
+    } catch (error) {
+        console.error("Error Chatbot:", error);
+        res.status(500).json({ reply: "Hubo un error interno." });
+    }
+});
+
+
 
 app.listen(port, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${port}`);

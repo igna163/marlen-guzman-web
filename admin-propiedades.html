@@ -7,8 +7,9 @@
     <title>Propiedades - Nexxos Admin</title>
     <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
 
     <style>
         body {
@@ -18,35 +19,7 @@
             color: #555;
         }
 
-        /* --- NAVBAR (Gris Oscuro) --- */
-        .navbar-nexxos {
-            background-color: #343a40;
-            padding: 10px 20px;
-        }
-
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.3rem;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-link {
-            color: #adb5bd !important;
-            font-size: 0.9rem;
-            margin-right: 10px;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: #fff !important;
-        }
-
-        .user-info {
-            color: #fff;
-            font-size: 0.8rem;
-            text-align: right;
-            line-height: 1.2;
-        }
+        /* --- NAVBAR styles removed (used sidebar) --- */
 
         /* --- ENCABEZADO --- */
         .page-header {
@@ -131,7 +104,7 @@
             background-color: #fff;
             border: 1px solid #dee2e6;
             border-radius: 4px;
-            overflow: hidden;
+            overflow-x: auto;
         }
 
         .table-nexxos {
@@ -328,8 +301,10 @@
             color: #1877F2;
         }
 
-        .share-item.linkedin i {
-            color: #0077b5;
+        /* Color para el botón de Twitter/X */
+        .share-item.twitter i {
+            color: #000;
+            /* Negro oficial de X */
         }
 
         .share-item.copy i {
@@ -489,111 +464,100 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-nexxos">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="admin-dashboard.html">nexxos</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="admin-dashboard.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sistema</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Clientes</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Propiedades</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Reportes</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin-publicar-1.html">+ Publicar</a></li>
-                </ul>
-                <div class="user-info">
-                    <div class="fw-bold">viernes, 16 de enero de 2026</div>
-                    <div class="text-info" style="font-size:0.75rem">UF 39.744,55</div>
-                    <div>Marlen Teresita <i class="bi bi-person-circle"></i></div>
+    <div class="sidebar"></div>
+
+    <div class="main-content">
+        <!-- User info that was in navbar, maybe move it here or just drop it for now as per standardization request? 
+             matches admin-dashboard layout which has no top user bar in main-content usually, 
+             or maybe I should keep it. admin-dashboard does not seem to have a top bar in the provided view.
+             I will just drop the navbar specific user info for standardization unless I see it in dashboard.
+        -->
+
+        <div class="page-header">
+            <h2 class="page-title">Propiedades</h2>
+            <div class="breadcrumb">Panel de Control • Propiedades</div>
+        </div>
+
+        <div class="container-fluid px-4">
+
+            <div class="filters-container">
+                <div>
+                    <span class="count-text" id="totalProps">Cargando...</span> <span
+                        class="text-muted small">encontradas</span>
+                    <div class="mt-1">
+                        <small class="text-muted">Estado:</small> <span class="active-filter">Activa <i
+                                class="bi bi-x"></i></span>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-view rounded"><i class="bi bi-arrow-down-up"></i></button>
+                    <button class="btn btn-view rounded"><i class="bi bi-layout-split"></i></button>
+                    <button class="btn btn-view rounded"><i class="bi bi-layout-three-columns"></i></button>
+
+                    <div class="vr mx-2"></div>
+
+                    <button class="btn btn-view-gray rounded"><i class="bi bi-list-ul"></i></button>
+                    <button class="btn btn-view-gray rounded"><i class="bi bi-grid-3x3-gap"></i></button>
+                    <button class="btn btn-view-gray rounded"><i class="bi bi-geo-alt"></i></button>
+
+                    <button class="btn btn-filter-main ms-3">FILTRAR LISTADO <i class="bi bi-funnel-fill"></i></button>
                 </div>
             </div>
-        </div>
-    </nav>
 
-    <div class="page-header">
-        <h2 class="page-title">Propiedades</h2>
-        <div class="breadcrumb">Panel de Control • Propiedades</div>
-    </div>
-
-    <div class="container-fluid px-4">
-
-        <div class="filters-container">
-            <div>
-                <span class="count-text" id="totalProps">Cargando...</span> <span
-                    class="text-muted small">encontradas</span>
-                <div class="mt-1">
-                    <small class="text-muted">Estado:</small> <span class="active-filter">Activa <i
-                            class="bi bi-x"></i></span>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" placeholder="buscar...">
+                        <button class="btn btn-warning text-white btn-sm"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-8 d-flex justify-content-end">
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0" id="paginacionTop"></ul>
+                    </nav>
                 </div>
             </div>
 
-            <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-view rounded"><i class="bi bi-arrow-down-up"></i></button>
-                <button class="btn btn-view rounded"><i class="bi bi-layout-split"></i></button>
-                <button class="btn btn-view rounded"><i class="bi bi-layout-three-columns"></i></button>
+            <div class="table-container table-responsive">
+                <table class="table table-nexxos">
+                    <thead>
+                        <tr>
+                            <th width="120">Imagen</th>
+                            <th class="sortable">Código</th>
+                            <th class="sortable">Tipo</th>
+                            <th class="sortable">Operación</th>
+                            <th class="sortable">Estado</th>
+                            <th class="sortable">Captador</th>
+                            <th class="sortable">Dirección</th>
+                            <th class="sortable">Precio</th>
+                            <th class="sortable">Comuna</th>
+                            <th class="sortable">Región</th>
+                            <th>Editar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCuerpo">
+                        <tr>
+                            <td colspan="11" class="text-center py-5">
+                                <div class="spinner-border text-primary mb-2"></div>
+                                <p class="text-muted">Conectando con base de datos...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                <div class="vr mx-2"></div>
-
-                <button class="btn btn-view-gray rounded"><i class="bi bi-list-ul"></i></button>
-                <button class="btn btn-view-gray rounded"><i class="bi bi-grid-3x3-gap"></i></button>
-                <button class="btn btn-view-gray rounded"><i class="bi bi-geo-alt"></i></button>
-
-                <button class="btn btn-filter-main ms-3">FILTRAR LISTADO <i class="bi bi-funnel-fill"></i></button>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" placeholder="buscar...">
-                    <button class="btn btn-warning text-white btn-sm"><i class="bi bi-search"></i></button>
+                <div class="pagination-bar">
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0" id="paginacionBottom"></ul>
+                    </nav>
                 </div>
             </div>
-            <div class="col-md-8 d-flex justify-content-end">
-                <nav>
-                    <ul class="pagination pagination-sm mb-0" id="paginacionTop"></ul>
-                </nav>
+
+            <div class="text-center mt-4 mb-5 small text-muted">
+                2026 © Convecta. Todos los derechos reservados.
             </div>
         </div>
-
-        <div class="table-container">
-            <table class="table table-nexxos">
-                <thead>
-                    <tr>
-                        <th width="120">Imagen</th>
-                        <th class="sortable">Código</th>
-                        <th class="sortable">Tipo</th>
-                        <th class="sortable">Operación</th>
-                        <th class="sortable">Estado</th>
-                        <th class="sortable">Captador</th>
-                        <th class="sortable">Dirección</th>
-                        <th class="sortable">Precio</th>
-                        <th class="sortable">Comuna</th>
-                        <th class="sortable">Región</th>
-                        <th>Editar</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaCuerpo">
-                    <tr>
-                        <td colspan="11" class="text-center py-5">
-                            <div class="spinner-border text-primary mb-2"></div>
-                            <p class="text-muted">Conectando con base de datos...</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="pagination-bar">
-                <nav>
-                    <ul class="pagination pagination-sm mb-0" id="paginacionBottom"></ul>
-                </nav>
-            </div>
-        </div>
-
-        <div class="text-center mt-4 mb-5 small text-muted">
-            2026 © Convecta. Todos los derechos reservados.
-        </div>
-    </div>
+    </div><!-- End main-content -->
     <div id="shareMenu" class="share-menu">
         <a href="#" class="share-item whatsapp" onclick="compartirRed('whatsapp')">
             <i class="bi bi-whatsapp"></i> WhatsApp
@@ -601,8 +565,8 @@
         <a href="#" class="share-item facebook" onclick="compartirRed('facebook')">
             <i class="bi bi-facebook"></i> Facebook
         </a>
-        <a href="#" class="share-item linkedin" onclick="compartirRed('linkedin')">
-            <i class="bi bi-linkedin"></i> LinkedIn
+        <a href="#" class="share-item twitter" onclick="compartirRed('twitter')">
+            <i class="bi bi-twitter-x"></i> X
         </a>
         <hr class="my-1">
         <a href="#" class="share-item copy" onclick="compartirRed('copy')">
@@ -634,76 +598,299 @@
                         Tareas</button>
                 </div>
 
-                <div class="modal-body p-0">
+                <div class="modal-body p-0" style="background-color: #f8f9fa;">
+
                     <div id="tab-propiedad" class="ficha-content">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="gallery-placeholder">
-                                    <img id="modalImg" src="" alt="Propiedad">
-                                    <button class="btn btn-light btn-sm position-absolute start-0 ms-2"><i
-                                            class="bi bi-chevron-left"></i></button>
-                                    <button class="btn btn-light btn-sm position-absolute end-0 me-2"><i
-                                            class="bi bi-chevron-right"></i></button>
+                            <div class="col-md-5">
+                                <div class="gallery-placeholder position-relative bg-dark rounded overflow-hidden"
+                                    style="height: 320px;">
+                                    <img id="modalImg" src="" alt="Propiedad" class="w-100 h-100"
+                                        style="object-fit: cover;">
+                                    <div
+                                        class="position-absolute top-50 start-0 translate-middle-y w-100 d-flex justify-content-between px-2">
+                                        <button class="btn btn-light btn-sm rounded-circle opacity-75"><i
+                                                class="bi bi-chevron-left"></i></button>
+                                        <button class="btn btn-light btn-sm rounded-circle opacity-75"><i
+                                                class="bi bi-chevron-right"></i></button>
+                                    </div>
+                                    <div class="position-absolute bottom-0 w-100 p-2 text-center">
+                                        <i class="bi bi-circle-fill text-white small mx-1"></i>
+                                        <i class="bi bi-circle text-white-50 small mx-1"></i>
+                                        <i class="bi bi-circle text-white-50 small mx-1"></i>
+                                    </div>
                                 </div>
-                                <div class="mt-3 d-flex gap-2">
-                                    <button class="btn btn-outline-primary btn-sm rounded-circle"><i
-                                            class="bi bi-facebook"></i></button>
-                                    <button class="btn btn-outline-success btn-sm rounded-circle"><i
-                                            class="bi bi-whatsapp"></i></button>
-                                    <button class="btn btn-outline-secondary btn-sm rounded-circle"><i
-                                            class="bi bi-share"></i></button>
+                                <div class="mt-3 d-flex gap-2 justify-content-center">
+                                    <button class="btn btn-outline-primary btn-sm rounded-circle"
+                                        title="Compartir Facebook"><i class="bi bi-facebook"></i></button>
+                                    <button class="btn btn-outline-success btn-sm rounded-circle"
+                                        title="Compartir WhatsApp"><i class="bi bi-whatsapp"></i></button>
+                                    <button class="btn btn-outline-secondary btn-sm rounded-circle"
+                                        title="Copiar Enlace"><i class="bi bi-link-45deg"></i></button>
+                                </div>
+
+                                <div class="mt-4 p-3 bg-white border rounded">
+                                    <h6 class="text-primary fw-bold mb-2"><i class="bi bi-key-fill"></i> Forma de
+                                        Visitar</h6>
+                                    <div class="fw-bold text-dark fs-5">+56 9 5228 6689</div>
+                                    <small class="text-muted">Coordinar con captador</small>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="d-flex justify-content-between">
-                                    <span class="text-primary fw-bold" id="modalCodigo">Cód: 000</span>
-                                    <span class="badge bg-warning text-dark" id="modalEstado">Novedad</span>
+                            <div class="col-md-7">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="text-primary fw-bold" id="modalCodigo">Cód: 000</div>
+                                        <h4 class="fw-bold mb-0" id="modalTipo">Casa</h4>
+                                        <div class="text-muted small text-uppercase" id="modalDireccionCorta">CALLE
+                                            NUEVA</div>
+                                    </div>
+                                    <span class="badge bg-success" id="modalEstadoBadge">PUBLICADA</span>
                                 </div>
-                                <h4 class="mt-2 mb-0 fw-bold" id="modalTipo">Departamento</h4>
-                                <p class="text-muted small mb-3">
-                                    <i class="bi bi-geo-alt-fill"></i> <span id="modalDireccion">Dirección...</span>
+
+                                <p class="text-muted small mt-1 mb-3">
+                                    <i class="bi bi-geo-alt"></i> <span id="modalDireccionLarga">Dirección
+                                        completa...</span><br>
+                                    Rol: <span id="modalRol">0000-000</span>
                                 </p>
 
-                                <div class="price-box">
-                                    <span class="tag" id="modalTagOperacion">VENTA</span>
-                                    <div class="value" id="modalPrecio">UF 0.000</div>
-                                    <div class="value-clp" id="modalPrecioPesos">$ 0 aprox</div>
-                                </div>
-
-                                <div class="card bg-light border-0 p-3 mb-3">
-                                    <div class="fw-bold text-white bg-dark px-2 py-1 rounded mb-2 d-inline-block">
-                                        Información</div>
-                                    <div class="info-row">
-                                        <label>Dormitorios:</label> <span id="modalDorms">0</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <label>Baños:</label> <span id="modalBanos">0</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <label>Superficie:</label> <span id="modalSup">0 m²</span>
-                                    </div>
-                                    <div class="info-row border-0">
-                                        <label>Gastos Comunes:</label> <span>$ 33.000</span>
+                                <div class="price-box d-flex justify-content-between align-items-center px-4 py-3 mb-3">
+                                    <div class="text-start">
+                                        <span class="tag d-block mb-1" id="modalTagOperacion">VENTA</span>
+                                        <div class="value" id="modalPrecio">UF 0.000</div>
+                                        <div class="value-clp text-muted" id="modalPrecioPesos">$ 0</div>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <h6 class="text-primary border-bottom pb-1">Descripción</h6>
-                                    <p class="small text-muted" id="modalDesc"
-                                        style="max-height: 100px; overflow-y: auto;">
-                                        Descripción de la propiedad...
-                                    </p>
+                                <div class="row g-2 text-center mb-3">
+                                    <div class="col-4">
+                                        <div class="bg-white border rounded p-2">
+                                            <small class="d-block text-muted">Dormitorios</small>
+                                            <strong id="modalDorms">0</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="bg-white border rounded p-2">
+                                            <small class="d-block text-muted">Baños</small>
+                                            <strong id="modalBanos">0</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="bg-white border rounded p-2">
+                                            <small class="d-block text-muted">Contribuciones</small>
+                                            <strong id="modalContrib">$ 194.388</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card bg-white border mb-3">
+                                    <div class="card-header bg-white fw-bold py-2">Descripción</div>
+                                    <div class="card-body py-2">
+                                        <p class="small text-muted mb-0" id="modalDesc"
+                                            style="max-height: 120px; overflow-y: auto;">
+                                            Cargando descripción...
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-white border rounded p-3 small">
+                                    <h6 class="fw-bold mb-3 border-bottom pb-2">Características</h6>
+                                    <div class="row g-2">
+                                        <div class="col-6 d-flex justify-content-between border-bottom pb-1">
+                                            <span class="text-muted">Sup. Terreno:</span> <strong id="modalSupTerreno">0
+                                                m²</strong>
+                                        </div>
+                                        <div class="col-6 d-flex justify-content-between border-bottom pb-1">
+                                            <span class="text-muted">Sup. Construida:</span> <strong
+                                                id="modalSupConst">0 m²</strong>
+                                        </div>
+                                        <div class="col-6 d-flex justify-content-between border-bottom pb-1">
+                                            <span class="text-muted">Estacionamientos:</span> <strong
+                                                id="modalEstac">0</strong>
+                                        </div>
+                                        <div class="col-6 d-flex justify-content-between border-bottom pb-1">
+                                            <span class="text-muted">Canje:</span> <strong class="text-success"><i
+                                                    class="bi bi-check"></i> Sí</strong>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="tab-otros" class="ficha-content text-center py-5" style="display: none;">
-                        <i class="bi bi-cone-striped display-1 text-muted"></i>
-                        <h4 class="mt-3 text-muted">Módulo en desarrollo</h4>
-                        <p>Esta pestaña se mostrará próximamente.</p>
+                    <div id="tab-reportes" class="ficha-content" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold m-0"><i class="bi bi-graph-up"></i> Reporte de Gestión</h5>
+                            <select class="form-select form-select-sm w-auto">
+                                <option>Últimos 3 Meses</option>
+                                <option>Último Mes</option>
+                                <option>Histórico</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="card h-100 border shadow-sm">
+                                    <div class="card-header bg-white fw-bold text-primary">Contactos</div>
+                                    <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                                        <i class="bi bi-people display-4 text-muted opacity-25 mb-3"></i>
+                                        <h3 class="fw-bold text-dark">0</h3>
+                                        <small class="text-muted">Total contactos del período</small>
+                                    </div>
+                                    <div class="card-footer bg-light small text-muted">
+                                        Por origen: Sin datos
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card h-100 border shadow-sm">
+                                    <div class="card-header bg-white fw-bold text-success">Órdenes de Visita</div>
+                                    <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                                        <i class="bi bi-geo-alt display-4 text-muted opacity-25 mb-3"></i>
+                                        <h3 class="fw-bold text-dark">0</h3>
+                                        <small class="text-muted">Total O.V. del período</small>
+                                    </div>
+                                    <div class="card-footer bg-light small text-muted">
+                                        Realizadas: 0 | Canceladas: 0
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card h-100 border shadow-sm">
+                                    <div class="card-header bg-white fw-bold text-info">Envíos</div>
+                                    <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                                        <i class="bi bi-envelope display-4 text-muted opacity-25 mb-3"></i>
+                                        <h3 class="fw-bold text-dark">0</h3>
+                                        <small class="text-muted">Total envíos del período</small>
+                                    </div>
+                                    <div class="card-footer bg-light small text-muted">
+                                        Último informe: Sin envíos
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 bg-white border rounded">
+                            <h6 class="fw-bold border-bottom pb-2">Información de Ciclo de Vida</h6>
+                            <div class="row small text-muted">
+                                <div class="col-md-4">
+                                    <strong>Última actualización:</strong> 10/02/2026 por Marlen Teresita
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Días activa:</strong> 0 días
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Días sin acciones:</strong> 0 días
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div id="tab-interesados" class="ficha-content text-center py-5" style="display: none;">
+                        <i class="bi bi-person-x display-1 text-muted opacity-25"></i>
+                        <h5 class="mt-3 text-muted">No se encuentran perfiles de búsqueda coincidentes</h5>
+                        <p class="text-muted small">Aquí aparecerán los clientes cuyos requerimientos coincidan con esta
+                            propiedad.</p>
+                        <button class="btn btn-primary btn-sm mt-2"><i class="bi bi-plus-circle"></i> Agregar Interesado
+                            Manual</button>
+                    </div>
+
+                    <div id="tab-bitacora" class="ficha-content" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold m-0"><i class="bi bi-clock-history"></i> Historial de Actividad</h5>
+                            <button class="btn btn-dark btn-sm"><i class="bi bi-plus-lg"></i> Agregar
+                                comentario</button>
+                        </div>
+
+                        <div class="timeline p-3 bg-white border rounded">
+                            <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+                                <div class="flex-shrink-0">
+                                    <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 40px; height: 40px;">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <strong class="text-dark">Marlen Teresita Guzman</strong>
+                                        <span class="text-muted small">10/02/2026 15:53:22</span>
+                                    </div>
+                                    <p class="mb-0 text-secondary">Se agregó la propiedad al sistema.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-portales" class="ficha-content" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold m-0">Estado en Portales</h5>
+                            <a href="#" class="small text-primary text-decoration-none">Ver histórico</a>
+                        </div>
+
+                        <div class="list-group shadow-sm">
+
+                            <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                                <div>
+                                    <strong class="text-primary"><i class="bi bi-globe"></i> Sitio web propio</strong>
+                                    <div class="small text-success fw-bold"><i class="bi bi-check-circle-fill"></i>
+                                        Publicada</div>
+                                    <small class="text-muted">Cód. Int: 101137173</small>
+                                </div>
+                                <a href="#" class="btn btn-outline-secondary btn-sm"><i
+                                        class="bi bi-box-arrow-up-right"></i> Ver</a>
+                            </div>
+
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <strong><img src="https://www.portalinmobiliario.com/favicon.ico" width="16"
+                                                class="me-1"> Portal Inmobiliario</strong>
+                                        <div class="small text-success fw-bold"><i class="bi bi-check-circle-fill"></i>
+                                            Publicada</div>
+                                        <small class="text-muted d-block">Cód: MLC3575566670</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-secondary">Estándar</span>
+                                        <small class="d-block text-muted mt-1">Expira: 10/03/2026</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item">
+                                <div>
+                                    <strong>TocToc</strong>
+                                    <div class="small text-warning fw-bold"><i class="bi bi-hourglass-split"></i>
+                                        Pendiente</div>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item">
+                                <div>
+                                    <strong>Yapo.cl</strong>
+                                    <div class="small text-success fw-bold"><i class="bi bi-check-circle-fill"></i>
+                                        Publicada</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="tab-tareas" class="ficha-content" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold m-0">Tareas Pendientes</h5>
+                            <button class="btn btn-dark btn-sm">Agregar tarea</button>
+                        </div>
+
+                        <div class="text-center py-5">
+                            <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" width="80"
+                                class="mb-3 opacity-50">
+                            <h6 class="text-muted">No hay tareas registradas para esta propiedad</h6>
+                            <p class="small text-muted">Crea recordatorios de llamadas, visitas o trámites aquí.</p>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer bg-dark border-0 justify-content-center">
@@ -729,63 +916,140 @@
             try {
                 const res = await fetch(`http://localhost:3000/api/propiedades-list?page=${pagina}&limit=15`);
                 const data = await res.json();
-
                 if (data.success) {
-                    // GUARDAMOS LOS DATOS EN LA VARIABLE GLOBAL
                     listaPropiedadesGlobal = data.data;
-
                     document.getElementById('totalProps').innerText = `${data.pagination.totalItems} PROPIEDADES`;
                     pintarTabla(data.data);
                     pintarPaginacion(data.pagination);
-                } else {
-                    mostrarError(data.message);
-                }
-            } catch (error) {
-                console.error(error);
-                mostrarError("No se pudo conectar con el servidor.");
-            }
+                } else { mostrarError(data.message); }
+            } catch (error) { console.error(error); mostrarError("No se pudo conectar con el servidor."); }
         }
 
-        // --- FUNCIÓN QUE ABRE LA FICHA (NUEVA) ---
+        // --- FUNCIÓN QUE ABRE LA FICHA (CON DATOS REALES) ---
         function verFicha(id) {
-            // 1. Buscar la propiedad en la memoria
             const prop = listaPropiedadesGlobal.find(p => p.id === id);
+            if (!prop) { alert("Error: No se encontraron datos."); return; }
 
-            if (!prop) {
-                alert("Error: No se encontraron los datos de la propiedad ID " + id);
-                return;
-            }
-
-            // 2. Llenar los campos del Modal
+            // 1. Llenar Datos Principales
             document.getElementById('modalCodigo').innerText = 'Cód: ' + prop.id;
-            document.getElementById('modalTipo').innerText = prop.tipo_propiedad;
-            document.getElementById('modalDireccion').innerText = (prop.direccion_calle || '') + ' ' + (prop.direccion_numero || '') + ', ' + prop.comuna;
+            document.getElementById('modalTipo').innerText = prop.tipo_propiedad || 'Propiedad';
+            document.getElementById('modalDireccionCorta').innerText = (prop.direccion_calle || 'Dirección') + ' ' + (prop.direccion_numero || '');
+            document.getElementById('modalDireccionLarga').innerText = (prop.direccion_calle || '') + ' ' + (prop.direccion_numero || '') + ', ' + (prop.comuna || '') + ', ' + (prop.region || '');
+            document.getElementById('modalRol').innerText = prop.rol_sii || 'Sin Rol';
+            document.getElementById('modalEstadoBadge').innerText = prop.estado_publicacion || 'BORRADOR';
+            document.getElementById('modalEstadoBadge').className = prop.estado_publicacion === 'PUBLICADA' ? 'badge bg-success' : 'badge bg-secondary';
 
-            // Imagen
             const imgUrl = prop.imagen_principal || 'https://placehold.co/600x400?text=Sin+Imagen';
             document.getElementById('modalImg').src = imgUrl;
 
-            // Precio y Operación
+            // Precio
             if (prop.operacion_venta) {
                 document.getElementById('modalTagOperacion').innerText = 'VENTA';
-                document.getElementById('modalTagOperacion').className = 'tag text-primary';
+                document.getElementById('modalTagOperacion').className = 'tag text-primary fw-bold';
                 document.getElementById('modalPrecio').innerText = (prop.moneda_venta || 'UF') + ' ' + Number(prop.precio_venta).toLocaleString('es-CL');
-                // Simulación de conversión a pesos (opcional)
                 document.getElementById('modalPrecioPesos').innerText = '$ ' + (prop.precio_venta * 38000).toLocaleString('es-CL') + ' aprox';
             } else {
                 document.getElementById('modalTagOperacion').innerText = 'ARRIENDO';
-                document.getElementById('modalTagOperacion').className = 'tag text-success';
+                document.getElementById('modalTagOperacion').className = 'tag text-success fw-bold';
                 document.getElementById('modalPrecio').innerText = (prop.moneda_arriendo || '$') + ' ' + Number(prop.precio_arriendo).toLocaleString('es-CL');
                 document.getElementById('modalPrecioPesos').innerText = '';
             }
 
-            // Datos técnicos
+            // Datos Técnicos
             document.getElementById('modalDorms').innerText = prop.dormitorios || 0;
             document.getElementById('modalBanos').innerText = prop.banos || 0;
-            document.getElementById('modalSup').innerText = (prop.superficie_util || 0) + ' m²';
-            document.getElementById('modalDesc').innerText = "Excelente oportunidad en " + prop.comuna + ". Contáctanos para más información."; // Texto simulado si no viene de la API
+            // Ojo: Contribuciones no siempre viene en la lista, si no viene poner 0
+            document.getElementById('modalContrib').innerText = '$ ' + (prop.contribuciones || 0).toLocaleString('es-CL');
+            document.getElementById('modalSupConst').innerText = (prop.superficie_util || 0) + ' m²';
+            // Superficie total tampoco viene en lista simple a veces, usar lógica defensiva
+            document.getElementById('modalSupTerreno').innerText = (prop.superficie_total || 0) + ' m²';
+            document.getElementById('modalEstac').innerText = prop.estacionamientos || 0;
 
-            // 3. Abrir el Modal usando Bootstrap 5
+            // Descripción: Si es muy larga recortar o dejar scroll
+            const desc = prop.detalles_json && JSON.parse(prop.detalles_json).descripcion_publica ? JSON.parse(prop.detalles_json).descripcion_publica : (prop.descripcion_publica || "Sin descripción.");
+            document.getElementById('modalDesc').innerText = desc;
+
+            // 2. DATOS REALES EN OTRAS PESTAÑAS
+
+            // TAB REPORTES (Sin datos reales aún)
+            // Se mantienen en 0 como se pidió ("ser sincero")
+
+            // TAB BITÁCORA (Simulamos entrada de creación con datos reales)
+            const captador = prop.captador_nombre || 'Marlen Teresita'; // Si no viene, fallback
+
+            const bitacoraHtml = `
+                <div class="d-flex gap-3 mb-3 pb-3 border-bottom">
+                    <div class="flex-shrink-0">
+                        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <strong class="text-dark">${captador}</strong>
+                            <span class="text-muted small">Fecha Ingreso</span>
+                        </div>
+                        <p class="mb-0 text-secondary">Propiedad cargada al sistema.</p>
+                    </div>
+                </div>
+            `;
+            const timelineContainer = document.querySelector('#tab-bitacora .timeline');
+            if (timelineContainer) timelineContainer.innerHTML = bitacoraHtml;
+
+
+            // TAB PORTALES (Estado Real)
+            const estadoWeb = prop.estado_publicacion === 'PUBLICADA';
+            const iconWeb = estadoWeb ? '<i class="bi bi-check-circle-fill"></i> Publicada' : '<i class="bi bi-pause-circle-fill"></i> Borrador';
+            const classWeb = estadoWeb ? 'text-success' : 'text-secondary';
+
+            const listPortales = document.querySelector('#tab-portales .list-group');
+            if (listPortales) {
+                listPortales.innerHTML = `
+                    <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
+                        <div>
+                            <strong class="text-primary"><i class="bi bi-globe"></i> Sitio web propio</strong>
+                            <div class="small ${classWeb} fw-bold">${iconWeb}</div>
+                            <small class="text-muted">Cód. Int: ${prop.id}</small>
+                        </div>
+                        <a href="web-ficha.html?id=${prop.id}" target="_blank" class="btn btn-outline-secondary btn-sm"><i class="bi bi-box-arrow-up-right"></i> Ver</a>
+                    </div>
+                    <div class="list-group-item">
+                        <div>
+                            <strong>Portal Inmobiliario</strong>
+                            <div class="small text-muted">No conectado</div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div>
+                            <strong>TocToc</strong>
+                            <div class="small text-muted">No conectado</div>
+                        </div>
+                    </div>
+                     <div class="list-group-item">
+                        <div>
+                            <strong>Yapo.cl</strong>
+                            <div class="small text-muted">No conectado</div>
+                        </div>
+                    </div>
+                 `;
+            }
+
+            // 3. RESETEAR PESTAÑAS MANUALMENTE
+            const tabs = ['propiedad', 'reportes', 'interesados', 'bitacora', 'portales', 'tareas'];
+            tabs.forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if (el) el.style.display = 'none';
+            });
+            // Mostramos la primera
+            document.getElementById('tab-propiedad').style.display = 'block';
+
+            // Reseteamos botones activos
+            document.querySelectorAll('.nav-tabs-nexxos .nav-link').forEach(btn => btn.classList.remove('active'));
+            // Activamos el primer botón (Propiedad)
+            document.querySelector('.nav-tabs-nexxos .nav-link:first-child').classList.add('active');
+
+            // 4. ABRIR MODAL
             const modalElement = document.getElementById('modalFicha');
             const modal = new bootstrap.Modal(modalElement);
             modal.show();
@@ -793,18 +1057,27 @@
 
         // Función para cambiar pestañas dentro del modal (Visual)
         function switchTab(tabName) {
-            // Quitar active de todos los botones
-            document.querySelectorAll('.nav-tabs-nexxos .nav-link').forEach(btn => btn.classList.remove('active'));
-            // Poner active al clickeado (truco simple buscando por el onclick)
-            event.currentTarget.classList.add('active');
+            // 1. Manejo visual de los botones (Pestañas)
+            // Usamos 'event' solo si existe (click del usuario)
+            if (window.event) {
+                document.querySelectorAll('.nav-tabs-nexxos .nav-link').forEach(btn => btn.classList.remove('active'));
+                window.event.currentTarget.classList.add('active');
+            }
 
-            if (tabName === 'propiedad') {
-                document.getElementById('tab-propiedad').style.display = 'block';
-                document.getElementById('tab-otros').style.display = 'none';
+            // 2. Ocultar TODAS las pestañas primero
+            const allTabs = ['propiedad', 'reportes', 'interesados', 'bitacora', 'portales', 'tareas'];
+
+            allTabs.forEach(name => {
+                const el = document.getElementById('tab-' + name);
+                if (el) el.style.display = 'none';
+            });
+
+            // 3. Mostrar SOLO la seleccionada
+            const target = document.getElementById('tab-' + tabName);
+            if (target) {
+                target.style.display = 'block';
             } else {
-                document.getElementById('tab-propiedad').style.display = 'none';
-                document.getElementById('tab-otros').style.display = 'block';
-                // Aquí podrías personalizar el mensaje según la pestaña (Reportes, Bitácora, etc.)
+                console.error("No se encontró la pestaña: tab-" + tabName);
             }
         }
 
@@ -914,20 +1187,42 @@
 
         function compartirRed(red) {
             if (!currentShareId) return;
-            const urlPropiedad = `http://localhost:3000/ficha-propiedad.html?id=${currentShareId}`;
-            const texto = `¡Mira esta propiedad en Nexxos! ID: #${currentShareId}`;
+
+            // 1. URL real pública de la propiedad
+            const baseUrl = window.location.origin;
+            const urlPropiedad = `${baseUrl}/web-ficha.html?id=${currentShareId}`;
+
+            // Texto para acompañar
+            const texto = `¡Mira esta propiedad en Marlen Guzmán! ID: #${currentShareId}`;
+
             let shareUrl = "";
 
             switch (red) {
-                case 'whatsapp': shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto + ' ' + urlPropiedad)}`; break;
-                case 'facebook': shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlPropiedad)}`; break;
-                case 'linkedin': shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(urlPropiedad)}`; break;
+                case 'whatsapp':
+                    shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto + ' ' + urlPropiedad)}`;
+                    break;
+
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlPropiedad)}`;
+                    break;
+
+                // CAMBIO: Lógica para Twitter (X)
+                case 'twitter':
+                    // Twitter usa 'url' para el enlace y 'text' para el mensaje opcional
+                    shareUrl = `https://x.com/intent/post?url=${encodeURIComponent(urlPropiedad)}&text=${encodeURIComponent(texto)}`;
+                    break;
+
                 case 'copy':
-                    navigator.clipboard.writeText(urlPropiedad).then(() => { alert("✅ Enlace copiado"); });
+                    navigator.clipboard.writeText(urlPropiedad).then(() => { alert("✅ Enlace copiado al portapapeles"); });
                     document.getElementById('shareMenu').classList.remove('show');
                     return;
             }
-            if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=400');
+
+            // Abrir ventana emergente
+            if (shareUrl) {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+
             document.getElementById('shareMenu').classList.remove('show');
         }
 
@@ -942,6 +1237,8 @@
 
 
 
+    <script src="admin-auth.js"></script>
+    <script src="js/admin-sidebar.js"></script>
 </body>
 
 </html>

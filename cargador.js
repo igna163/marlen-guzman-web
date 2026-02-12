@@ -30,6 +30,11 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
                 footerPlaceholder.innerHTML = data;
+                // Actualizar año automáticamente
+                const yearSpan = document.getElementById('footer-year');
+                if (yearSpan) {
+                    yearSpan.textContent = new Date().getFullYear();
+                }
             })
             .catch(error => console.error("Error al cargar el footer:", error));
     }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Postulaciones | Marlen Guzmán</title>
+    <link rel="icon" type="image/jpeg" href="Logo_MG.jpeg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/client-sidebar.css">
+</head>
+
+<body data-page="client-apps">
+
+    <div class="sidebar"></div>
+
+    <div class="main-content">
+        <section class="section bg-light" style="padding-top: 40px; min-height: 90vh;">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="overline">Negociaciones</span>
+                    <h2 class="section-title">Estado de Postulaciones</h2>
+                    <p>Seguimiento de tus ofertas de arriendo o compra.</p>
+                </div>
+
+                <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+
+                    <div class="dashboard-card" style="text-align: left; cursor: default;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span class="badge bg-venta"
+                                style="padding: 5px 10px; border-radius: 4px; color: white; background: #bfa378;">VENTA</span>
+                            <span style="color: #f39c12; font-weight: 700; font-size: 0.9rem;"><i
+                                    class="fas fa-spinner fa-spin"></i> En Evaluación</span>
+                        </div>
+                        <h4 style="margin-bottom: 5px;">Casa en Los Andes 3D 2B</h4>
+                        <p class="text-muted small">Cód: 137166</p>
+
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
+                        <div style="font-size: 0.9rem;">
+                            <p><strong>Oferta realizada:</strong> UF 4.500</p>
+                            <p><strong>Fecha:</strong> 10 Feb 2026</p>
+                        </div>
+
+                        <button class="btn btn-outline-primary btn-sm w-100 mt-3">Ver Oferta</button>
+                    </div>
+
+                    <div class="dashboard-card" style="text-align: left; cursor: default; opacity: 0.8;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <span class="badge bg-arriendo"
+                                style="padding: 5px 10px; border-radius: 4px; color: white; background: #2c3e50;">ARRIENDO</span>
+                            <span style="color: #e74c3c; font-weight: 700; font-size: 0.9rem;"><i
+                                    class="fas fa-times-circle"></i> Rechazada</span>
+                        </div>
+                        <h4 style="margin-bottom: 5px;">Depto Independencia</h4>
+                        <p class="text-muted small">Cód: 99402</p>
+
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
+                        <div style="font-size: 0.9rem;">
+                            <p><strong>Oferta:</strong> $450.000 / mes</p>
+                            <p class="text-danger small">La propiedad fue arrendada a otro postulante.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script src="js/client-sidebar.js"></script>
+    <script src="cargador.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>

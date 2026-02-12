@@ -8,6 +8,7 @@
     <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
     <style>
         body {
             background-color: #f4f6f9;
@@ -138,276 +139,300 @@
 
 <body>
 
-    <div class="container mt-4 mb-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-11">
-
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div>
-                        <small class="text-muted">Panel de Control • Agregar propiedad</small>
-                        <h5 class="text-primary fw-bold mt-1"><i class="bi bi-person-vcard"></i> AGREGAR PROPIEDAD -
-                            PASO 5 DE 6</h5>
-                    </div>
-                    <div class="text-success fw-bold small" id="borradorInfo"><i class="bi bi-check-circle-fill"></i>
-                        BORRADOR GUARDADO...</div>
-                </div>
-
-                <div class="step-indicator">
-                    <div class="step-item completed" onclick="location.href='admin-publicar-3.html'">
-                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
-                            class="step-label">Tipo</span>
-                    </div>
-                    <div class="step-item completed" onclick="location.href='admin-publicar-paso2.html'">
-                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
-                            class="step-label">Ubicación</span>
-                    </div>
-                    <div class="step-item completed" onclick="location.href='admin-publicar-paso3.html'">
-                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
-                            class="step-label">Caract.</span>
-                    </div>
-                    <div class="step-item completed" onclick="location.href='admin-publicar-paso4.html'">
-                        <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
-                            class="step-label">Obs.</span>
-                    </div>
-                    <div class="step-item active">
-                        <div class="step-circle">5</div><span class="step-label">Propietario</span>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-circle">6</div><span class="step-label">Confirmar</span>
-                    </div>
-                </div>
-
-                <div class="progress" style="height: 6px; margin-bottom: 25px;">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                        style="width: 83%;"></div>
-                </div>
-
-                <div class="card p-4">
-                    <form id="formPaso5">
-
-                        <h5 class="mb-4 text-dark border-bottom pb-2">Datos del Propietario</h5>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label required">Nº documento (RUT)</label>
-                                <input type="text" id="rut" class="form-control required-field"
-                                    placeholder="Ej: 12.345.678-9" oninput="formatearRUT(this)">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label required">Tipo de documento</label>
-                                <div class="mt-2">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="tipoDoc" id="docRut"
-                                            value="rut" checked>
-                                        <label class="form-check-label" for="docRut">RUT</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="tipoDoc" id="docPasaporte"
-                                            value="pasaporte">
-                                        <label class="form-check-label" for="docPasaporte">Pasaporte</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label required">Nombre</label>
-                            <input type="text" id="nombre" class="form-control required-field"
-                                placeholder="Nombre completo">
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label required">Apellido Paterno</label>
-                                <input type="text" id="apellidoP" class="form-control required-field">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Apellido Materno</label>
-                                <input type="text" id="apellidoM" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label required">Correo electrónico</label>
-                            <input type="email" id="email" class="form-control required-field"
-                                placeholder="nombre@correo.com">
-                        </div>
-
-                        <h5 class="mb-3 text-dark border-bottom pb-2 mt-4">Teléfonos</h5>
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <label class="form-label required">Celular</label>
-                                <input type="tel" id="celular" class="form-control required-field"
-                                    placeholder="+569...">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Tfno. particular</label>
-                                <input type="tel" id="fijo" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Tfno. comercial</label>
-                                <input type="tel" id="comercial" class="form-control">
-                            </div>
-                        </div>
-
-                        <h5 class="mb-3 text-dark border-bottom pb-2 mt-4">Perfil del Cliente</h5>
-                        <div class="row mb-4">
-                            <div class="col-md-3">
-                                <label class="form-label small d-block">Activo</label>
-                                <div class="btn-group btn-toggle-group">
-                                    <button type="button" class="btn active" id="btnActivoSi"
-                                        onclick="toggleBtn(this, true)">Sí</button>
-                                    <button type="button" class="btn" id="btnActivoNo"
-                                        onclick="toggleBtn(this, false)">No</button>
-                                </div>
-                                <input type="hidden" id="esActivo" value="true">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label small d-block">Interés (Rating)</label>
-                                <div class="rating-stars" id="ratingStars">
-                                    <i class="bi bi-star-fill active" onclick="setRating(1)"></i>
-                                    <i class="bi bi-star-fill active" onclick="setRating(2)"></i>
-                                    <i class="bi bi-star-fill active" onclick="setRating(3)"></i>
-                                    <i class="bi bi-star-fill" onclick="setRating(4)"></i>
-                                    <i class="bi bi-star-fill" onclick="setRating(5)"></i>
-                                </div>
-                                <input type="hidden" id="ratingValue" value="3">
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Comentarios internos</label>
-                            <textarea class="form-control" id="comentarios" rows="2"
-                                placeholder="Notas sobre el cliente..."></textarea>
-                        </div>
-
-                        <div class="d-flex justify-content-between pt-3 border-top">
-                            <button type="button" class="btn btn-secondary px-4"
-                                onclick="location.href='admin-publicar-paso4.html'">
-                                <i class="bi bi-arrow-left"></i> Anterior
-                            </button>
-                            <button type="button" class="btn btn-primary px-5" onclick="validarYContinuar()">
-                                Siguiente <i class="bi bi-arrow-right"></i>
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <img src="Logo_MG.jpeg" alt="Logo MG">
+            <div>ADMIN</div>
+        </div>
+        <a href="admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a href="admin-propiedades.html"><i class="bi bi-house-door me-2"></i> Propiedades</a>
+        <a href="admin-publicar-3.html" class="active"><i class="bi bi-plus-circle me-2"></i> Publicar</a>
+        <a href="admin-interesados.html"><i class="bi bi-people me-2"></i> Interesados / Leads</a>
+        <a href="admin-agenda-2.html"><i class="bi bi-calendar-check me-2"></i> Agenda</a>
+        <a href="admin-reportes.html"><i class="bi bi-bar-chart me-2"></i> Reportes</a>
+        <a href="admin-marketing-ai.html"><i class="bi bi-stars me-2"></i> Marketing IA</a>
+        <div class="mt-auto p-3">
+            <a href="index.html" class="d-flex align-items-center text-white-50 text-decoration-none">
+                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+            </a>
         </div>
     </div>
 
-    <script>
-        // 1. Reloj
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('borradorInfo').innerHTML = `<i class="bi bi-check-circle-fill"></i> BORRADOR GUARDADO A LAS ${now.toLocaleTimeString('es-CL')}`;
-        }, 30000);
+    <div class="main-content">
 
-        // 2. RECUPERAR DATOS (Memoria)
-        document.addEventListener('DOMContentLoaded', () => {
-            const datos = JSON.parse(localStorage.getItem('propiedad_paso5'));
-            if (datos) {
-                // Campos de texto
-                if (datos.rut) document.getElementById('rut').value = datos.rut;
-                if (datos.nombre) document.getElementById('nombre').value = datos.nombre;
-                if (datos.apellidoP) document.getElementById('apellidoP').value = datos.apellidoP;
-                if (datos.apellidoM) document.getElementById('apellidoM').value = datos.apellidoM;
-                if (datos.email) document.getElementById('email').value = datos.email;
-                if (datos.celular) document.getElementById('celular').value = datos.celular;
-                if (datos.fijo) document.getElementById('fijo').value = datos.fijo;
-                if (datos.comercial) document.getElementById('comercial').value = datos.comercial;
-                if (datos.comentarios) document.getElementById('comentarios').value = datos.comentarios;
+        <div class="container mt-4 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-11">
 
-                // Tipo de documento (Radio)
-                if (datos.tipoDoc) {
-                    const radio = document.querySelector(`input[name="tipoDoc"][value="${datos.tipoDoc}"]`);
-                    if (radio) radio.checked = true;
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <small class="text-muted">Panel de Control • Agregar propiedad</small>
+                            <h5 class="text-primary fw-bold mt-1"><i class="bi bi-person-vcard"></i> AGREGAR PROPIEDAD -
+                                PASO 5 DE 6</h5>
+                        </div>
+                        <div class="text-success fw-bold small" id="borradorInfo"><i
+                                class="bi bi-check-circle-fill"></i>
+                            BORRADOR GUARDADO...</div>
+                    </div>
+
+                    <div class="step-indicator">
+                        <div class="step-item completed" onclick="location.href='admin-publicar-3.html'">
+                            <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                                class="step-label">Tipo</span>
+                        </div>
+                        <div class="step-item completed" onclick="location.href='admin-publicar-paso2.html'">
+                            <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                                class="step-label">Ubicación</span>
+                        </div>
+                        <div class="step-item completed" onclick="location.href='admin-publicar-paso3.html'">
+                            <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                                class="step-label">Caract.</span>
+                        </div>
+                        <div class="step-item completed" onclick="location.href='admin-publicar-paso4.html'">
+                            <div class="step-circle"><i class="bi bi-check-lg"></i></div><span
+                                class="step-label">Obs.</span>
+                        </div>
+                        <div class="step-item active">
+                            <div class="step-circle">5</div><span class="step-label">Propietario</span>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle">6</div><span class="step-label">Confirmar</span>
+                        </div>
+                    </div>
+
+                    <div class="progress" style="height: 6px; margin-bottom: 25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            style="width: 83%;"></div>
+                    </div>
+
+                    <div class="card p-4">
+                        <form id="formPaso5">
+
+                            <h5 class="mb-4 text-dark border-bottom pb-2">Datos del Propietario</h5>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label required">Nº documento (RUT)</label>
+                                    <input type="text" id="rut" class="form-control required-field"
+                                        placeholder="Ej: 12.345.678-9" oninput="formatearRUT(this)">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label required">Tipo de documento</label>
+                                    <div class="mt-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="tipoDoc" id="docRut"
+                                                value="rut" checked>
+                                            <label class="form-check-label" for="docRut">RUT</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="tipoDoc"
+                                                id="docPasaporte" value="pasaporte">
+                                            <label class="form-check-label" for="docPasaporte">Pasaporte</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label required">Nombre</label>
+                                <input type="text" id="nombre" class="form-control required-field"
+                                    placeholder="Nombre completo">
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label required">Apellido Paterno</label>
+                                    <input type="text" id="apellidoP" class="form-control required-field">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Apellido Materno</label>
+                                    <input type="text" id="apellidoM" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label required">Correo electrónico</label>
+                                <input type="email" id="email" class="form-control required-field"
+                                    placeholder="nombre@correo.com">
+                            </div>
+
+                            <h5 class="mb-3 text-dark border-bottom pb-2 mt-4">Teléfonos</h5>
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <label class="form-label required">Celular</label>
+                                    <input type="tel" id="celular" class="form-control required-field"
+                                        placeholder="+569...">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Tfno. particular</label>
+                                    <input type="tel" id="fijo" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Tfno. comercial</label>
+                                    <input type="tel" id="comercial" class="form-control">
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 text-dark border-bottom pb-2 mt-4">Perfil del Cliente</h5>
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <label class="form-label small d-block">Activo</label>
+                                    <div class="btn-group btn-toggle-group">
+                                        <button type="button" class="btn active" id="btnActivoSi"
+                                            onclick="toggleBtn(this, true)">Sí</button>
+                                        <button type="button" class="btn" id="btnActivoNo"
+                                            onclick="toggleBtn(this, false)">No</button>
+                                    </div>
+                                    <input type="hidden" id="esActivo" value="true">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small d-block">Interés (Rating)</label>
+                                    <div class="rating-stars" id="ratingStars">
+                                        <i class="bi bi-star-fill active" onclick="setRating(1)"></i>
+                                        <i class="bi bi-star-fill active" onclick="setRating(2)"></i>
+                                        <i class="bi bi-star-fill active" onclick="setRating(3)"></i>
+                                        <i class="bi bi-star-fill" onclick="setRating(4)"></i>
+                                        <i class="bi bi-star-fill" onclick="setRating(5)"></i>
+                                    </div>
+                                    <input type="hidden" id="ratingValue" value="3">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Comentarios internos</label>
+                                <textarea class="form-control" id="comentarios" rows="2"
+                                    placeholder="Notas sobre el cliente..."></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-between pt-3 border-top">
+                                <button type="button" class="btn btn-secondary px-4"
+                                    onclick="location.href='admin-publicar-paso4.html'">
+                                    <i class="bi bi-arrow-left"></i> Anterior
+                                </button>
+                                <button type="button" class="btn btn-primary px-5" onclick="validarYContinuar()">
+                                    Siguiente <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // 1. Reloj
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('borradorInfo').innerHTML = `<i class="bi bi-check-circle-fill"></i> BORRADOR GUARDADO A LAS ${now.toLocaleTimeString('es-CL')}`;
+            }, 30000);
+
+            // 2. RECUPERAR DATOS (Memoria)
+            document.addEventListener('DOMContentLoaded', () => {
+                const datos = JSON.parse(localStorage.getItem('propiedad_paso5'));
+                if (datos) {
+                    // Campos de texto
+                    if (datos.rut) document.getElementById('rut').value = datos.rut;
+                    if (datos.nombre) document.getElementById('nombre').value = datos.nombre;
+                    if (datos.apellidoP) document.getElementById('apellidoP').value = datos.apellidoP;
+                    if (datos.apellidoM) document.getElementById('apellidoM').value = datos.apellidoM;
+                    if (datos.email) document.getElementById('email').value = datos.email;
+                    if (datos.celular) document.getElementById('celular').value = datos.celular;
+                    if (datos.fijo) document.getElementById('fijo').value = datos.fijo;
+                    if (datos.comercial) document.getElementById('comercial').value = datos.comercial;
+                    if (datos.comentarios) document.getElementById('comentarios').value = datos.comentarios;
+
+                    // Tipo de documento (Radio)
+                    if (datos.tipoDoc) {
+                        const radio = document.querySelector(`input[name="tipoDoc"][value="${datos.tipoDoc}"]`);
+                        if (radio) radio.checked = true;
+                    }
+
+                    // Estrellas
+                    if (datos.rating) {
+                        setRating(datos.rating);
+                    }
+
+                    // Activo (Botones)
+                    if (datos.esActivo === 'false' || datos.esActivo === false) {
+                        toggleBtn(document.getElementById('btnActivoNo'), false);
+                    } else {
+                        toggleBtn(document.getElementById('btnActivoSi'), true);
+                    }
                 }
-
-                // Estrellas
-                if (datos.rating) {
-                    setRating(datos.rating);
-                }
-
-                // Activo (Botones)
-                if (datos.esActivo === 'false' || datos.esActivo === false) {
-                    toggleBtn(document.getElementById('btnActivoNo'), false);
-                } else {
-                    toggleBtn(document.getElementById('btnActivoSi'), true);
-                }
-            }
-        });
-
-        // 3. Lógica Visual (Botones y Estrellas)
-        function toggleBtn(btn, valor) {
-            let siblings = btn.parentElement.children;
-            for (let i = 0; i < siblings.length; i++) { siblings[i].classList.remove('active'); }
-            btn.classList.add('active');
-            document.getElementById('esActivo').value = valor;
-        }
-
-        function setRating(rating) {
-            const stars = document.querySelectorAll('#ratingStars .bi-star-fill');
-            document.getElementById('ratingValue').value = rating;
-            stars.forEach((s, i) => {
-                if (i < rating) s.classList.add('active');
-                else s.classList.remove('active');
             });
-        }
 
-        // 4. Formatear RUT
-        function formatearRUT(input) {
-            let valor = input.value.replace(/[^0-9kK]/g, "");
-            if (valor.length > 1) {
-                const cuerpo = valor.slice(0, -1);
-                const dv = valor.slice(-1).toUpperCase();
-                input.value = `${cuerpo}-${dv}`;
+            // 3. Lógica Visual (Botones y Estrellas)
+            function toggleBtn(btn, valor) {
+                let siblings = btn.parentElement.children;
+                for (let i = 0; i < siblings.length; i++) { siblings[i].classList.remove('active'); }
+                btn.classList.add('active');
+                document.getElementById('esActivo').value = valor;
             }
-        }
 
-        // 5. GUARDAR Y CONTINUAR
-        function validarYContinuar() {
-            const required = document.querySelectorAll('.required-field');
-            let isValid = true;
+            function setRating(rating) {
+                const stars = document.querySelectorAll('#ratingStars .bi-star-fill');
+                document.getElementById('ratingValue').value = rating;
+                stars.forEach((s, i) => {
+                    if (i < rating) s.classList.add('active');
+                    else s.classList.remove('active');
+                });
+            }
 
-            required.forEach(field => {
-                if (!field.value.trim()) {
-                    field.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    field.classList.remove('is-invalid');
+            // 4. Formatear RUT
+            function formatearRUT(input) {
+                let valor = input.value.replace(/[^0-9kK]/g, "");
+                if (valor.length > 1) {
+                    const cuerpo = valor.slice(0, -1);
+                    const dv = valor.slice(-1).toUpperCase();
+                    input.value = `${cuerpo}-${dv}`;
                 }
-            });
-
-            if (isValid) {
-                // Recopilar datos
-                const datosPaso5 = {
-                    rut: document.getElementById('rut').value,
-                    tipoDoc: document.querySelector('input[name="tipoDoc"]:checked').value,
-                    nombre: document.getElementById('nombre').value,
-                    apellidoP: document.getElementById('apellidoP').value,
-                    apellidoM: document.getElementById('apellidoM').value,
-                    email: document.getElementById('email').value,
-                    celular: document.getElementById('celular').value,
-                    fijo: document.getElementById('fijo').value,
-                    comercial: document.getElementById('comercial').value,
-                    esActivo: document.getElementById('esActivo').value,
-                    rating: document.getElementById('ratingValue').value,
-                    comentarios: document.getElementById('comentarios').value
-                };
-
-                // Guardar en Memoria
-                localStorage.setItem('propiedad_paso5', JSON.stringify(datosPaso5));
-
-                // Ir al Paso 6 (Resumen Final)
-                window.location.href = 'admin-publicar-paso6.html';
-            } else {
-                alert("Por favor complete los campos obligatorios del propietario.");
             }
-        }
-    </script>
 
+            // 5. GUARDAR Y CONTINUAR
+            function validarYContinuar() {
+                const required = document.querySelectorAll('.required-field');
+                let isValid = true;
+
+                required.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+
+                if (isValid) {
+                    // Recopilar datos
+                    const datosPaso5 = {
+                        rut: document.getElementById('rut').value,
+                        tipoDoc: document.querySelector('input[name="tipoDoc"]:checked').value,
+                        nombre: document.getElementById('nombre').value,
+                        apellidoP: document.getElementById('apellidoP').value,
+                        apellidoM: document.getElementById('apellidoM').value,
+                        email: document.getElementById('email').value,
+                        celular: document.getElementById('celular').value,
+                        fijo: document.getElementById('fijo').value,
+                        comercial: document.getElementById('comercial').value,
+                        esActivo: document.getElementById('esActivo').value,
+                        rating: document.getElementById('ratingValue').value,
+                        comentarios: document.getElementById('comentarios').value
+                    };
+
+                    // Guardar en Memoria
+                    localStorage.setItem('propiedad_paso5', JSON.stringify(datosPaso5));
+
+                    // Ir al Paso 6 (Resumen Final)
+                    window.location.href = 'admin-publicar-paso6.html';
+                } else {
+                    alert("Por favor complete los campos obligatorios del propietario.");
+                }
+            }
+        </script>
+
+        <script src="admin-auth.js"></script>
+    </div>
 </body>
 
 </html>

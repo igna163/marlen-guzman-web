@@ -1,0 +1,104 @@
+/* --- PALETA DE COLORES MARLEN GUZMÁN --- */
+:root {
+    --color-primary: #bfa378;
+    /* Dorado del Logo */
+    --color-secondary: #3e3632;
+    /* Café oscuro corporativo */
+    --color-bg: #f9f7f2;
+    /* Crema suave fondo */
+    --color-text: #594a42;
+    /* Texto café grisáceo */
+}
+
+body {
+    background-color: var(--color-bg);
+    font-family: 'Playfair Display', 'Segoe UI', serif;
+    color: var(--color-text);
+}
+
+/* Sidebar (Barra Lateral) - Café Oscuro */
+.sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    background: var(--color-secondary);
+    color: white;
+    padding-top: 20px;
+    z-index: 1000;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.sidebar-brand {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+    color: var(--color-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-brand img {
+    height: 50px;
+    border-radius: 5px;
+}
+
+.sidebar a {
+    padding: 12px 20px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    border-left: 4px solid transparent;
+    transition: 0.3s;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+}
+
+.sidebar a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    padding-left: 25px;
+    /* Efecto movimiento */
+}
+
+.sidebar a.active {
+    background: rgba(191, 163, 120, 0.15);
+    /* Fondo dorado transparente */
+    color: var(--color-primary);
+    border-left-color: var(--color-primary);
+}
+
+.sidebar i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+    vertical-align: text-bottom;
+}
+
+/* Contenido Principal */
+.main-content {
+    margin-left: 250px;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}

@@ -9,8 +9,124 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
 
     <style>
+        /* --- ESTILOS MODAL FICHA TIPO NEXXOS --- */
+        .modal-nexxos .modal-header {
+            background-color: #2c3e50;
+            color: white;
+            border-bottom: none;
+            padding: 15px 20px;
+        }
+
+        .modal-nexxos .modal-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .modal-nexxos .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        .nav-tabs-nexxos {
+            border-bottom: 1px solid #dee2e6;
+            background-color: #f8f9fa;
+            padding: 10px 20px 0;
+            gap: 5px;
+            display: flex;
+        }
+
+        .nav-tabs-nexxos .nav-link {
+            border: 1px solid transparent;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            color: #6c757d;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .nav-tabs-nexxos .nav-link.active {
+            background-color: #fff;
+            border-color: #dee2e6 #dee2e6 #fff;
+            color: #343a40;
+            border-top: 3px solid #2c3e50;
+        }
+
+        .nav-tabs-nexxos .nav-link i {
+            margin-right: 5px;
+        }
+
+        .ficha-content {
+            padding: 20px;
+            background-color: #fff;
+            min-height: 400px;
+        }
+
+        .price-box {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .price-box .tag {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .price-box .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0d6efd;
+        }
+
+        .price-box .value-clp {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Galería */
+        .gallery-placeholder {
+            background-color: #eee;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-select-orange {
+            background-color: #f39c12;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 30px;
+        }
+
+        .btn-select-orange:hover {
+            background-color: #e67e22;
+            color: white;
+        }
+
+
         body {
             background-color: #f4f6f9;
             font-family: 'Open Sans', sans-serif;
@@ -19,51 +135,9 @@
         }
 
         /* Sidebar */
-        /* Sidebar */
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            background: #343a40;
-            color: white;
-            padding-top: 20px;
-            z-index: 1000;
-            overflow-y: auto;
-            /* <--- AGREGA ESTA LÍNEA */
-        }
 
-        .sidebar-brand {
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
 
-        .sidebar a {
-            padding: 12px 20px;
-            text-decoration: none;
-            color: #adb5bd;
-            display: block;
-            border-left: 4px solid transparent;
-        }
 
-        .sidebar a:hover {
-            background: #495057;
-            color: white;
-        }
-
-        .sidebar a.active {
-            background: #495057;
-            color: white;
-            border-left: 4px solid #0d6efd;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
 
         /* Tabs */
         .nav-tabs .nav-link {
@@ -267,44 +341,42 @@
 <body>
 
     <div class="sidebar">
-        <div class="text-center p-3 border-bottom border-secondary">
+        <div class="sidebar-brand">
+            <img src="Logo_MG.jpeg" alt="Logo MG">
+            <div>ADMIN</div>
+        </div>
+        <div class="text-center p-3 border-bottom border-secondary pt-4">
             <div class="mb-2 position-relative d-inline-block">
                 <img src="https://placehold.co/150" id="sidebar_foto" class="rounded img-fluid"
-                    style="width: 120px; height: 120px; object-fit: cover; border: 2px solid #fff;">
+                    style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #fff;">
             </div>
-
-            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cód: ...</div>
-            <h6 class="text-white fw-bold mb-0" id="sidebar_tipo">Cargando...</h6>
-
+            <div class="mb-1"><span class="badge bg-secondary" id="sidebar_estado">Cargando...</span></div>
+            <div class="badge bg-secondary mb-1" id="sidebar_cod">Cargando...</div>
+            <h6 class="text-white fw-bold mb-0 text-truncate px-2" id="sidebar_tipo">...</h6>
             <div class="mt-2">
                 <span class="badge bg-primary" id="sidebar_operacion">-</span>
-                <span class="badge bg-success" id="sidebar_estado">-</span>
             </div>
             <div class="text-muted small mt-1" id="sidebar_comuna">...</div>
         </div>
 
         <div class="py-2">
-            <a href="#" class="d-flex align-items-center"><i class="bi bi-house me-2"></i> Resumen</a>
-
+            <a href="#" id="link_ficha" class="d-flex align-items-center"><i class="bi bi-eye me-2"></i> Ver Ficha</a>
             <a href="#" class="active d-flex align-items-center"><i class="bi bi-pencil-square me-2"></i> Editar</a>
-
-            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i> Imágenes
-                y videos</a>
+            <a href="#" id="link_imagenes" class="d-flex align-items-center"><i class="bi bi-images me-2"></i>
+                Imágenes</a>
             <a href="#" id="link_documentos" class="d-flex align-items-center"><i class="bi bi-folder me-2"></i>
                 Documentos</a>
-            <a href="#" id="link_estado" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado /
-                Config.</a>
+            <a href="#" id="link_informes" class="d-flex align-items-center"><i class="bi bi-bar-chart me-2"></i>
+                Informes</a>
+            <a href="#" id="link_estado" class="d-flex align-items-center"><i class="bi bi-gear me-2"></i> Estado</a>
             <a href="#" id="link_bitacora" class="d-flex align-items-center"><i class="bi bi-chat-left-text me-2"></i>
                 Bitácora</a>
             <a href="#" id="link_propietario" class="d-flex align-items-center"><i class="bi bi-person me-2"></i>
                 Propietario</a>
-            <a href="#" id="link_informes" class="d-flex align-items-center"><i class="bi bi-list-ul me-2"></i> Informes
-                prop.</a>
-            <a href="#" id="link_ficha" class="d-flex align-items-center"><i class="bi bi-book me-2"></i> Ficha</a>
-            <a href="#" id="link_portales" class="d-flex align-items-center"><i class="bi bi-display me-2"></i>
+            <a href="#" id="link_portales" class="d-flex align-items-center"><i class="bi bi-globe me-2"></i>
                 Portales</a>
-            <a href="#" id="link_duplicar" class="d-flex align-items-center text-warning"><i
-                    class="bi bi-layers me-2"></i> Duplicar</a>
+            <a href="#" id="link_duplicar" class="d-flex align-items-center"><i class="bi bi-files me-2"></i>
+                Duplicar</a>
 
             <hr class="border-secondary mx-3">
             <a href="admin-propiedades.html" class="text-muted small"><i class="bi bi-arrow-left me-2"></i> Volver al
@@ -2028,6 +2100,131 @@
         </div>
     </div>
 
+    <div class="modal fade modal-nexxos" id="modalFicha" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">FICHA PROPIEDAD</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="nav-tabs-nexxos">
+                    <button class="nav-link active" onclick="switchTab('propiedad')"><i
+                            class="bi bi-house-door-fill"></i> Propiedad</button>
+                    <button class="nav-link" onclick="switchTab('reportes')"><i class="bi bi-graph-up"></i>
+                        Reportes</button>
+                    <button class="nav-link" onclick="switchTab('interesados')"><i class="bi bi-people-fill"></i>
+                        Interesados</button>
+                    <button class="nav-link" onclick="switchTab('bitacora')"><i class="bi bi-chat-left-text-fill"></i>
+                        Bitácora</button>
+                    <button class="nav-link" onclick="switchTab('portales')"><i class="bi bi-laptop"></i>
+                        Portales</button>
+                    <button class="nav-link" onclick="switchTab('tareas')"><i class="bi bi-bell-fill"></i>
+                        Tareas</button>
+                </div>
+
+                <div class="modal-body p-0" style="background-color: #f8f9fa;">
+                    <div id="tab-propiedad" class="ficha-content">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="gallery-placeholder position-relative bg-dark rounded overflow-hidden"
+                                    style="height: 320px;">
+                                    <img id="modalImg" src="" alt="Propiedad" class="w-100 h-100"
+                                        style="object-fit: cover;">
+                                </div>
+                                <div class="mt-4 p-3 bg-white border rounded">
+                                    <h6 class="text-primary fw-bold mb-2"><i class="bi bi-key-fill"></i> Forma de
+                                        Visitar</h6>
+                                    <div class="fw-bold text-dark fs-5" id="modalFormaVisita">...</div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <div class="text-primary fw-bold" id="modalCodigo">Cód: 000</div>
+                                        <h4 class="fw-bold mb-0" id="modalTipo">Casa</h4>
+                                        <div class="text-muted small text-uppercase" id="modalDireccionCorta">...
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-success" id="modalEstadoBadge">PUBLICADA</span>
+                                </div>
+                                <p class="text-muted small mt-1 mb-3">
+                                    <i class="bi bi-geo-alt"></i> <span id="modalDireccionLarga">...</span><br>
+                                    Rol: <span id="modalRol">...</span>
+                                </p>
+                                <div class="price-box d-flex justify-content-between align-items-center px-4 py-3 mb-3">
+                                    <div class="text-start">
+                                        <span class="tag d-block mb-1" id="modalTagOperacion">VENTA</span>
+                                        <div class="value" id="modalPrecio">UF 0</div>
+                                        <div class="value-clp text-muted" id="modalPrecioPesos">$ 0</div>
+                                    </div>
+                                </div>
+                                <div class="row g-2 text-center mb-3">
+                                    <div class="col-4">
+                                        <div class="bg-white border rounded p-2"><small
+                                                class="d-block text-muted">Dormitorios</small><strong
+                                                id="modalDorms">0</strong></div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="bg-white border rounded p-2"><small
+                                                class="d-block text-muted">Baños</small><strong
+                                                id="modalBanos">0</strong></div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="bg-white border rounded p-2"><small
+                                                class="d-block text-muted">Contribuciones</small><strong
+                                                id="modalContrib">$ 0</strong></div>
+                                    </div>
+                                </div>
+                                <div class="card bg-white border mb-3">
+                                    <div class="card-header bg-white fw-bold py-2">Descripción</div>
+                                    <div class="card-body py-2">
+                                        <p class="small text-muted mb-0" id="modalDesc"
+                                            style="max-height: 120px; overflow-y: auto;">...</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white border rounded p-3 small">
+                                    <h6 class="fw-bold mb-3 border-bottom pb-2">Características</h6>
+                                    <div class="row g-2">
+                                        <div class="col-6 d-flex justify-content-between border-bottom pb-1"><span
+                                                class="text-muted">Sup. Terreno:</span> <strong id="modalSupTerreno">0
+                                                m²</strong></div>
+                                        <div class="col-6 d-flex justify-content-between border-bottom pb-1"><span
+                                                class="text-muted">Sup. Construida:</span> <strong id="modalSupConst">0
+                                                m²</strong></div>
+                                        <div class="col-6 d-flex justify-content-between border-bottom pb-1"><span
+                                                class="text-muted">Estacionamientos:</span> <strong
+                                                id="modalEstac">0</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-reportes" class="ficha-content text-center py-5" style="display:none;">
+                        <h5 class="text-muted">Módulo Reportes</h5>
+                    </div>
+                    <div id="tab-interesados" class="ficha-content text-center py-5" style="display:none;">
+                        <h5 class="text-muted">Módulo Interesados</h5>
+                    </div>
+                    <div id="tab-bitacora" class="ficha-content text-center py-5" style="display:none;">
+                        <h5 class="text-muted">Módulo Bitácora</h5>
+                    </div>
+                    <div id="tab-portales" class="ficha-content text-center py-5" style="display:none;">
+                        <h5 class="text-muted">Módulo Portales</h5>
+                    </div>
+                    <div id="tab-tareas" class="ficha-content text-center py-5" style="display:none;">
+                        <h5 class="text-muted">Módulo Tareas</h5>
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark border-0 justify-content-center">
+                    <button type="button" class="btn btn-select-orange rounded-1"
+                        data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // DATOS DE COMUNAS
@@ -2135,9 +2332,15 @@
                     // ... dentro de cargarDatos ...
                     const linkInfo = document.getElementById('link_informes');
                     if (linkInfo) linkInfo.href = `admin-propiedad-informes.html?id=${p.id}`;
-                    // ... dentro de cargarDatos ...
+
                     const linkFicha = document.getElementById('link_ficha');
-                    if (linkFicha) linkFicha.href = `admin-propiedad-ficha-2.html?id=${p.id}`;
+                    if (linkFicha) {
+                        linkFicha.href = "#"; // Evita recargar
+                        linkFicha.onclick = (e) => {
+                            e.preventDefault();
+                            abrirModalFicha(p); // Llama a la nueva función pasando los datos 'p'
+                        };
+                    }
                     const linkPortales = document.getElementById('link_portales');
                     if (linkPortales) {
                         linkPortales.href = "#"; // Para que no recargue
@@ -2475,7 +2678,75 @@
             myModal.show();
         }
 
+        // --- NUEVAS FUNCIONES PARA EL MODAL DE FICHA ---
+
+        function abrirModalFicha(prop) {
+            if (!prop) return;
+
+            // 1. Llenar Datos Básicos
+            document.getElementById('modalCodigo').innerText = 'Cód: ' + prop.id;
+            document.getElementById('modalTipo').innerText = prop.tipo_propiedad;
+            document.getElementById('modalDireccionCorta').innerText = (prop.direccion_calle || '') + ' ' + (prop.direccion_numero || '');
+            document.getElementById('modalDireccionLarga').innerText = (prop.direccion_calle || '') + ' ' + (prop.direccion_numero || '') + ', ' + prop.comuna;
+            document.getElementById('modalRol').innerText = prop.rol_sii || 'Sin Rol';
+            document.getElementById('modalFormaVisita').innerText = prop.forma_visita || 'No especificada';
+
+            // Imagen
+            const imgUrl = prop.imagen_principal || 'https://placehold.co/600x400?text=Sin+Imagen';
+            const imgEl = document.getElementById('modalImg');
+            if (imgEl) imgEl.src = imgUrl;
+
+            // Precio
+            if (prop.operacion_venta) {
+                document.getElementById('modalTagOperacion').innerText = 'VENTA';
+                document.getElementById('modalTagOperacion').className = 'tag text-primary fw-bold';
+                document.getElementById('modalPrecio').innerText = (prop.moneda_venta || 'UF') + ' ' + Number(prop.precio_venta).toLocaleString('es-CL');
+                document.getElementById('modalPrecioPesos').innerText = '$ ' + (prop.precio_venta * 38000).toLocaleString('es-CL') + ' aprox';
+            } else {
+                document.getElementById('modalTagOperacion').innerText = 'ARRIENDO';
+                document.getElementById('modalTagOperacion').className = 'tag text-success fw-bold';
+                document.getElementById('modalPrecio').innerText = (prop.moneda_arriendo || '$') + ' ' + Number(prop.precio_arriendo).toLocaleString('es-CL');
+                document.getElementById('modalPrecioPesos').innerText = '';
+            }
+
+            // Datos Técnicos
+            document.getElementById('modalDorms').innerText = prop.dormitorios || 0;
+            document.getElementById('modalBanos').innerText = prop.banos || 0;
+            document.getElementById('modalContrib').innerText = '$ ' + (prop.contribuciones || 0).toLocaleString('es-CL');
+            document.getElementById('modalSupConst').innerText = (prop.superficie_util || 0) + ' m²';
+            document.getElementById('modalSupTerreno').innerText = (prop.superficie_total || 0) + ' m²';
+            document.getElementById('modalEstac').innerText = prop.estacionamientos || 0;
+            document.getElementById('modalDesc').innerText = prop.descripcion_publica || "Sin descripción.";
+
+            // 2. Resetear Pestañas
+            switchTab('propiedad');
+
+            // 3. Mostrar Modal
+            var myModal = new bootstrap.Modal(document.getElementById('modalFicha'));
+            myModal.show();
+        }
+
+        function switchTab(tabName) {
+            // Manejo visual de botones
+            if (window.event) {
+                document.querySelectorAll('.nav-tabs-nexxos .nav-link').forEach(btn => btn.classList.remove('active'));
+                window.event.currentTarget.classList.add('active');
+            }
+
+            // Ocultar todas las pestañas
+            const tabs = ['propiedad', 'reportes', 'interesados', 'bitacora', 'portales', 'tareas'];
+            tabs.forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if (el) el.style.display = 'none';
+            });
+
+            // Mostrar la seleccionada
+            const target = document.getElementById('tab-' + tabName);
+            if (target) target.style.display = 'block';
+        }
+
     </script>
+    <script src="admin-auth.js"></script>
 </body>
 
 </html>

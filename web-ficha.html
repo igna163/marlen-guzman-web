@@ -134,6 +134,108 @@
         .btn-submit:hover {
             background: #a38960;
         }
+
+        /* --- ESTILOS DE NAVEGACIÓN Y LIGHTBOX (NUEVO) --- */
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .gallery-main {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: zoom-in;
+            /* Indica que se puede ampliar */
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-btn.prev {
+            left: 10px;
+        }
+
+        .nav-btn.next {
+            right: 10px;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 3rem;
+            cursor: pointer;
+            padding: 20px;
+            z-index: 10000;
+        }
+
+        .lightbox-nav:hover {
+            color: #bfa378;
+        }
+
+        .lightbox-nav.prev {
+            left: 20px;
+        }
+
+        .lightbox-nav.next {
+            right: 20px;
+        }
     </style>
 </head>
 
@@ -155,7 +257,13 @@
                     <p class="prop-address"><i class="fas fa-map-marker-alt text-gold"></i> <span
                             id="prop-address">...</span></p>
 
-                    <img src="" id="main-img" class="gallery-main" alt="Principal">
+                    <div class="gallery-container">
+                        <img src="" id="main-img" class="gallery-main" alt="Principal" onclick="openLightbox()">
+                        <button class="nav-btn prev" onclick="changeImage(-1)"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <button class="nav-btn next" onclick="changeImage(1)"><i
+                                class="fas fa-chevron-right"></i></button>
+                    </div>
                     <div class="gallery-grid">
                         <img src="https://placehold.co/150" class="gallery-thumb">
                         <img src="https://placehold.co/150" class="gallery-thumb">
@@ -219,6 +327,16 @@
 
     <div id="footer-placeholder"></div>
 
+    <!-- Lightbox Structure -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="close-lightbox" onclick="closeLightbox(event)">&times;</span>
+        <button class="lightbox-nav prev" onclick="changeLightboxImage(-1, event)"><i
+                class="fas fa-chevron-left"></i></button>
+        <img class="lightbox-content" id="lightbox-img">
+        <button class="lightbox-nav next" onclick="changeLightboxImage(1, event)"><i
+                class="fas fa-chevron-right"></i></button>
+    </div>
+
     <script src="cargador.js"></script>
     <script type="module" src="script.js"></script>
 
@@ -227,12 +345,54 @@
         const propId = urlParams.get('id');
 
         if (propId) {
-            fetch(`http://localhost:3000/api/propiedades2/${propId}`)
+            // Usar ruta relativa para que funcione tanto en localhost como en Cloudflare
+            const API_URL = '';
+
+            fetch(`${API_URL}/api/propiedades2/${propId}`)
                 .then(res => res.json())
                 .then(json => {
                     if (json.success) {
                         const p = json.data;
                         const imgs = json.imagenes;
+
+                        // --- FUNCIONES GLOBALIZADAS PARA EL HTML ---
+                        // DEFINIDAS PRIMERO PARA EVITAR REFERENCE ERROR
+                        window.currentIndex = 0;
+                        window.galleryList = []; // Se llenará abajo
+
+                        window.updateMainImage = function () {
+                            const img = document.getElementById('main-img');
+                            if (window.galleryList.length > 0) {
+                                img.src = window.galleryList[window.currentIndex];
+                            }
+                        }
+
+                        window.changeImage = function (direction) {
+                            window.currentIndex += direction;
+                            if (window.currentIndex < 0) window.currentIndex = window.galleryList.length - 1;
+                            if (window.currentIndex >= window.galleryList.length) window.currentIndex = 0;
+                            updateMainImage();
+                        }
+
+                        window.openLightbox = function () {
+                            const lightbox = document.getElementById('lightbox');
+                            const lightboxImg = document.getElementById('lightbox-img');
+                            lightbox.style.display = 'flex';
+                            if (window.galleryList.length > 0) {
+                                lightboxImg.src = window.galleryList[window.currentIndex];
+                            }
+                        }
+
+                        window.closeLightbox = function (e) {
+                            if (e && e.target !== e.currentTarget && !e.target.classList.contains('close-lightbox')) return;
+                            document.getElementById('lightbox').style.display = 'none';
+                        }
+
+                        window.changeLightboxImage = function (direction, e) {
+                            if (e) e.stopPropagation();
+                            changeImage(direction);
+                            document.getElementById('lightbox-img').src = window.galleryList[window.currentIndex];
+                        }
 
                         // Llenar textos básicos
                         document.getElementById('bread-code').innerText = `COD: ${p.id}`;
@@ -244,34 +404,62 @@
                         document.getElementById('prop-desc').innerText = p.descripcion_publica;
 
                         // --- CONFIGURACIÓN DEL MAPA (LO NUEVO) ---
-                        // Construimos la dirección: "Calle Numero, Comuna, Chile"
                         const direccionCompleta = `${p.direccion_calle} ${p.direccion_numero}, ${p.comuna}, Chile`;
-                        // Generamos la URL de Google Maps para embeber
                         const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(direccionCompleta)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
                         document.getElementById('prop-map').src = mapUrl;
 
-                        // 1. Poner Imagen Principal
-                        const mainImg = document.getElementById('main-img');
-                        mainImg.src = p.imagen_principal || 'https://placehold.co/800';
+                        // 1. Array de imágenes para navegación
+                        let galleryImages = [];
+                        if (p.imagen_principal) galleryImages.push(p.imagen_principal);
+                        if (imgs && imgs.length > 0) {
+                            imgs.forEach(img => galleryImages.push(img.url_imagen));
+                        }
+                        // Eliminar duplicados
+                        galleryImages = [...new Set(galleryImages)];
+
+                        // Si no hay imágenes, poner placeholder
+                        if (galleryImages.length === 0) galleryImages.push('https://placehold.co/800');
+
+                        // Configuración Inicial REAL
+                        window.currentIndex = 0;
+                        window.galleryList = galleryImages;
+
+                        updateMainImage();
 
                         // 2. Cargar Galería de Miniaturas
                         const galleryGrid = document.querySelector('.gallery-grid');
                         galleryGrid.innerHTML = '';
 
-                        if (imgs && imgs.length > 0) {
-                            imgs.forEach(img => {
-                                const thumb = document.createElement('img');
-                                thumb.src = img.url_imagen;
-                                thumb.className = 'gallery-thumb';
-                                thumb.onclick = () => { mainImg.src = img.url_imagen; };
-                                galleryGrid.appendChild(thumb);
-                            });
-                        }
+                        window.galleryList.forEach((src, index) => {
+                            const thumb = document.createElement('img');
+                            thumb.src = src;
+                            thumb.className = 'gallery-thumb';
+                            thumb.onclick = () => {
+                                window.currentIndex = index;
+                                updateMainImage();
+                            };
+                            galleryGrid.appendChild(thumb);
+                        });
 
                         // Precios
                         const valor = p.operacion_venta ? p.precio_venta : p.precio_arriendo;
                         const moneda = p.operacion_venta ? p.moneda_venta : p.moneda_arriendo;
                         document.getElementById('prop-price').innerText = `${moneda} ${new Intl.NumberFormat('es-CL').format(valor)}`;
+
+                        // Nuevo: Mostrar valor CLP aproximado (si es UF)
+                        const clpEl = document.getElementById('prop-price-clp');
+                        if (moneda === 'UF') {
+                            const valorCLP = valor * 38000; // Valor UF aproximado
+                            clpEl.innerText = `$ ${new Intl.NumberFormat('es-CL').format(valorCLP)} (Aprox.)`;
+                        } else {
+                            clpEl.innerText = '';
+                        }
+
+                        // Nuevo: Mostrar Operación (Venta / Arriendo)
+                        const opEl = document.getElementById('prop-op');
+                        if (opEl) {
+                            opEl.innerText = p.operacion_venta ? "Venta" : "Arriendo";
+                        }
                     }
                 })
                 .catch(e => console.error("Error cargando ficha:", e));

@@ -8,6 +8,7 @@
     <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
     <style>
         body {
             background-color: #f4f6f9;
@@ -120,1067 +121,1109 @@
 
 <body>
 
-    <div class="container mt-5 mb-5">
-        <div class="row justify-content-center">
-            <div class="col-md-11">
-                <div class="d-flex justify-content-between align-items-end mb-4">
-                    <div>
-                        <small class="text-muted">Panel de Control • Agregar propiedad</small>
-                        <h4 class="text-primary mt-1"><i class="bi bi-list-check"></i> AGREGAR PROPIEDAD - PASO 3 DE 6
-                        </h4>
-                    </div>
-                    <small class="text-success fw-bold" id="borradorText"><i class="bi bi-check-circle"></i>
-                        Editando...</small>
-                </div>
-
-                <div class="step-indicator px-4">
-                    <div class="text-center">
-                        <div class="step completed" onclick="location.href='admin-publicar-1.html'"><i
-                                class="bi bi-check"></i></div><span class="step-label text-success">Tipo</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step completed" onclick="location.href='admin-publicar-paso2.html'"><i
-                                class="bi bi-check"></i></div><span class="step-label text-success">Ubicación</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step active">3</div><span class="step-label">Características</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">4</div><span class="step-label">Observaciones</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">5</div><span class="step-label">Propietario</span>
-                    </div>
-                    <div class="text-center">
-                        <div class="step">6</div><span class="step-label">Confirmar</span>
-                    </div>
-                </div>
-                <div class="progress mb-4" style="height: 5px;">
-                    <div class="progress-bar" style="width: 50%;"></div>
-                </div>
-
-                <div class="card p-4">
-                    <form id="formPaso3">
-
-                        <div class="alert alert-light border small text-muted mb-4">
-                            <i class="bi bi-star-fill text-warning"></i> Campos que se envían a Portal Inmobiliario /
-                            Mercado Libre
-                        </div>
-
-                        <div class="row g-3">
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> N° de suites</label>
-                                <input type="number" name="num_suites" class="form-control">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Dormitorios</label>
-                                <input type="number" name="num_dormitorios" class="form-control" value="3">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Piezas de servicio</label>
-                                <input type="number" name="num_piezas_servicio" class="form-control">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Pieza de
-                                    servicio</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="pieza_servicio" id="psSi"
-                                        value="Si"><label class="btn btn-outline-success" for="psSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="pieza_servicio" id="psNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="psNo">No</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Baños</label>
-                                <input type="number" name="num_banos" class="form-control" value="2">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Baño de servicio</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="bano_servicio" id="bsSi"
-                                        value="Si"><label class="btn btn-outline-success" for="bsSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="bano_servicio" id="bsNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="bsNo">No</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Jacuzzi</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="jacuzzi" id="jzSi" value="Si"><label
-                                        class="btn btn-outline-success" for="jzSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="jacuzzi" id="jzNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="jzNo">No</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3"></div>
-                            <div class="col-md-3">
-                                <label class="form-label">Camas servicio</label>
-                                <input type="number" name="camas_servicio" class="form-control">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> N° de salas de
-                                    estar</label>
-                                <input type="number" name="salas_estar" class="form-control">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Bodega</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="bodega" id="bodSi" value="Si"><label
-                                        class="btn btn-outline-success" for="bodSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="bodega" id="bodNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="bodNo">No</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Comedor de diario</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="comedor_diario" id="cdSi"
-                                        value="Si"><label class="btn btn-outline-success" for="cdSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="comedor_diario" id="cdNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="cdNo">No</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">Family room</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="family_room" id="frSi" value="Si"><label
-                                        class="btn btn-outline-success" for="frSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="family_room" id="frNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="frNo">No</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Recibos</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="recibos" id="recSi" value="Si"><label
-                                        class="btn btn-outline-success" for="recSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="recibos" id="recNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="recNo">No</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sauna</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="sauna" id="sauSi" value="Si"><label
-                                        class="btn btn-outline-success" for="sauSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="sauna" id="sauNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="sauNo">No</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row g-3 mt-2">
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sup. de
-                                    terreno</label>
-                                <input type="number" name="sup_terreno" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sup.
-                                    construida</label>
-                                <input type="number" name="sup_construida" class="form-control">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sup. de
-                                    terraza</label>
-                                <input type="number" name="sup_terraza" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row g-3 mt-2">
-                            <div class="col-md-3"><label class="form-label">Piso de los dormitorios</label><select
-                                    class="form-select" name="piso_dormitorios">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Piso Flotante">Piso Flotante</option>
-                                    <option value="Alfombrado">Alfombrado</option>
-                                    <option value="Porcelanato">Porcelanato</option>
-                                    <option value="Cerámica">Cerámica</option>
-                                    <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
-                                    <option value="Parquet">Parquet</option>
-                                    <option value="Madera Natural">Madera Natural</option>
-                                    <option value="Laminado">Laminado</option>
-                                    <option value="Hormigón Afinado">Hormigón Afinado</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Piso de los baños</label><select
-                                    class="form-select" name="piso_banos">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Cerámica">Cerámica</option>
-                                    <option value="Porcelanato">Porcelanato</option>
-                                    <option value="Piso Vinílico / SPC">Piso Vinílico / SPC (Resistente al agua)
-                                    </option>
-                                    <option value="Mármol">Mármol / Piedra Natural</option>
-                                    <option value="Microcemento">Microcemento</option>
-                                    <option value="Baldosa Hidráulica">Baldosa Hidráulica</option>
-                                    <option value="Flexit">Flexit</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Piso de la cocina</label><select
-                                    class="form-select" name="piso_cocina">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Cerámica">Cerámica</option>
-                                    <option value="Porcelanato">Porcelanato</option>
-                                    <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
-                                    <option value="Microcemento">Microcemento</option>
-                                    <option value="Baldosa Hidráulica">Baldosa Hidráulica</option>
-                                    <option value="Piedra Pizarra">Piedra Pizarra</option>
-                                    <option value="Flexit">Flexit</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Piso del comedor</label><select
-                                    class="form-select" name="piso_comedor">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Piso Flotante">Piso Flotante</option>
-                                    <option value="Madera Natural">Madera Natural</option>
-                                    <option value="Parquet">Parquet</option>
-                                    <option value="Porcelanato">Porcelanato</option>
-                                    <option value="Cerámica">Cerámica</option>
-                                    <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
-                                    <option value="Mármol">Mármol</option>
-                                    <option value="Piedra Pizarra">Piedra Pizarra</option>
-                                    <option value="Laminado">Laminado</option>
-                                    <option value="Hormigón Afinado">Hormigón Afinado</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Piso del living</label><select
-                                    class="form-select" name="piso_living">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Piso Flotante">Piso Flotante</option>
-                                    <option value="Madera Natural">Madera Natural</option>
-                                    <option value="Parquet">Parquet</option>
-                                    <option value="Porcelanato">Porcelanato</option>
-                                    <option value="Cerámica">Cerámica</option>
-                                    <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
-                                    <option value="Mármol">Mármol</option>
-                                    <option value="Piedra Pizarra">Piedra Pizarra</option>
-                                    <option value="Alfombrado">Alfombrado</option>
-                                    <option value="Microcemento">Microcemento / Hormigón Pulido</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Piso hall de entrada</label><select
-                                    class="form-select" name="piso_hall">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Mármol">Mármol</option>
-                                    <option value="Porcelanato">Porcelanato</option>
-                                    <option value="Piedra Pizarra">Piedra Pizarra</option>
-                                    <option value="Cerámica">Cerámica</option>
-                                    <option value="Madera Natural">Madera Natural</option>
-                                    <option value="Parquet">Parquet</option>
-                                    <option value="Piso Flotante">Piso Flotante</option>
-                                    <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
-                                    <option value="Baldosa Hidráulica">Baldosa Hidráulica</option>
-                                    <option value="Microcemento">Microcemento</option>
-                                </select></div>
-                        </div>
-
-                        <div class="row g-3 mt-4">
-                            <div class="col-md-3"><label class="form-label">Estilo de casa</label><select
-                                    class="form-select" name="estilo_casa">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Moderna / Minimalista">Moderna / Minimalista</option>
-                                    <option value="Chilena">Chilena</option>
-                                    <option value="Mediterránea">Mediterránea</option>
-                                    <option value="Clásica / Tradicional">Clásica / Tradicional</option>
-                                    <option value="Colonial">Colonial</option>
-                                    <option value="Provenzal">Provenzal</option>
-                                    <option value="Inglesa / Tudor">Inglesa / Tudor</option>
-                                    <option value="Georgiana">Georgiana</option>
-                                    <option value="Rústica / Campo">Rústica / Campo</option>
-                                    <option value="Ley Pereira">Ley Pereira</option>
-                                    <option value="Townhouse">Townhouse</option>
-                                    <option value="Construcción Sólida">Construcción Sólida (Sin estilo definido)
-                                    </option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label"><i class="bi bi-star-fill star-icon"></i>
-                                    Tipo de casa</label><select class="form-select" name="tipo_casa">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Aislada">Aislada</option>
-                                    <option value="Pareada">Pareada</option>
-                                    <option value="Semi-pareada">Semi-pareada</option>
-                                    <option value="En hilera">En hilera</option>
-                                    <option value="Bungalow">Bungalow (1 piso)</option>
-                                    <option value="Chalet">Chalet</option>
-                                    <option value="Casa de Campo">Casa de Campo</option>
-                                    <option value="Mansión">Mansión / Gran propiedad</option>
-                                    <option value="Prefabricada">Prefabricada / Modular</option>
-                                    <option value="Remodelada">Remodelada</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Recepción final</label><select
-                                    class="form-select" name="recepcion_final">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Total">Total</option>
-                                    <option value="Parcial">Parcial</option>
-                                    <option value="En trámite">En trámite</option>
-                                    <option value="No tiene">No tiene</option>
-                                    <option value="Ampliación no regularizada">Ampliación no regularizada</option>
-                                    <option value="No informada">No informada</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label"><i class="bi bi-star-fill star-icon"></i>
-                                    Orientación</label><select class="form-select" name="orientacion">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Norte">Norte (Mucha luz)</option>
-                                    <option value="Sur">Sur</option>
-                                    <option value="Oriente">Oriente (Sol de mañana)</option>
-                                    <option value="Poniente">Poniente (Sol de tarde)</option>
-                                    <option value="Nor-Oriente">Nor-Oriente</option>
-                                    <option value="Nor-Poniente">Nor-Poniente</option>
-                                    <option value="Sur-Oriente">Sur-Oriente</option>
-                                    <option value="Sur-Poniente">Sur-Poniente</option>
-                                    <option value="Todas">Todas (Casa aislada)</option>
-                                </select></div>
-
-                            <div class="col-md-3"><label class="form-label"><i class="bi bi-star-fill star-icon"></i>
-                                    Año de construcción</label><input type="number" name="ano_construccion"
-                                    class="form-control"></div>
-                            <div class="col-md-3"><label class="form-label"><i class="bi bi-star-fill star-icon"></i> N°
-                                    de pisos</label><input type="number" name="num_pisos" class="form-control"></div>
-                            <div class="col-md-3"><label class="form-label"><i class="bi bi-star-fill star-icon"></i> N°
-                                    ascensores</label><input type="number" name="num_ascensores" class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Amoblado</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="amoblado" id="amoSi" value="Si"><label
-                                        class="btn btn-outline-success" for="amoSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="amoblado" id="amoNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="amoNo">No</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Permiten
-                                    mascotas</label>
-                                <div class="btn-group w-100 btn-group-sm" role="group">
-                                    <input type="radio" class="btn-check" name="mascotas" id="mascSi" value="Si"><label
-                                        class="btn btn-outline-success" for="mascSi">Sí</label>
-                                    <input type="radio" class="btn-check" name="mascotas" id="mascNo" value="No"
-                                        checked><label class="btn btn-outline-secondary" for="mascNo">No</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3"><label class="form-label">Tipo muebles cocina</label><select
-                                    class="form-select" name="muebles_cocina">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Cubierta Granito">Cubierta Granito</option>
-                                    <option value="Cubierta Cuarzo">Cubierta Cuarzo</option>
-                                    <option value="Cubierta Postformado">Cubierta Postformado</option>
-                                    <option value="Cubierta Mármol">Cubierta Mármol</option>
-                                    <option value="Cubierta Acero Inoxidable">Cubierta Acero Inoxidable</option>
-                                    <option value="Muebles Melamina">Muebles Melamina</option>
-                                    <option value="Muebles Madera">Muebles Madera</option>
-                                    <option value="Sin muebles (Base)">Sin muebles (Base)</option>
-                                    <option value="Equipada (Encimera/Horno/Campana)">Equipada (Encimera/Horno/Campana)
-                                    </option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Tipo aislación</label><select
-                                    class="form-select" name="tipo_aislacion">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Térmica">Térmica</option>
-                                    <option value="Acústica">Acústica</option>
-                                    <option value="Termopanel (Ventanas)">Termopanel (Ventanas)</option>
-                                    <option value="Lana de Vidrio / Mineral">Lana de Vidrio / Mineral</option>
-                                    <option value="Poliuretano Proyectado">Poliuretano Proyectado</option>
-                                    <option value="Planchas de Poliestireno (EPS)">Planchas de Poliestireno (EPS)
-                                    </option>
-                                    <option value="EIFS (Aislación Exterior)">EIFS (Aislación Exterior)</option>
-                                    <option value="Ninguna">Ninguna</option>
-                                    <option value="No informada">No informada</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Tipo de gas</label><select
-                                    class="form-select" name="tipo_gas">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Cañería (Gas Natural)">Cañería (Gas Natural)</option>
-                                    <option value="Balón / Cilindro">Balón / Cilindro</option>
-                                    <option value="Bombona / Granel (Tanque)">Bombona / Granel (Tanque)</option>
-                                    <option value="No tiene (Todo Eléctrico)">No tiene (Todo Eléctrico)</option>
-                                    <option value="Otro">Otro</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Termopanel</label><select
-                                    class="form-select" name="termopanel">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Toda la propiedad">Toda la propiedad</option>
-                                    <option value="Parcial (Solo dormitorios)">Parcial (Solo dormitorios)</option>
-                                    <option value="Solo en ventanales principales">Solo en ventanales principales
-                                    </option>
-                                    <option value="Marco PVC">Marco PVC</option>
-                                    <option value="Marco Aluminio">Marco Aluminio</option>
-                                    <option value="Marco Madera">Marco Madera</option>
-                                    <option value="No tiene (Vidrio Simple)">No tiene (Vidrio Simple)</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Tipo agua caliente</label><select
-                                    class="form-select" name="agua_caliente">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Calefont a Gas">Calefont a Gas</option>
-                                    <option value="Termo Eléctrico">Termo Eléctrico</option>
-                                    <option value="Caldera Central (Edificio)">Caldera Central (Edificio)</option>
-                                    <option value="Caldera Individual">Caldera Individual</option>
-                                    <option value="Panel Solar / Energía Térmica">Panel Solar / Energía Térmica</option>
-                                    <option value="Bomba de Calor">Bomba de Calor</option>
-                                    <option value="Sistema Mixto">Sistema Mixto</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label"><i class="bi bi-star-fill star-icon"></i>
-                                    Tipo calefacción</label><select class="form-select" name="tipo_calefaccion">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Losa Radiante">Losa Radiante</option>
-                                    <option value="Radiadores Murales">Radiadores Murales</option>
-                                    <option value="Estufa a Pellet">Estufa a Pellet</option>
-                                    <option value="Aire Acondicionado / Split">Aire Acondicionado / Split</option>
-                                    <option value="Calefacción Central (Edificio)">Calefacción Central (Edificio)
-                                    </option>
-                                    <option value="Bosca / Combustión Lenta">Bosca / Combustión Lenta</option>
-                                    <option value="Estufa a Gas (Cañería)">Estufa a Gas (Cañería)</option>
-                                    <option value="Paneles Eléctricos">Paneles Eléctricos</option>
-                                    <option value="Chimenea Tradicional">Chimenea Tradicional</option>
-                                    <option value="Ninguna">Ninguna</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Tipo de cocina</label><select
-                                    class="form-select" name="tipo_cocina">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Tradicional (Cerrada)">Tradicional (Cerrada)</option>
-                                    <option value="Americana (Abierta)">Americana (Abierta)</option>
-                                    <option value="Semi-incorporada">Semi-incorporada</option>
-                                    <option value="Con Isla">Con Isla</option>
-                                    <option value="Con Comedor de Diario">Con Comedor de Diario</option>
-                                    <option value="Galería / Pasillo">Galería / Pasillo</option>
-                                    <option value="Kitchenette">Kitchenette (Pequeña)</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Tipo construcción</label><select
-                                    class="form-select" name="tipo_construccion">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Hormigón Armado">Hormigón Armado</option>
-                                    <option value="Albañilería (Ladrillo)">Albañilería (Ladrillo)</option>
-                                    <option value="Sólida (Mixta)">Sólida (Mixta)</option>
-                                    <option value="Metalcom / Steel Frame">Metalcom / Steel Frame</option>
-                                    <option value="Madera">Madera</option>
-                                    <option value="Adobe">Adobe</option>
-                                    <option value="Estructura Metálica">Estructura Metálica</option>
-                                    <option value="Tabiquería">Tabiquería</option>
-                                    <option value="SIP (Paneles Térmicos)">SIP (Paneles Térmicos)</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Tipo de techo</label><select
-                                    class="form-select" name="tipo_techo">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Teja Chilena (Arcilla)">Teja Chilena (Arcilla)</option>
-                                    <option value="Teja Asfáltica">Teja Asfáltica</option>
-                                    <option value="Teja de Cemento">Teja de Cemento</option>
-                                    <option value="Teja Colonial">Teja Colonial</option>
-                                    <option value="Zinc / Calamina">Zinc / Calamina</option>
-                                    <option value="Techo Plano (Losa/Terraza)">Techo Plano (Losa/Terraza)</option>
-                                    <option value="Fibrocemento (Pizarreño)">Fibrocemento (Pizarreño)</option>
-                                    <option value="Plancha de Policarbonato">Plancha de Policarbonato (Tragaluz)
-                                    </option>
-                                    <option value="Teja Chena">Teja Chena</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label">Tipo de ventanas</label><select
-                                    class="form-select" name="tipo_ventanas">
-                                    <option value="">Seleccione...</option>
-                                    <option value="PVC Termopanel">PVC Termopanel</option>
-                                    <option value="Aluminio Termopanel">Aluminio Termopanel</option>
-                                    <option value="Aluminio Simple">Aluminio Simple</option>
-                                    <option value="Madera">Madera</option>
-                                    <option value="PVC Simple">PVC Simple</option>
-                                    <option value="Correderas">Correderas</option>
-                                    <option value="Abatibles (De abrir)">Abatibles (De abrir)</option>
-                                    <option value="Oscilobatientes">Oscilobatientes</option>
-                                    <option value="Vidrio Templado / Proyectante">Vidrio Templado / Proyectante</option>
-                                </select></div>
-                        </div>
-
-                        <h6 class="section-header">Exteriores</h6>
-                        <div class="row g-3">
-                            <div class="col-md-6"><label class="form-label">N° estac. cubiertos</label><input
-                                    type="number" name="estac_cub" class="form-control"></div>
-                            <div class="col-md-6"><label class="form-label">N° estac. descubiertos</label><input
-                                    type="number" name="estac_des" class="form-control"></div>
-
-                            <div class="col-md-3"><label class="form-label small">Barbecue</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="barbecue" id="bq2Si" value="Si"><label class="btn btn-outline-success"
-                                        for="bq2Si">Sí</label><input type="radio" class="btn-check" name="barbecue"
-                                        id="bq2No" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="bq2No">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Cancha de tenis</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="tenis" id="teSi" value="Si"><label class="btn btn-outline-success"
-                                        for="teSi">Sí</label><input type="radio" class="btn-check" name="tenis"
-                                        id="teNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="teNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">Cerco eléctrico</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="cerco" id="ceSi" value="Si"><label class="btn btn-outline-success"
-                                        for="ceSi">Sí</label><input type="radio" class="btn-check" name="cerco"
-                                        id="ceNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="ceNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">Circuito vigilancia</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="vigilancia" id="viSi" value="Si"><label class="btn btn-outline-success"
-                                        for="viSi">Sí</label><input type="radio" class="btn-check" name="vigilancia"
-                                        id="viNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="viNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Piscina</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="piscina" id="pis2Si" value="Si"><label class="btn btn-outline-success"
-                                        for="pis2Si">Sí</label><input type="radio" class="btn-check" name="piscina"
-                                        id="pis2No" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="pis2No">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Portón automático</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="porton_auto" id="po2Si" value="Si"><label class="btn btn-outline-success"
-                                        for="po2Si">Sí</label><input type="radio" class="btn-check" name="porton_auto"
-                                        id="po2No" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="po2No">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">Reja de piscina</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="reja_pis" id="rpSi" value="Si"><label class="btn btn-outline-success"
-                                        for="rpSi">Sí</label><input type="radio" class="btn-check" name="reja_pis"
-                                        id="rpNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="rpNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">Riego automático</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="riego_auto" id="raSi" value="Si"><label class="btn btn-outline-success"
-                                        for="raSi">Sí</label><input type="radio" class="btn-check" name="riego_auto"
-                                        id="raNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="raNo">No</label></div>
-                            </div>
-                        </div>
-
-                        <h6 class="section-header">Urbanización</h6>
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label small">Agua de riego</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="agua_riego" id="arSi" value="Si"><label class="btn btn-outline-success"
-                                        for="arSi">Sí</label><input type="radio" class="btn-check" name="agua_riego"
-                                        id="arNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="arNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">Agua de pozo</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="agua_pozo" id="apSi" value="Si"><label class="btn btn-outline-success"
-                                        for="apSi">Sí</label><input type="radio" class="btn-check" name="agua_pozo"
-                                        id="apNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="apNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">En condominio</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="en_condominio" id="ecSi" value="Si"><label class="btn btn-outline-success"
-                                        for="ecSi">Sí</label><input type="radio" class="btn-check" name="en_condominio"
-                                        id="ecNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="ecNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">Alcantarillado</label><select
-                                    class="form-select" name="alcantarillado">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Red Pública">Red Pública</option>
-                                    <option value="Fosa Séptica">Fosa Séptica</option>
-                                    <option value="Planta de Tratamiento">Planta de Tratamiento</option>
-                                    <option value="Pozo Negro">Pozo Negro</option>
-                                    <option value="No tiene">No tiene</option>
-                                </select></div>
-                            <div class="col-md-3"><label class="form-label small">Tipo de agua</label><select
-                                    class="form-select" name="tipo_agua">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Agua Potable (Red Pública)">Agua Potable (Red Pública)</option>
-                                    <option value="Pozo Profundo">Pozo Profundo</option>
-                                    <option value="APR (Agua Potable Rural)">APR (Agua Potable Rural)</option>
-                                    <option value="Derechos de Agua de Riego">Derechos de Agua de Riego</option>
-                                    <option value="Camión Aljibe">Camión Aljibe</option>
-                                    <option value="Vertiente">Vertiente</option>
-                                </select></div>
-                        </div>
-
-                        <h6 class="section-header">Otros</h6>
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label small">Tiene letrero</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="tiene_letrero" id="letSi" value="Si"><label
-                                        class="btn btn-outline-success" for="letSi">Sí</label><input type="radio"
-                                        class="btn-check" name="tiene_letrero" id="letNo" value="No" checked><label
-                                        class="btn btn-outline-secondary" for="letNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small">Llaves en oficina</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="llaves_oficina" id="llaSi" value="Si"><label
-                                        class="btn btn-outline-success" for="llaSi">Sí</label><input type="radio"
-                                        class="btn-check" name="llaves_oficina" id="llaNo" value="No" checked><label
-                                        class="btn btn-outline-secondary" for="llaNo">No</label></div>
-                            </div>
-                        </div>
-
-                        <h6 class="section-header">Portal Inm. > Ficha técnica</h6>
-                        <div class="row g-3">
-                            <div class="col-md-4"><label class="form-label"><i class="bi bi-star-fill star-icon"></i>
-                                    Horario contacto</label><input type="text" name="horario_contacto"
-                                    class="form-control"></div>
-                            <div class="col-md-4"><label class="form-label"><i class="bi bi-star-fill star-icon"></i>
-                                    Bodegas</label><input type="number" name="bodegas_ficha" class="form-control"></div>
-                            <div class="col-md-4"><label class="form-label"><i class="bi bi-star-fill star-icon"></i>
-                                    Estacionamientos</label><input type="number" name="estacionamientos_ficha"
-                                    class="form-control"></div>
-                        </div>
-
-                        <h6 class="section-header">Portal Inm. > Adicionales</h6>
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Agua corriente</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="agua_cte" id="aguaSi" value="Si"><label class="btn btn-outline-success"
-                                        for="aguaSi">Sí</label><input type="radio" class="btn-check" name="agua_cte"
-                                        id="aguaNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="aguaNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Línea telefónica</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="linea_tel" id="telSi" value="Si"><label class="btn btn-outline-success"
-                                        for="telSi">Sí</label><input type="radio" class="btn-check" name="linea_tel"
-                                        id="telNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="telNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Alarma</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="alarma" id="alSi" value="Si"><label class="btn btn-outline-success"
-                                        for="alSi">Sí</label><input type="radio" class="btn-check" name="alarma"
-                                        id="alNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="alNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Caldera</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="caldera" id="calSi" value="Si"><label class="btn btn-outline-success"
-                                        for="calSi">Sí</label><input type="radio" class="btn-check" name="caldera"
-                                        id="calNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="calNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Generador eléct.</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="generador" id="genSi" value="Si"><label class="btn btn-outline-success"
-                                        for="genSi">Sí</label><input type="radio" class="btn-check" name="generador"
-                                        id="genNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="genNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Gas natural</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="gas_natural" id="gasSi" value="Si"><label class="btn btn-outline-success"
-                                        for="gasSi">Sí</label><input type="radio" class="btn-check" name="gas_natural"
-                                        id="gasNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="gasNo">No</label></div>
-                            </div>
-                        </div>
-
-                        <h6 class="section-header">Portal Inm. > Ambientes</h6>
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Patio</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="patio" id="patSi" value="Si"><label class="btn btn-outline-success"
-                                        for="patSi">Sí</label><input type="radio" class="btn-check" name="patio"
-                                        id="patNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="patNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Playroom</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="playroom" id="playSi" value="Si"><label class="btn btn-outline-success"
-                                        for="playSi">Sí</label><input type="radio" class="btn-check" name="playroom"
-                                        id="playNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="playNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Cocina</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="cocina" id="cocSi" value="Si"><label class="btn btn-outline-success"
-                                        for="cocSi">Sí</label><input type="radio" class="btn-check" name="cocina"
-                                        id="cocNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="cocNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Baño visitas</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="bano_visitas" id="bvSi" value="Si"><label class="btn btn-outline-success"
-                                        for="bvSi">Sí</label><input type="radio" class="btn-check" name="bano_visitas"
-                                        id="bvNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="bvNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Jardín</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="jardin" id="jarSi" value="Si"><label class="btn btn-outline-success"
-                                        for="jarSi">Sí</label><input type="radio" class="btn-check" name="jardin"
-                                        id="jarNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="jarNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Parrilla</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="parrilla" id="parSi" value="Si"><label class="btn btn-outline-success"
-                                        for="parSi">Sí</label><input type="radio" class="btn-check" name="parrilla"
-                                        id="parNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="parNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Walk-in closet</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="walkin" id="wiSi" value="Si"><label class="btn btn-outline-success"
-                                        for="wiSi">Sí</label><input type="radio" class="btn-check" name="walkin"
-                                        id="wiNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="wiNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Comedor</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="comedor" id="comSi" value="Si"><label class="btn btn-outline-success"
-                                        for="comSi">Sí</label><input type="radio" class="btn-check" name="comedor"
-                                        id="comNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="comNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Closets</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="closets" id="clSi" value="Si"><label class="btn btn-outline-success"
-                                        for="clSi">Sí</label><input type="radio" class="btn-check" name="closets"
-                                        id="clNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="clNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Desayunador</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="desayunador" id="desSi" value="Si"><label class="btn btn-outline-success"
-                                        for="desSi">Sí</label><input type="radio" class="btn-check" name="desayunador"
-                                        id="desNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="desNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Mansarda</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="mansarda" id="manSi" value="Si"><label class="btn btn-outline-success"
-                                        for="manSi">Sí</label><input type="radio" class="btn-check" name="mansarda"
-                                        id="manNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="manNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Balcón</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="balcon" id="balSi" value="Si"><label class="btn btn-outline-success"
-                                        for="balSi">Sí</label><input type="radio" class="btn-check" name="balcon"
-                                        id="balNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="balNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Homeoffice</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="homeoffice" id="hoSi" value="Si"><label class="btn btn-outline-success"
-                                        for="hoSi">Sí</label><input type="radio" class="btn-check" name="homeoffice"
-                                        id="hoNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="hoNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Terraza</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="terraza_amb" id="taSi" value="Si"><label class="btn btn-outline-success"
-                                        for="taSi">Sí</label><input type="radio" class="btn-check" name="terraza_amb"
-                                        id="taNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="taNo">No</label></div>
-                            </div>
-                        </div>
-
-                        <h6 class="section-header">Portal Inm. > Comodidades y Amenities</h6>
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Cancha básquet</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="basquet" id="bqSi" value="Si"><label class="btn btn-outline-success"
-                                        for="bqSi">Sí</label><input type="radio" class="btn-check" name="basquet"
-                                        id="bqNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="bqNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Aire acond.</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="aire" id="aiSi" value="Si"><label class="btn btn-outline-success"
-                                        for="aiSi">Sí</label><input type="radio" class="btn-check" name="aire" id="aiNo"
-                                        value="No" checked><label class="btn btn-outline-secondary"
-                                        for="aiNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> TV Cable</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="tv" id="tvSi" value="Si"><label class="btn btn-outline-success"
-                                        for="tvSi">Sí</label><input type="radio" class="btn-check" name="tv" id="tvNo"
-                                        value="No" checked><label class="btn btn-outline-secondary"
-                                        for="tvNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Área cine</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="cine" id="ciSi" value="Si"><label class="btn btn-outline-success"
-                                        for="ciSi">Sí</label><input type="radio" class="btn-check" name="cine" id="ciNo"
-                                        value="No" checked><label class="btn btn-outline-secondary"
-                                        for="ciNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Cisterna</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="cisterna" id="cisSi" value="Si"><label class="btn btn-outline-success"
-                                        for="cisSi">Sí</label><input type="radio" class="btn-check" name="cisterna"
-                                        id="cisNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="cisNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Cancha fútbol</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="futbol" id="futSi" value="Si"><label class="btn btn-outline-success"
-                                        for="futSi">Sí</label><input type="radio" class="btn-check" name="futbol"
-                                        id="futNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="futNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Estac. visita</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="estac_visita" id="evSi" value="Si"><label class="btn btn-outline-success"
-                                        for="evSi">Sí</label><input type="radio" class="btn-check" name="estac_visita"
-                                        id="evNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="evNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Gimnasio</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="gimnasio" id="gymSi" value="Si"><label class="btn btn-outline-success"
-                                        for="gymSi">Sí</label><input type="radio" class="btn-check" name="gimnasio"
-                                        id="gymNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="gymNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Chimenea</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="chimenea" id="chiSi" value="Si"><label class="btn btn-outline-success"
-                                        for="chiSi">Sí</label><input type="radio" class="btn-check" name="chimenea"
-                                        id="chiNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="chiNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Internet</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="internet" id="intSi" value="Si"><label class="btn btn-outline-success"
-                                        for="intSi">Sí</label><input type="radio" class="btn-check" name="internet"
-                                        id="intNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="intNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Cancha paddle</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="paddle" id="padSi" value="Si"><label class="btn btn-outline-success"
-                                        for="padSi">Sí</label><input type="radio" class="btn-check" name="paddle"
-                                        id="padNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="padNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Salón fiestas</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="fiestas" id="fiSi" value="Si"><label class="btn btn-outline-success"
-                                        for="fiSi">Sí</label><input type="radio" class="btn-check" name="fiestas"
-                                        id="fiNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="fiNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Conserje 24h</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="conserje" id="conSi" value="Si"><label class="btn btn-outline-success"
-                                        for="conSi">Sí</label><input type="radio" class="btn-check" name="conserje"
-                                        id="conNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="conNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Refrigerador</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="refri" id="refSi" value="Si"><label class="btn btn-outline-success"
-                                        for="refSi">Sí</label><input type="radio" class="btn-check" name="refri"
-                                        id="refNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="refNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Juegos infantiles</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="juegos" id="jueSi" value="Si"><label class="btn btn-outline-success"
-                                        for="jueSi">Sí</label><input type="radio" class="btn-check" name="juegos"
-                                        id="jueNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="jueNo">No</label></div>
-                            </div>
-                        </div>
-
-                        <h6 class="section-header">Portal Inm. > Otros</h6>
-                        <div class="row g-3">
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Acceso controlado</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="acceso" id="accSi" value="Si"><label class="btn btn-outline-success"
-                                        for="accSi">Sí</label><input type="radio" class="btn-check" name="acceso"
-                                        id="accNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="accNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> En remate</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="remate" id="remSi" value="Si"><label class="btn btn-outline-success"
-                                        for="remSi">Sí</label><input type="radio" class="btn-check" name="remate"
-                                        id="remNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="remNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Apto crédito</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="apto_credito" id="acredSi" value="Si"><label
-                                        class="btn btn-outline-success" for="acredSi">Sí</label><input type="radio"
-                                        class="btn-check" name="apto_credito" id="acredNo" value="No" checked><label
-                                        class="btn btn-outline-secondary" for="acredNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Condominio cerrado</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="cond_cerrado" id="ccSi" value="Si"><label class="btn btn-outline-success"
-                                        for="ccSi">Sí</label><input type="radio" class="btn-check" name="cond_cerrado"
-                                        id="ccNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="ccNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Área verde</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="area_verde" id="avSi" value="Si"><label class="btn btn-outline-success"
-                                        for="avSi">Sí</label><input type="radio" class="btn-check" name="area_verde"
-                                        id="avNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="avNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Conexión lavadora</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="lavarropas" id="lavSi" value="Si"><label class="btn btn-outline-success"
-                                        for="lavSi">Sí</label><input type="radio" class="btn-check" name="lavarropas"
-                                        id="lavNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="lavNo">No</label></div>
-                            </div>
-                            <div class="col-md-3"><label class="form-label small"><i
-                                        class="bi bi-star-fill star-icon"></i> Energía solar</label>
-                                <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
-                                        name="solar" id="solSi" value="Si"><label class="btn btn-outline-success"
-                                        for="solSi">Sí</label><input type="radio" class="btn-check" name="solar"
-                                        id="solNo" value="No" checked><label class="btn btn-outline-secondary"
-                                        for="solNo">No</label></div>
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between mt-5 pt-3 border-top">
-                            <button type="button" class="btn btn-secondary px-4"
-                                onclick="location.href='admin-publicar-paso2.html'">
-                                <i class="bi bi-arrow-left"></i> Anterior
-                            </button>
-                            <button type="button" class="btn btn-primary px-5 shadow" onclick="guardarYContinuar()">
-                                Siguiente <i class="bi bi-arrow-right"></i>
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <img src="Logo_MG.jpeg" alt="Logo MG">
+            <div>ADMIN</div>
+        </div>
+        <a href="admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+        <a href="admin-propiedades.html"><i class="bi bi-house-door me-2"></i> Propiedades</a>
+        <a href="admin-publicar-3.html" class="active"><i class="bi bi-plus-circle me-2"></i> Publicar</a>
+        <a href="admin-interesados.html"><i class="bi bi-people me-2"></i> Interesados / Leads</a>
+        <a href="admin-agenda-2.html"><i class="bi bi-calendar-check me-2"></i> Agenda</a>
+        <a href="admin-reportes.html"><i class="bi bi-bar-chart me-2"></i> Reportes</a>
+        <a href="admin-marketing-ai.html"><i class="bi bi-stars me-2"></i> Marketing IA</a>
+        <div class="mt-auto p-3">
+            <a href="index.html" class="d-flex align-items-center text-white-50 text-decoration-none">
+                <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+            </a>
         </div>
     </div>
 
-    <script>
-        // 1. Reloj
-        function actualizarHora() {
-            const now = new Date();
-            const hora = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('borradorText').innerHTML = `<i class="bi bi-check-circle"></i> BORRADOR GUARDADO A LAS ${hora}`;
-        }
-        setInterval(actualizarHora, 30000);
+    <div class="main-content">
 
-        // 2. FUNCIÓN MÁGICA: Obtener datos de TODO el formulario
-        function getFormData(formId) {
-            const form = document.getElementById(formId);
-            const formData = new FormData(form);
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
+        <div class="container mt-5 mb-5">
+            <div class="row justify-content-center">
+                <div class="col-md-11">
+                    <div class="d-flex justify-content-between align-items-end mb-4">
+                        <div>
+                            <small class="text-muted">Panel de Control • Agregar propiedad</small>
+                            <h4 class="text-primary mt-1"><i class="bi bi-list-check"></i> AGREGAR PROPIEDAD - PASO 3 DE
+                                6
+                            </h4>
+                        </div>
+                        <small class="text-success fw-bold" id="borradorText"><i class="bi bi-check-circle"></i>
+                            Editando...</small>
+                    </div>
+
+                    <div class="step-indicator px-4">
+                        <div class="text-center">
+                            <div class="step completed" onclick="location.href='admin-publicar-1.html'"><i
+                                    class="bi bi-check"></i></div><span class="step-label text-success">Tipo</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step completed" onclick="location.href='admin-publicar-paso2.html'"><i
+                                    class="bi bi-check"></i></div><span class="step-label text-success">Ubicación</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step active">3</div><span class="step-label">Características</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">4</div><span class="step-label">Observaciones</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">5</div><span class="step-label">Propietario</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="step">6</div><span class="step-label">Confirmar</span>
+                        </div>
+                    </div>
+                    <div class="progress mb-4" style="height: 5px;">
+                        <div class="progress-bar" style="width: 50%;"></div>
+                    </div>
+
+                    <div class="card p-4">
+                        <form id="formPaso3">
+
+                            <div class="alert alert-light border small text-muted mb-4">
+                                <i class="bi bi-star-fill text-warning"></i> Campos que se envían a Portal Inmobiliario
+                                /
+                                Mercado Libre
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> N° de
+                                        suites</label>
+                                    <input type="number" name="num_suites" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i>
+                                        Dormitorios</label>
+                                    <input type="number" name="num_dormitorios" class="form-control" value="3">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Piezas de servicio</label>
+                                    <input type="number" name="num_piezas_servicio" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Pieza de
+                                        servicio</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="pieza_servicio" id="psSi"
+                                            value="Si"><label class="btn btn-outline-success" for="psSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="pieza_servicio" id="psNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="psNo">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Baños</label>
+                                    <input type="number" name="num_banos" class="form-control" value="2">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Baño de servicio</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="bano_servicio" id="bsSi"
+                                            value="Si"><label class="btn btn-outline-success" for="bsSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="bano_servicio" id="bsNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="bsNo">No</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Jacuzzi</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="jacuzzi" id="jzSi" value="Si"><label
+                                            class="btn btn-outline-success" for="jzSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="jacuzzi" id="jzNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="jzNo">No</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Camas servicio</label>
+                                    <input type="number" name="camas_servicio" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> N° de salas de
+                                        estar</label>
+                                    <input type="number" name="salas_estar" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Bodega</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="bodega" id="bodSi" value="Si"><label
+                                            class="btn btn-outline-success" for="bodSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="bodega" id="bodNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="bodNo">No</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Comedor de diario</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="comedor_diario" id="cdSi"
+                                            value="Si"><label class="btn btn-outline-success" for="cdSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="comedor_diario" id="cdNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="cdNo">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">Family room</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="family_room" id="frSi"
+                                            value="Si"><label class="btn btn-outline-success" for="frSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="family_room" id="frNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="frNo">No</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Recibos</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="recibos" id="recSi"
+                                            value="Si"><label class="btn btn-outline-success" for="recSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="recibos" id="recNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="recNo">No</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sauna</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="sauna" id="sauSi" value="Si"><label
+                                            class="btn btn-outline-success" for="sauSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="sauna" id="sauNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="sauNo">No</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-2">
+                                <div class="col-md-4">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sup. de
+                                        terreno</label>
+                                    <input type="number" name="sup_terreno" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sup.
+                                        construida</label>
+                                    <input type="number" name="sup_construida" class="form-control">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Sup. de
+                                        terraza</label>
+                                    <input type="number" name="sup_terraza" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-2">
+                                <div class="col-md-3"><label class="form-label">Piso de los dormitorios</label><select
+                                        class="form-select" name="piso_dormitorios">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Piso Flotante">Piso Flotante</option>
+                                        <option value="Alfombrado">Alfombrado</option>
+                                        <option value="Porcelanato">Porcelanato</option>
+                                        <option value="Cerámica">Cerámica</option>
+                                        <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
+                                        <option value="Parquet">Parquet</option>
+                                        <option value="Madera Natural">Madera Natural</option>
+                                        <option value="Laminado">Laminado</option>
+                                        <option value="Hormigón Afinado">Hormigón Afinado</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Piso de los baños</label><select
+                                        class="form-select" name="piso_banos">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Cerámica">Cerámica</option>
+                                        <option value="Porcelanato">Porcelanato</option>
+                                        <option value="Piso Vinílico / SPC">Piso Vinílico / SPC (Resistente al agua)
+                                        </option>
+                                        <option value="Mármol">Mármol / Piedra Natural</option>
+                                        <option value="Microcemento">Microcemento</option>
+                                        <option value="Baldosa Hidráulica">Baldosa Hidráulica</option>
+                                        <option value="Flexit">Flexit</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Piso de la cocina</label><select
+                                        class="form-select" name="piso_cocina">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Cerámica">Cerámica</option>
+                                        <option value="Porcelanato">Porcelanato</option>
+                                        <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
+                                        <option value="Microcemento">Microcemento</option>
+                                        <option value="Baldosa Hidráulica">Baldosa Hidráulica</option>
+                                        <option value="Piedra Pizarra">Piedra Pizarra</option>
+                                        <option value="Flexit">Flexit</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Piso del comedor</label><select
+                                        class="form-select" name="piso_comedor">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Piso Flotante">Piso Flotante</option>
+                                        <option value="Madera Natural">Madera Natural</option>
+                                        <option value="Parquet">Parquet</option>
+                                        <option value="Porcelanato">Porcelanato</option>
+                                        <option value="Cerámica">Cerámica</option>
+                                        <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
+                                        <option value="Mármol">Mármol</option>
+                                        <option value="Piedra Pizarra">Piedra Pizarra</option>
+                                        <option value="Laminado">Laminado</option>
+                                        <option value="Hormigón Afinado">Hormigón Afinado</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Piso del living</label><select
+                                        class="form-select" name="piso_living">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Piso Flotante">Piso Flotante</option>
+                                        <option value="Madera Natural">Madera Natural</option>
+                                        <option value="Parquet">Parquet</option>
+                                        <option value="Porcelanato">Porcelanato</option>
+                                        <option value="Cerámica">Cerámica</option>
+                                        <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
+                                        <option value="Mármol">Mármol</option>
+                                        <option value="Piedra Pizarra">Piedra Pizarra</option>
+                                        <option value="Alfombrado">Alfombrado</option>
+                                        <option value="Microcemento">Microcemento / Hormigón Pulido</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Piso hall de entrada</label><select
+                                        class="form-select" name="piso_hall">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Mármol">Mármol</option>
+                                        <option value="Porcelanato">Porcelanato</option>
+                                        <option value="Piedra Pizarra">Piedra Pizarra</option>
+                                        <option value="Cerámica">Cerámica</option>
+                                        <option value="Madera Natural">Madera Natural</option>
+                                        <option value="Parquet">Parquet</option>
+                                        <option value="Piso Flotante">Piso Flotante</option>
+                                        <option value="Piso Vinílico / SPC">Piso Vinílico / SPC</option>
+                                        <option value="Baldosa Hidráulica">Baldosa Hidráulica</option>
+                                        <option value="Microcemento">Microcemento</option>
+                                    </select></div>
+                            </div>
+
+                            <div class="row g-3 mt-4">
+                                <div class="col-md-3"><label class="form-label">Estilo de casa</label><select
+                                        class="form-select" name="estilo_casa">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Moderna / Minimalista">Moderna / Minimalista</option>
+                                        <option value="Chilena">Chilena</option>
+                                        <option value="Mediterránea">Mediterránea</option>
+                                        <option value="Clásica / Tradicional">Clásica / Tradicional</option>
+                                        <option value="Colonial">Colonial</option>
+                                        <option value="Provenzal">Provenzal</option>
+                                        <option value="Inglesa / Tudor">Inglesa / Tudor</option>
+                                        <option value="Georgiana">Georgiana</option>
+                                        <option value="Rústica / Campo">Rústica / Campo</option>
+                                        <option value="Ley Pereira">Ley Pereira</option>
+                                        <option value="Townhouse">Townhouse</option>
+                                        <option value="Construcción Sólida">Construcción Sólida (Sin estilo definido)
+                                        </option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i>
+                                        Tipo de casa</label><select class="form-select" name="tipo_casa">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Aislada">Aislada</option>
+                                        <option value="Pareada">Pareada</option>
+                                        <option value="Semi-pareada">Semi-pareada</option>
+                                        <option value="En hilera">En hilera</option>
+                                        <option value="Bungalow">Bungalow (1 piso)</option>
+                                        <option value="Chalet">Chalet</option>
+                                        <option value="Casa de Campo">Casa de Campo</option>
+                                        <option value="Mansión">Mansión / Gran propiedad</option>
+                                        <option value="Prefabricada">Prefabricada / Modular</option>
+                                        <option value="Remodelada">Remodelada</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Recepción final</label><select
+                                        class="form-select" name="recepcion_final">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Total">Total</option>
+                                        <option value="Parcial">Parcial</option>
+                                        <option value="En trámite">En trámite</option>
+                                        <option value="No tiene">No tiene</option>
+                                        <option value="Ampliación no regularizada">Ampliación no regularizada</option>
+                                        <option value="No informada">No informada</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i>
+                                        Orientación</label><select class="form-select" name="orientacion">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Norte">Norte (Mucha luz)</option>
+                                        <option value="Sur">Sur</option>
+                                        <option value="Oriente">Oriente (Sol de mañana)</option>
+                                        <option value="Poniente">Poniente (Sol de tarde)</option>
+                                        <option value="Nor-Oriente">Nor-Oriente</option>
+                                        <option value="Nor-Poniente">Nor-Poniente</option>
+                                        <option value="Sur-Oriente">Sur-Oriente</option>
+                                        <option value="Sur-Poniente">Sur-Poniente</option>
+                                        <option value="Todas">Todas (Casa aislada)</option>
+                                    </select></div>
+
+                                <div class="col-md-3"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i>
+                                        Año de construcción</label><input type="number" name="ano_construccion"
+                                        class="form-control"></div>
+                                <div class="col-md-3"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i> N°
+                                        de pisos</label><input type="number" name="num_pisos" class="form-control">
+                                </div>
+                                <div class="col-md-3"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i> N°
+                                        ascensores</label><input type="number" name="num_ascensores"
+                                        class="form-control">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Amoblado</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="amoblado" id="amoSi"
+                                            value="Si"><label class="btn btn-outline-success" for="amoSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="amoblado" id="amoNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="amoNo">No</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label"><i class="bi bi-star-fill star-icon"></i> Permiten
+                                        mascotas</label>
+                                    <div class="btn-group w-100 btn-group-sm" role="group">
+                                        <input type="radio" class="btn-check" name="mascotas" id="mascSi"
+                                            value="Si"><label class="btn btn-outline-success" for="mascSi">Sí</label>
+                                        <input type="radio" class="btn-check" name="mascotas" id="mascNo" value="No"
+                                            checked><label class="btn btn-outline-secondary" for="mascNo">No</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3"><label class="form-label">Tipo muebles cocina</label><select
+                                        class="form-select" name="muebles_cocina">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Cubierta Granito">Cubierta Granito</option>
+                                        <option value="Cubierta Cuarzo">Cubierta Cuarzo</option>
+                                        <option value="Cubierta Postformado">Cubierta Postformado</option>
+                                        <option value="Cubierta Mármol">Cubierta Mármol</option>
+                                        <option value="Cubierta Acero Inoxidable">Cubierta Acero Inoxidable</option>
+                                        <option value="Muebles Melamina">Muebles Melamina</option>
+                                        <option value="Muebles Madera">Muebles Madera</option>
+                                        <option value="Sin muebles (Base)">Sin muebles (Base)</option>
+                                        <option value="Equipada (Encimera/Horno/Campana)">Equipada
+                                            (Encimera/Horno/Campana)
+                                        </option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Tipo aislación</label><select
+                                        class="form-select" name="tipo_aislacion">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Térmica">Térmica</option>
+                                        <option value="Acústica">Acústica</option>
+                                        <option value="Termopanel (Ventanas)">Termopanel (Ventanas)</option>
+                                        <option value="Lana de Vidrio / Mineral">Lana de Vidrio / Mineral</option>
+                                        <option value="Poliuretano Proyectado">Poliuretano Proyectado</option>
+                                        <option value="Planchas de Poliestireno (EPS)">Planchas de Poliestireno (EPS)
+                                        </option>
+                                        <option value="EIFS (Aislación Exterior)">EIFS (Aislación Exterior)</option>
+                                        <option value="Ninguna">Ninguna</option>
+                                        <option value="No informada">No informada</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Tipo de gas</label><select
+                                        class="form-select" name="tipo_gas">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Cañería (Gas Natural)">Cañería (Gas Natural)</option>
+                                        <option value="Balón / Cilindro">Balón / Cilindro</option>
+                                        <option value="Bombona / Granel (Tanque)">Bombona / Granel (Tanque)</option>
+                                        <option value="No tiene (Todo Eléctrico)">No tiene (Todo Eléctrico)</option>
+                                        <option value="Otro">Otro</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Termopanel</label><select
+                                        class="form-select" name="termopanel">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Toda la propiedad">Toda la propiedad</option>
+                                        <option value="Parcial (Solo dormitorios)">Parcial (Solo dormitorios)</option>
+                                        <option value="Solo en ventanales principales">Solo en ventanales principales
+                                        </option>
+                                        <option value="Marco PVC">Marco PVC</option>
+                                        <option value="Marco Aluminio">Marco Aluminio</option>
+                                        <option value="Marco Madera">Marco Madera</option>
+                                        <option value="No tiene (Vidrio Simple)">No tiene (Vidrio Simple)</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Tipo agua caliente</label><select
+                                        class="form-select" name="agua_caliente">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Calefont a Gas">Calefont a Gas</option>
+                                        <option value="Termo Eléctrico">Termo Eléctrico</option>
+                                        <option value="Caldera Central (Edificio)">Caldera Central (Edificio)</option>
+                                        <option value="Caldera Individual">Caldera Individual</option>
+                                        <option value="Panel Solar / Energía Térmica">Panel Solar / Energía Térmica
+                                        </option>
+                                        <option value="Bomba de Calor">Bomba de Calor</option>
+                                        <option value="Sistema Mixto">Sistema Mixto</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i>
+                                        Tipo calefacción</label><select class="form-select" name="tipo_calefaccion">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Losa Radiante">Losa Radiante</option>
+                                        <option value="Radiadores Murales">Radiadores Murales</option>
+                                        <option value="Estufa a Pellet">Estufa a Pellet</option>
+                                        <option value="Aire Acondicionado / Split">Aire Acondicionado / Split</option>
+                                        <option value="Calefacción Central (Edificio)">Calefacción Central (Edificio)
+                                        </option>
+                                        <option value="Bosca / Combustión Lenta">Bosca / Combustión Lenta</option>
+                                        <option value="Estufa a Gas (Cañería)">Estufa a Gas (Cañería)</option>
+                                        <option value="Paneles Eléctricos">Paneles Eléctricos</option>
+                                        <option value="Chimenea Tradicional">Chimenea Tradicional</option>
+                                        <option value="Ninguna">Ninguna</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Tipo de cocina</label><select
+                                        class="form-select" name="tipo_cocina">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Tradicional (Cerrada)">Tradicional (Cerrada)</option>
+                                        <option value="Americana (Abierta)">Americana (Abierta)</option>
+                                        <option value="Semi-incorporada">Semi-incorporada</option>
+                                        <option value="Con Isla">Con Isla</option>
+                                        <option value="Con Comedor de Diario">Con Comedor de Diario</option>
+                                        <option value="Galería / Pasillo">Galería / Pasillo</option>
+                                        <option value="Kitchenette">Kitchenette (Pequeña)</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Tipo construcción</label><select
+                                        class="form-select" name="tipo_construccion">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Hormigón Armado">Hormigón Armado</option>
+                                        <option value="Albañilería (Ladrillo)">Albañilería (Ladrillo)</option>
+                                        <option value="Sólida (Mixta)">Sólida (Mixta)</option>
+                                        <option value="Metalcom / Steel Frame">Metalcom / Steel Frame</option>
+                                        <option value="Madera">Madera</option>
+                                        <option value="Adobe">Adobe</option>
+                                        <option value="Estructura Metálica">Estructura Metálica</option>
+                                        <option value="Tabiquería">Tabiquería</option>
+                                        <option value="SIP (Paneles Térmicos)">SIP (Paneles Térmicos)</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Tipo de techo</label><select
+                                        class="form-select" name="tipo_techo">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Teja Chilena (Arcilla)">Teja Chilena (Arcilla)</option>
+                                        <option value="Teja Asfáltica">Teja Asfáltica</option>
+                                        <option value="Teja de Cemento">Teja de Cemento</option>
+                                        <option value="Teja Colonial">Teja Colonial</option>
+                                        <option value="Zinc / Calamina">Zinc / Calamina</option>
+                                        <option value="Techo Plano (Losa/Terraza)">Techo Plano (Losa/Terraza)</option>
+                                        <option value="Fibrocemento (Pizarreño)">Fibrocemento (Pizarreño)</option>
+                                        <option value="Plancha de Policarbonato">Plancha de Policarbonato (Tragaluz)
+                                        </option>
+                                        <option value="Teja Chena">Teja Chena</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label">Tipo de ventanas</label><select
+                                        class="form-select" name="tipo_ventanas">
+                                        <option value="">Seleccione...</option>
+                                        <option value="PVC Termopanel">PVC Termopanel</option>
+                                        <option value="Aluminio Termopanel">Aluminio Termopanel</option>
+                                        <option value="Aluminio Simple">Aluminio Simple</option>
+                                        <option value="Madera">Madera</option>
+                                        <option value="PVC Simple">PVC Simple</option>
+                                        <option value="Correderas">Correderas</option>
+                                        <option value="Abatibles (De abrir)">Abatibles (De abrir)</option>
+                                        <option value="Oscilobatientes">Oscilobatientes</option>
+                                        <option value="Vidrio Templado / Proyectante">Vidrio Templado / Proyectante
+                                        </option>
+                                    </select></div>
+                            </div>
+
+                            <h6 class="section-header">Exteriores</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6"><label class="form-label">N° estac. cubiertos</label><input
+                                        type="number" name="estac_cub" class="form-control"></div>
+                                <div class="col-md-6"><label class="form-label">N° estac. descubiertos</label><input
+                                        type="number" name="estac_des" class="form-control"></div>
+
+                                <div class="col-md-3"><label class="form-label small">Barbecue</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="barbecue" id="bq2Si" value="Si"><label class="btn btn-outline-success"
+                                            for="bq2Si">Sí</label><input type="radio" class="btn-check" name="barbecue"
+                                            id="bq2No" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="bq2No">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Cancha de tenis</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="tenis" id="teSi" value="Si"><label class="btn btn-outline-success"
+                                            for="teSi">Sí</label><input type="radio" class="btn-check" name="tenis"
+                                            id="teNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="teNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">Cerco eléctrico</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="cerco" id="ceSi" value="Si"><label class="btn btn-outline-success"
+                                            for="ceSi">Sí</label><input type="radio" class="btn-check" name="cerco"
+                                            id="ceNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="ceNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">Circuito vigilancia</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="vigilancia" id="viSi" value="Si"><label
+                                            class="btn btn-outline-success" for="viSi">Sí</label><input type="radio"
+                                            class="btn-check" name="vigilancia" id="viNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="viNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Piscina</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="piscina" id="pis2Si" value="Si"><label class="btn btn-outline-success"
+                                            for="pis2Si">Sí</label><input type="radio" class="btn-check" name="piscina"
+                                            id="pis2No" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="pis2No">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Portón automático</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="porton_auto" id="po2Si" value="Si"><label
+                                            class="btn btn-outline-success" for="po2Si">Sí</label><input type="radio"
+                                            class="btn-check" name="porton_auto" id="po2No" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="po2No">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">Reja de piscina</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="reja_pis" id="rpSi" value="Si"><label class="btn btn-outline-success"
+                                            for="rpSi">Sí</label><input type="radio" class="btn-check" name="reja_pis"
+                                            id="rpNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="rpNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">Riego automático</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="riego_auto" id="raSi" value="Si"><label
+                                            class="btn btn-outline-success" for="raSi">Sí</label><input type="radio"
+                                            class="btn-check" name="riego_auto" id="raNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="raNo">No</label></div>
+                                </div>
+                            </div>
+
+                            <h6 class="section-header">Urbanización</h6>
+                            <div class="row g-3">
+                                <div class="col-md-3"><label class="form-label small">Agua de riego</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="agua_riego" id="arSi" value="Si"><label
+                                            class="btn btn-outline-success" for="arSi">Sí</label><input type="radio"
+                                            class="btn-check" name="agua_riego" id="arNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="arNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">Agua de pozo</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="agua_pozo" id="apSi" value="Si"><label class="btn btn-outline-success"
+                                            for="apSi">Sí</label><input type="radio" class="btn-check" name="agua_pozo"
+                                            id="apNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="apNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">En condominio</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="en_condominio" id="ecSi" value="Si"><label
+                                            class="btn btn-outline-success" for="ecSi">Sí</label><input type="radio"
+                                            class="btn-check" name="en_condominio" id="ecNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="ecNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">Alcantarillado</label><select
+                                        class="form-select" name="alcantarillado">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Red Pública">Red Pública</option>
+                                        <option value="Fosa Séptica">Fosa Séptica</option>
+                                        <option value="Planta de Tratamiento">Planta de Tratamiento</option>
+                                        <option value="Pozo Negro">Pozo Negro</option>
+                                        <option value="No tiene">No tiene</option>
+                                    </select></div>
+                                <div class="col-md-3"><label class="form-label small">Tipo de agua</label><select
+                                        class="form-select" name="tipo_agua">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Agua Potable (Red Pública)">Agua Potable (Red Pública)</option>
+                                        <option value="Pozo Profundo">Pozo Profundo</option>
+                                        <option value="APR (Agua Potable Rural)">APR (Agua Potable Rural)</option>
+                                        <option value="Derechos de Agua de Riego">Derechos de Agua de Riego</option>
+                                        <option value="Camión Aljibe">Camión Aljibe</option>
+                                        <option value="Vertiente">Vertiente</option>
+                                    </select></div>
+                            </div>
+
+                            <h6 class="section-header">Otros</h6>
+                            <div class="row g-3">
+                                <div class="col-md-3"><label class="form-label small">Tiene letrero</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="tiene_letrero" id="letSi" value="Si"><label
+                                            class="btn btn-outline-success" for="letSi">Sí</label><input type="radio"
+                                            class="btn-check" name="tiene_letrero" id="letNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="letNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small">Llaves en oficina</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="llaves_oficina" id="llaSi" value="Si"><label
+                                            class="btn btn-outline-success" for="llaSi">Sí</label><input type="radio"
+                                            class="btn-check" name="llaves_oficina" id="llaNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="llaNo">No</label></div>
+                                </div>
+                            </div>
+
+                            <h6 class="section-header">Portal Inm. > Ficha técnica</h6>
+                            <div class="row g-3">
+                                <div class="col-md-4"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i>
+                                        Horario contacto</label><input type="text" name="horario_contacto"
+                                        class="form-control"></div>
+                                <div class="col-md-4"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i>
+                                        Bodegas</label><input type="number" name="bodegas_ficha" class="form-control">
+                                </div>
+                                <div class="col-md-4"><label class="form-label"><i
+                                            class="bi bi-star-fill star-icon"></i>
+                                        Estacionamientos</label><input type="number" name="estacionamientos_ficha"
+                                        class="form-control"></div>
+                            </div>
+
+                            <h6 class="section-header">Portal Inm. > Adicionales</h6>
+                            <div class="row g-3">
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Agua corriente</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="agua_cte" id="aguaSi" value="Si"><label
+                                            class="btn btn-outline-success" for="aguaSi">Sí</label><input type="radio"
+                                            class="btn-check" name="agua_cte" id="aguaNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="aguaNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Línea telefónica</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="linea_tel" id="telSi" value="Si"><label
+                                            class="btn btn-outline-success" for="telSi">Sí</label><input type="radio"
+                                            class="btn-check" name="linea_tel" id="telNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="telNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Alarma</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="alarma" id="alSi" value="Si"><label class="btn btn-outline-success"
+                                            for="alSi">Sí</label><input type="radio" class="btn-check" name="alarma"
+                                            id="alNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="alNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Caldera</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="caldera" id="calSi" value="Si"><label class="btn btn-outline-success"
+                                            for="calSi">Sí</label><input type="radio" class="btn-check" name="caldera"
+                                            id="calNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="calNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Generador eléct.</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="generador" id="genSi" value="Si"><label
+                                            class="btn btn-outline-success" for="genSi">Sí</label><input type="radio"
+                                            class="btn-check" name="generador" id="genNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="genNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Gas natural</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="gas_natural" id="gasSi" value="Si"><label
+                                            class="btn btn-outline-success" for="gasSi">Sí</label><input type="radio"
+                                            class="btn-check" name="gas_natural" id="gasNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="gasNo">No</label></div>
+                                </div>
+                            </div>
+
+                            <h6 class="section-header">Portal Inm. > Ambientes</h6>
+                            <div class="row g-3">
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Patio</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="patio" id="patSi" value="Si"><label class="btn btn-outline-success"
+                                            for="patSi">Sí</label><input type="radio" class="btn-check" name="patio"
+                                            id="patNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="patNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Playroom</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="playroom" id="playSi" value="Si"><label
+                                            class="btn btn-outline-success" for="playSi">Sí</label><input type="radio"
+                                            class="btn-check" name="playroom" id="playNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="playNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Cocina</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="cocina" id="cocSi" value="Si"><label class="btn btn-outline-success"
+                                            for="cocSi">Sí</label><input type="radio" class="btn-check" name="cocina"
+                                            id="cocNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="cocNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Baño visitas</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="bano_visitas" id="bvSi" value="Si"><label
+                                            class="btn btn-outline-success" for="bvSi">Sí</label><input type="radio"
+                                            class="btn-check" name="bano_visitas" id="bvNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="bvNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Jardín</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="jardin" id="jarSi" value="Si"><label class="btn btn-outline-success"
+                                            for="jarSi">Sí</label><input type="radio" class="btn-check" name="jardin"
+                                            id="jarNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="jarNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Parrilla</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="parrilla" id="parSi" value="Si"><label class="btn btn-outline-success"
+                                            for="parSi">Sí</label><input type="radio" class="btn-check" name="parrilla"
+                                            id="parNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="parNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Walk-in closet</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="walkin" id="wiSi" value="Si"><label class="btn btn-outline-success"
+                                            for="wiSi">Sí</label><input type="radio" class="btn-check" name="walkin"
+                                            id="wiNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="wiNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Comedor</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="comedor" id="comSi" value="Si"><label class="btn btn-outline-success"
+                                            for="comSi">Sí</label><input type="radio" class="btn-check" name="comedor"
+                                            id="comNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="comNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Closets</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="closets" id="clSi" value="Si"><label class="btn btn-outline-success"
+                                            for="clSi">Sí</label><input type="radio" class="btn-check" name="closets"
+                                            id="clNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="clNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Desayunador</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="desayunador" id="desSi" value="Si"><label
+                                            class="btn btn-outline-success" for="desSi">Sí</label><input type="radio"
+                                            class="btn-check" name="desayunador" id="desNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="desNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Mansarda</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="mansarda" id="manSi" value="Si"><label class="btn btn-outline-success"
+                                            for="manSi">Sí</label><input type="radio" class="btn-check" name="mansarda"
+                                            id="manNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="manNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Balcón</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="balcon" id="balSi" value="Si"><label class="btn btn-outline-success"
+                                            for="balSi">Sí</label><input type="radio" class="btn-check" name="balcon"
+                                            id="balNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="balNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Homeoffice</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="homeoffice" id="hoSi" value="Si"><label
+                                            class="btn btn-outline-success" for="hoSi">Sí</label><input type="radio"
+                                            class="btn-check" name="homeoffice" id="hoNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="hoNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Terraza</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="terraza_amb" id="taSi" value="Si"><label
+                                            class="btn btn-outline-success" for="taSi">Sí</label><input type="radio"
+                                            class="btn-check" name="terraza_amb" id="taNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="taNo">No</label></div>
+                                </div>
+                            </div>
+
+                            <h6 class="section-header">Portal Inm. > Comodidades y Amenities</h6>
+                            <div class="row g-3">
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Cancha básquet</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="basquet" id="bqSi" value="Si"><label class="btn btn-outline-success"
+                                            for="bqSi">Sí</label><input type="radio" class="btn-check" name="basquet"
+                                            id="bqNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="bqNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Aire acond.</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="aire" id="aiSi" value="Si"><label class="btn btn-outline-success"
+                                            for="aiSi">Sí</label><input type="radio" class="btn-check" name="aire"
+                                            id="aiNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="aiNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> TV Cable</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="tv" id="tvSi" value="Si"><label class="btn btn-outline-success"
+                                            for="tvSi">Sí</label><input type="radio" class="btn-check" name="tv"
+                                            id="tvNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="tvNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Área cine</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="cine" id="ciSi" value="Si"><label class="btn btn-outline-success"
+                                            for="ciSi">Sí</label><input type="radio" class="btn-check" name="cine"
+                                            id="ciNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="ciNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Cisterna</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="cisterna" id="cisSi" value="Si"><label class="btn btn-outline-success"
+                                            for="cisSi">Sí</label><input type="radio" class="btn-check" name="cisterna"
+                                            id="cisNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="cisNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Cancha fútbol</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="futbol" id="futSi" value="Si"><label class="btn btn-outline-success"
+                                            for="futSi">Sí</label><input type="radio" class="btn-check" name="futbol"
+                                            id="futNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="futNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Estac. visita</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="estac_visita" id="evSi" value="Si"><label
+                                            class="btn btn-outline-success" for="evSi">Sí</label><input type="radio"
+                                            class="btn-check" name="estac_visita" id="evNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="evNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Gimnasio</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="gimnasio" id="gymSi" value="Si"><label class="btn btn-outline-success"
+                                            for="gymSi">Sí</label><input type="radio" class="btn-check" name="gimnasio"
+                                            id="gymNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="gymNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Chimenea</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="chimenea" id="chiSi" value="Si"><label class="btn btn-outline-success"
+                                            for="chiSi">Sí</label><input type="radio" class="btn-check" name="chimenea"
+                                            id="chiNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="chiNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Internet</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="internet" id="intSi" value="Si"><label class="btn btn-outline-success"
+                                            for="intSi">Sí</label><input type="radio" class="btn-check" name="internet"
+                                            id="intNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="intNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Cancha paddle</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="paddle" id="padSi" value="Si"><label class="btn btn-outline-success"
+                                            for="padSi">Sí</label><input type="radio" class="btn-check" name="paddle"
+                                            id="padNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="padNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Salón fiestas</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="fiestas" id="fiSi" value="Si"><label class="btn btn-outline-success"
+                                            for="fiSi">Sí</label><input type="radio" class="btn-check" name="fiestas"
+                                            id="fiNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="fiNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Conserje 24h</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="conserje" id="conSi" value="Si"><label class="btn btn-outline-success"
+                                            for="conSi">Sí</label><input type="radio" class="btn-check" name="conserje"
+                                            id="conNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="conNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Refrigerador</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="refri" id="refSi" value="Si"><label class="btn btn-outline-success"
+                                            for="refSi">Sí</label><input type="radio" class="btn-check" name="refri"
+                                            id="refNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="refNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Juegos infantiles</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="juegos" id="jueSi" value="Si"><label class="btn btn-outline-success"
+                                            for="jueSi">Sí</label><input type="radio" class="btn-check" name="juegos"
+                                            id="jueNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="jueNo">No</label></div>
+                                </div>
+                            </div>
+
+                            <h6 class="section-header">Portal Inm. > Otros</h6>
+                            <div class="row g-3">
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Acceso controlado</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="acceso" id="accSi" value="Si"><label class="btn btn-outline-success"
+                                            for="accSi">Sí</label><input type="radio" class="btn-check" name="acceso"
+                                            id="accNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="accNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> En remate</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="remate" id="remSi" value="Si"><label class="btn btn-outline-success"
+                                            for="remSi">Sí</label><input type="radio" class="btn-check" name="remate"
+                                            id="remNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="remNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Apto crédito</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="apto_credito" id="acredSi" value="Si"><label
+                                            class="btn btn-outline-success" for="acredSi">Sí</label><input type="radio"
+                                            class="btn-check" name="apto_credito" id="acredNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="acredNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Condominio cerrado</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="cond_cerrado" id="ccSi" value="Si"><label
+                                            class="btn btn-outline-success" for="ccSi">Sí</label><input type="radio"
+                                            class="btn-check" name="cond_cerrado" id="ccNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="ccNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Área verde</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="area_verde" id="avSi" value="Si"><label
+                                            class="btn btn-outline-success" for="avSi">Sí</label><input type="radio"
+                                            class="btn-check" name="area_verde" id="avNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="avNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Conexión lavadora</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="lavarropas" id="lavSi" value="Si"><label
+                                            class="btn btn-outline-success" for="lavSi">Sí</label><input type="radio"
+                                            class="btn-check" name="lavarropas" id="lavNo" value="No" checked><label
+                                            class="btn btn-outline-secondary" for="lavNo">No</label></div>
+                                </div>
+                                <div class="col-md-3"><label class="form-label small"><i
+                                            class="bi bi-star-fill star-icon"></i> Energía solar</label>
+                                    <div class="btn-group w-100 btn-group-sm"><input type="radio" class="btn-check"
+                                            name="solar" id="solSi" value="Si"><label class="btn btn-outline-success"
+                                            for="solSi">Sí</label><input type="radio" class="btn-check" name="solar"
+                                            id="solNo" value="No" checked><label class="btn btn-outline-secondary"
+                                            for="solNo">No</label></div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+                                <button type="button" class="btn btn-secondary px-4"
+                                    onclick="location.href='admin-publicar-paso2.html'">
+                                    <i class="bi bi-arrow-left"></i> Anterior
+                                </button>
+                                <button type="button" class="btn btn-primary px-5 shadow" onclick="guardarYContinuar()">
+                                    Siguiente <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // 1. Reloj
+            function actualizarHora() {
+                const now = new Date();
+                const hora = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+                document.getElementById('borradorText').innerHTML = `<i class="bi bi-check-circle"></i> BORRADOR GUARDADO A LAS ${hora}`;
             }
-            return data;
-        }
+            setInterval(actualizarHora, 30000);
 
-        // 3. FUNCIÓN MÁGICA: Rellenar TODO el formulario
-        function setFormData(formId, data) {
-            const form = document.getElementById(formId);
-            for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                    // Buscar input por NAME, no por ID
-                    const input = form.querySelector(`[name="${key}"]`);
+            // 2. FUNCIÓN MÁGICA: Obtener datos de TODO el formulario
+            function getFormData(formId) {
+                const form = document.getElementById(formId);
+                const formData = new FormData(form);
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                return data;
+            }
 
-                    if (input) {
-                        // Si es Radio Button
-                        if (input.type === 'radio') {
-                            const radio = form.querySelector(`[name="${key}"][value="${data[key]}"]`);
-                            if (radio) radio.checked = true;
-                        }
-                        // Si es Checkbox
-                        else if (input.type === 'checkbox') {
-                            input.checked = data[key] === "on";
-                        }
-                        // Texto, Número, Select
-                        else {
-                            input.value = data[key];
-                        }
-                    } else {
-                        // Caso especial para grupos de radio buttons (NodeList)
-                        const radios = form.querySelectorAll(`[name="${key}"]`);
-                        if (radios.length > 0) {
-                            radios.forEach(r => {
-                                if (r.value === data[key]) r.checked = true;
-                            });
+            // 3. FUNCIÓN MÁGICA: Rellenar TODO el formulario
+            function setFormData(formId, data) {
+                const form = document.getElementById(formId);
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        // Buscar input por NAME, no por ID
+                        const input = form.querySelector(`[name="${key}"]`);
+
+                        if (input) {
+                            // Si es Radio Button
+                            if (input.type === 'radio') {
+                                const radio = form.querySelector(`[name="${key}"][value="${data[key]}"]`);
+                                if (radio) radio.checked = true;
+                            }
+                            // Si es Checkbox
+                            else if (input.type === 'checkbox') {
+                                input.checked = data[key] === "on";
+                            }
+                            // Texto, Número, Select
+                            else {
+                                input.value = data[key];
+                            }
+                        } else {
+                            // Caso especial para grupos de radio buttons (NodeList)
+                            const radios = form.querySelectorAll(`[name="${key}"]`);
+                            if (radios.length > 0) {
+                                radios.forEach(r => {
+                                    if (r.value === data[key]) r.checked = true;
+                                });
+                            }
                         }
                     }
                 }
             }
-        }
 
-        // 4. AL CARGAR: Recuperar Memoria
-        document.addEventListener('DOMContentLoaded', () => {
-            const datosGuardados = localStorage.getItem('propiedad_paso3');
-            if (datosGuardados) {
-                console.log("Recuperando datos Paso 3...");
-                const data = JSON.parse(datosGuardados);
-                setFormData('formPaso3', data);
+            // 4. AL CARGAR: Recuperar Memoria
+            document.addEventListener('DOMContentLoaded', () => {
+                const datosGuardados = localStorage.getItem('propiedad_paso3');
+                if (datosGuardados) {
+                    console.log("Recuperando datos Paso 3...");
+                    const data = JSON.parse(datosGuardados);
+                    setFormData('formPaso3', data);
+                }
+            });
+
+            // 5. AL GUARDAR
+            function guardarYContinuar() {
+                // Validar requeridos básicos
+                const dorms = document.querySelector('input[name="num_dormitorios"]');
+                const banos = document.querySelector('input[name="num_banos"]');
+
+                if (!dorms.value || !banos.value) {
+                    alert("Por favor complete al menos Dormitorios y Baños.");
+                    return;
+                }
+
+                // Captura automática
+                const datosCompletos = getFormData('formPaso3');
+
+                // Guardar en memoria
+                localStorage.setItem('propiedad_paso3', JSON.stringify(datosCompletos));
+                console.log("Datos Guardados:", datosCompletos);
+
+                // Ir al siguiente paso
+                window.location.href = 'admin-publicar-paso4.html';
             }
-        });
+        </script>
 
-        // 5. AL GUARDAR
-        function guardarYContinuar() {
-            // Validar requeridos básicos
-            const dorms = document.querySelector('input[name="num_dormitorios"]');
-            const banos = document.querySelector('input[name="num_banos"]');
-
-            if (!dorms.value || !banos.value) {
-                alert("Por favor complete al menos Dormitorios y Baños.");
-                return;
-            }
-
-            // Captura automática
-            const datosCompletos = getFormData('formPaso3');
-
-            // Guardar en memoria
-            localStorage.setItem('propiedad_paso3', JSON.stringify(datosCompletos));
-            console.log("Datos Guardados:", datosCompletos);
-
-            // Ir al siguiente paso
-            window.location.href = 'admin-publicar-paso4.html';
-        }
-    </script>
-
+        <script src="admin-auth.js"></script>
+    </div>
 </body>
 
 </html>

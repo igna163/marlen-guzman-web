@@ -131,6 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // ======================================================
     if (page === 'client-config') {
         if (!currentUser) { window.location.href = 'index.html'; return; }
+
+        // Check for forced password change
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('change_password') === 'true') {
+            setTimeout(() => {
+                alert("⚠️ Has ingresado con una contraseña temporal.\nPor favor, crea una nueva contraseña ahora.");
+                const firstInput = document.getElementById('current-password');
+                if (firstInput) firstInput.focus();
+            }, 500);
+        }
+
         const form = document.getElementById('change-password-form');
         if (form) {
             form.addEventListener('submit', async (e) => {
@@ -177,7 +188,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // ======================================================
     // CASO 3: ADMIN Y LÓGICA GENERAL
     // ======================================================
-    if (page === 'admin-config') { setupAdminConfig(); }
+    if (page === 'admin-config') {
+        setupAdminConfig();
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('change_password') === 'true') {
+            setTimeout(() => {
+                alert("⚠️ Has ingresado con una contraseña temporal.\nPor favor, crea una nueva contraseña ahora.");
+                const firstInput = document.getElementById('current-password');
+                if (firstInput) firstInput.focus();
+            }, 500);
+        }
+    }
     if (page === 'admin-lista') { updateAdminList(); }
     if (page === 'admin-historial') { loadHistoryList(); }
 
@@ -279,6 +300,15 @@ function initAuth() {
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
         });
     });*/
+
+    // E. DETECTAR URL PARAMETER ?action=login PARA ABRIR EL MODAL DIRECTAMENTE
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('action') === 'login') {
+        const modal = document.getElementById('login-modal');
+        if (modal) modal.style.display = 'block';
+        // Limpiamos la URL para que no se abra siempre al refrescar
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
 }
 function updateUserUI() {
     const btn = document.getElementById('login-btn');
@@ -342,8 +372,24 @@ async function handleLogin(e) {
         console.log("📦 Datos recibidos:", data);
 
         if (data.success) {
+            localStorage.setItem('user', JSON.stringify(data.user)); // Key estandarizada
+            // Mantenemos 'usuario_logueado' por compatibilidad temporal si es necesario, 
+            // pero lo ideal es migrar todo a 'user'.
             localStorage.setItem('usuario_logueado', JSON.stringify(data.user));
+
             console.log("✅ Login exitoso:", data.user.nombre_completo);
+
+            // VERIFICAR CAMBIO DE CONTRASEÑA OBLIGATORIO
+            if (data.force_password_change) {
+                alert("⚠️ Has ingresado con una contraseña temporal.\nPor seguridad, debes cambiar tu contraseña ahora.");
+                // Redirigir a configuración segun rol
+                if (data.user.rol === 'admin') {
+                    window.location.href = 'admin-config.html?change_password=true';
+                } else {
+                    window.location.href = 'cliente-config.html?change_password=true';
+                }
+                return;
+            }
 
             if (data.user.rol === 'admin') {
                 window.location.href = 'admin-dashboard.html';
@@ -763,7 +809,7 @@ async function renderFeaturedProperties() {
             return;
         }
 
-        container.innerHTML = featured.map(p => createCardHTML(p)).join('');
+        container.innerHTML = featured.map(p => createPremiumCardHTML(p)).join('');
 
     } catch (error) {
         console.error("Error al cargar destacadas:", error);
@@ -1062,9 +1108,18 @@ function setupChatbot() {
                     fullReply = `¿Para qué fecha buscas? Escribe: 'Disponibilidad el ${hoy}'`;
                 }
             }
-            // 6. DEFAULT
+            // 6. DEFAULT (FALLBACK A INTELIGENCIA ARTIFICIAL)
             else {
-                fullReply = "Soy la IA de Marlen Guzmán (Modo Local). Puedo ayudarte a agendar, consultar, reprogramar o cancelar citas. Usa los botones rápidos para guiarte.";
+                // En vez de responder con un texto fijo, le preguntamos a la IA
+                // Pasamos 'text' que es lo que escribió el usuario
+                await enviarMensajeAI(text);
+
+                // Retornamos aquí para evitar que siga ejecutando el bloque de abajo "||"
+                // Ya que enviarMensajeAI se encarga de mostrar la respuesta
+                typingInd.style.display = 'none';
+                input.disabled = false;
+                input.focus();
+                return;
             }
 
             typingInd.style.display = 'none';
@@ -1494,6 +1549,65 @@ function toggleFavorite(event, id) {
     localStorage.setItem('myFavorites', JSON.stringify(favs));
 }
 
+function createPremiumCardHTML(p) {
+    const favs = getFavorites();
+    const isFav = favs.includes(p.id);
+    const heartIcon = isFav ? 'fas fa-heart' : 'far fa-heart';
+    const activeClass = isFav ? 'active' : '';
+
+    // Asegurar imagen válida
+    const imgUrl = (p.images && p.images.main) ? p.images.main : 'https://via.placeholder.com/400';
+
+    // Formatear precio si viene como número
+    let displayPrice = p.price;
+    if (p.rawPrice && !isNaN(p.rawPrice)) {
+        // Si tenemos rawPrice, lo formateamos bonito. Si no, usamos p.price tal cual.
+        // Asumimos que p.price ya viene con el símbolo (UF o $)
+    }
+
+    const dorms = (p.specs && p.specs.dorms) || 0;
+    const baths = (p.specs && p.specs.baths) || 0;
+    const m2 = (p.specs && p.specs.m2Util) || 0;
+    const type = p.type || 'Propiedad';
+    const code = p.id;
+
+    // Determinar etiqueta según operación
+    let tagClass = 'venta'; // Default color dorado
+    if (p.operation.toLowerCase().includes('arriendo')) {
+        tagClass = 'arriendo'; // Color oscuro
+    }
+
+    return `
+    <article class="property-card-premium" onclick="window.location.href='web-ficha.html?id=${p.id}'" style="cursor: pointer;">
+        <div class="premium-img-wrapper">
+            <span class="premium-tag ${tagClass}">${p.operation}</span>
+            <span class="premium-code">COD: ${code}</span>
+            <img src="${imgUrl}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/400'">
+            
+             <div class="premium-overlay" style="position:absolute; top:10px; right:10px; z-index:10;">
+                 <button class="fav-btn ${activeClass}" onclick="toggleFavorite(event, ${p.id})" style="background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:35px; height:35px; box-shadow:0 2px 5px rgba(0,0,0,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                    <i class="${heartIcon}" style="color:#bfa378; font-size:1.1rem;"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="premium-body">
+            <div class="premium-type">${type}</div>
+            <h3 class="premium-title">${p.title}</h3>
+            <p class="premium-location"><i class="fas fa-map-marker-alt" style="color:#bfa378;"></i> ${p.location}</p>
+            <div class="premium-price">${displayPrice}</div>
+            
+            <div class="premium-features">
+                <div class="feat-item"><i class="fas fa-bed"></i> ${dorms} Dorm</div>
+                <div class="feat-item"><i class="fas fa-bath"></i> ${baths} Baños</div>
+                <div class="feat-item"><i class="fas fa-ruler-combined"></i> ${m2} m²</div>
+            </div>
+            
+            <a href="web-ficha.html?id=${p.id}" class="btn-premium">Ver Detalles</a>
+        </div>
+    </article>`;
+}
+
 function createCardHTML(p) {
     const favs = getFavorites();
     const isFav = favs.includes(p.id);
@@ -1646,6 +1760,61 @@ function mostrarMenuPrincipal() {
     // Agregamos el mensaje del bot con el menú
     appendMessage('bot', '<strong>¿En qué puedo ayudarte hoy?</strong><br>Selecciona una opción:' + menuHTML);
 }
+
+// 6. FUNCIÓN DE INTELIGENCIA ARTIFICIAL (NUEVA)
+async function enviarMensajeAI(pregunta) {
+    const chatBox = document.getElementById('chat-messages');
+    const typingInd = document.getElementById('typing-indicator');
+
+    // Mostramos que está pensando
+    typingInd.style.display = 'block';
+
+    try {
+        // 1. OBTENER CONTEXTO (FAQ DEL SITIO)
+        // Leemos el contenido de la sección de preguntas frecuentes para que la IA sepa qué responder
+        const faqSection = document.getElementById('faq');
+        let contexto = "";
+        if (faqSection) {
+            contexto = faqSection.innerText.replace(/\s+/g, ' ').substring(0, 5000); // Limpiamos y limitamos
+        } else {
+            contexto = "Somos Inmobiliaria Marlen Guzmán. Ofrecemos venta, arriendo y administración de propiedades en Los Andes, San Felipe y alrededores.";
+        }
+
+        // 2. CREAR EL PROMPT (PERSONALIDAD SERIA Y VENTA)
+        const prompt = `
+            Eres la "Asistente Virtual Ejecutiva" de Inmobiliaria Marlen Guzmán.
+            Tu objetivo es filtrar clientes, resolver dudas con elegancia y SIEMPRE invitar a la acción (agendar visita o contactar).
+            
+            INFORMACIÓN OFICIAL DEL SITIO:
+            "${contexto}"
+
+            TU PERSONALIDAD:
+            - Tono: Profesional, Cercano, Educado y Persuasivo.
+            - NO uses exceso de emojis (máximo 1 por mensaje).
+            - NO inventes información. Si no sabes, deriva a WhatsApp (+569 5228 6689).
+            - FORMATO: Respuestas cortas (máximo 40 palabras). Ve al grano.
+
+            PREGUNTA DEL CLIENTE: "${pregunta}"
+            
+            TU RESPUESTA PROFESIONAL:
+        `;
+
+        // 3. LLAMAR A GEMINI (Usamos la instancia ya creada arriba 'chatModel')
+        const result = await chatModel.generateContent(prompt);
+        const response = await result.response;
+        const textoIA = response.text();
+
+        // 4. MOSTRAR RESPUESTA
+        typingInd.style.display = 'none';
+        addMessage('bot', textoIA);
+
+    } catch (error) {
+        console.error("Error AI Chat:", error);
+        typingInd.style.display = 'none';
+        addMessage('bot', "😓 Lo siento, tuve un error técnico. Por favor escríbeme por WhatsApp.");
+    }
+}
+
 
 // Función que maneja qué pasa cuando clicas un botón
 function ejecutarOpcion(opcion) {

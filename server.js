@@ -30,15 +30,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// 3. BASE DE DATOS
-// 3. BASE DE DATOS (Configuración Local con tus credenciales)
+
+// 3. BASE DE DATOS (Configuración para Render)
 const pool = new Pool({
-    user: process.env.DB_USER,      // Leerá: postgres
-    host: process.env.DB_HOST,      // Leerá: 127.0.0.1
-    database: process.env.DB_NAME,  // Leerá: Datosusuarios
-    password: process.env.DB_PASSWORD, // Leerá: Postgres1234
-    port: process.env.DB_PORT,      // Leerá: 5432
-    ssl: false // <--- ¡ESTO ES CLAVE! Desactiva el SSL para local
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 pool.connect((err) => {

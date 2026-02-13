@@ -59,50 +59,48 @@ pool.connect((err) => {
     }
 });
 
-// 4. CONFIGURACIÓN EMAIL (Corrección para Render: Puerto 587 STARTTLS - Más compatible en Nube)
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587, // Puerto estándar para STARTTLS
-    secure: false, // false para 587 (usa STARTTLS), true para 465
-    auth: {
-        user: 'ignacio.ojeda2002@gmail.com',
-        pass: 'sdclbrxurniioorx'
-    },
-    tls: {
-        rejectUnauthorized: false // Ignorar errores de certificado
-    },
-    // Timeouts ajustados para redes lentas
-    connectionTimeout: 20000, // 20 segundos
-    greetingTimeout: 20000,
-    socketTimeout: 30000, // Un poco más largo para el socket
-    debug: true, // Seguir mostrando logs
-    logger: true
-});
+// =======================================================
+// 4. CONFIGURACIÓN EMAIL (PLAN B: RESEND VÍA API - SIN BLOQUEOS)
+// =======================================================
 
-// VERIFICAR CONEXIÓN EMAIL AL INICIAR
-transporter.verify((error, success) => {
-    if (error) {
-        console.error('⚠️ Error verifying connection (Trying Port 587):', error.message);
-    } else {
-        console.log('✅ Servidor de correos listo y conectado (SMTP 587 STARTTLS).');
-    }
-});
+// ✅ TU CLAVE DE RESEND YA ESTÁ PUESTA AQUÍ:
+const RESEND_API_KEY = 're_cXiRtVLW_NwKDV8Q2y68GzM21QEVzCBDr';
 
 async function enviarCorreo(destinatario, asunto, mensajeHTML) {
+    console.log(`🚀 (Resend) Iniciando envío a: ${destinatario}`);
+
     try {
-        await transporter.sendMail({
-            from: '"Gestión Inmobiliaria" <ignacio.ojeda2002@gmail.com>',
-            to: destinatario,
-            subject: asunto,
-            html: mensajeHTML
+        // Usamos fetch (HTTP) en lugar de puertos de correo. Esto Render NO lo bloquea.
+        const response = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${RESEND_API_KEY}`
+            },
+            body: JSON.stringify({
+                // OJO: En la cuenta gratis, SIEMPRE debe salir de este correo:
+                from: 'onboarding@resend.dev',
+
+                // OJO: Por seguridad de Resend, al inicio solo llegará a TU correo:
+                to: ['ignacio.ojeda2002@gmail.com'],
+
+                // Ponemos el correo del cliente en el asunto para que sepas quién escribió:
+                subject: `${asunto} (Cliente: ${destinatario})`,
+                html: mensajeHTML
+            })
         });
-        console.log(`📧 Correo enviado a: ${destinatario}`);
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("✅ ¡CORREO ENVIADO CON ÉXITO! ID:", data.id);
+        } else {
+            console.error("⚠️ Error Resend (Revisa logs):", data);
+        }
     } catch (error) {
-        console.error('❌ Error enviando correo:', error);
+        console.error("❌ Error de red al conectar con Resend:", error);
     }
 }
-
-const errorResponse = (res, msg, status = 500) => res.status(status).json({ success: false, message: msg });
 
 /* ======================================================= */
 /* NUEVA LÓGICA: CONEXIÓN CON N8N (WEBHOOK)                */

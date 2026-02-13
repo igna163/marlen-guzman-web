@@ -81,8 +81,8 @@ async function enviarCorreo(destinatario, asunto, mensajeHTML) {
                 // OJO: En la cuenta gratis, SIEMPRE debe salir de este correo:
                 from: 'onboarding@resend.dev',
 
-                // OJO: Por seguridad de Resend, al inicio solo llegará a TU correo:
-                to: ['ignacio.ojeda2002@gmail.com'],
+                // DESTINATARIO DINÁMICO (Antes estaba hardcodeado)
+                to: [destinatario],
 
                 // Ponemos el correo del cliente en el asunto para que sepas quién escribió:
                 subject: `${asunto} (Cliente: ${destinatario})`,
@@ -918,16 +918,17 @@ app.post('/api/contact', async (req, res) => {
     try {
         const htmlAdmin = `<h2>Nuevo Mensaje</h2><p><strong>De:</strong> ${nombre} (${email})</p><p><strong>Tel:</strong> ${telefono}</p><p>${mensaje}</p>`;
 
-        await transporter.sendMail({
-            from: `"Web Marlen Guzmán" <ignacio.ojeda2002@gmail.com>`, // <--- CORREGIDO (Hardcode para evitar errores de .env)
-            to: 'ignacio.ojeda2002@gmail.com',
-            replyTo: email,
-            subject: `📩 Nuevo contacto: ${nombre}`,
-            html: htmlAdmin
-        });
+        // 1. AVISO AL ADMIN (Marlen/Ignacio)
+        await enviarCorreo('ignacio.ojedaci@mayor.cl', `📩 Nuevo contacto: ${nombre}`, htmlAdmin);
 
+        // 2. CONFIRMACIÓN AL CLIENTE (Si falla por sandbox, no detiene el flujo)
         const htmlCliente = `<h2>Hola ${nombre}</h2><p>Recibimos tu mensaje. Te contactaremos pronto.</p>`;
-        await enviarCorreo(email, "Hemos recibido tu mensaje", htmlCliente);
+        try {
+            await enviarCorreo(email, "Hemos recibido tu mensaje", htmlCliente);
+        } catch (e) {
+            console.warn("⚠️ No se pudo enviar confirmación al cliente (Posible restricción Sandbox):", e.message);
+        }
+
         res.json({ success: true, message: 'Mensaje enviado.' });
     } catch (err) {
         console.error("Error enviando contacto:", err);

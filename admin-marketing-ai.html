@@ -500,7 +500,7 @@
 
             try {
                 // Usamos /webhook/ para producción (workflow activo) en lugar de /webhook-test/
-                const response = await fetch(`${N8N_TUNNEL_URL}/webhook/publicar-facebook`, {
+                const response = await fetch(`${N8N_TUNNEL_URL}/webhook-test/publicar-facebook`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

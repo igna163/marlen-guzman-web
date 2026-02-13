@@ -347,7 +347,7 @@
 
         // ✅ TUS TÚNELES CLOUDFLARE ACTUALES
         const SERVER_TUNNEL_URL = 'https://buyer-regarding-sue-claims.trycloudflare.com';
-        const N8N_TUNNEL_URL = 'https://inside-mph-beam-briefing.trycloudflare.com';
+        const N8N_TUNNEL_URL = 'https://n8n-marlen-auto.onrender.com';
 
         document.addEventListener('DOMContentLoaded', () => {
             cargarPropiedadesSelect();
@@ -499,7 +499,8 @@
             console.log("🚀 Enviando a N8N:", payload);
 
             try {
-                const response = await fetch(`${N8N_TUNNEL_URL}/webhook-test/publicar-facebook`, {
+                // Usamos /webhook/ para producción (workflow activo) en lugar de /webhook-test/
+                const response = await fetch(`${N8N_TUNNEL_URL}/webhook/publicar-facebook`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

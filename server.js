@@ -919,7 +919,11 @@ app.post('/api/contact', async (req, res) => {
         const htmlAdmin = `<h2>Nuevo Mensaje</h2><p><strong>De:</strong> ${nombre} (${email})</p><p><strong>Tel:</strong> ${telefono}</p><p>${mensaje}</p>`;
 
         // 1. AVISO AL ADMIN (Marlen/Ignacio)
-        await enviarCorreo('ignacio.ojedaci@mayor.cl', `📩 Nuevo contacto: ${nombre}`, htmlAdmin);
+        // Volvemos a usar el correo verificado para evitar error 403 Sandbox
+        await enviarCorreo('ignacio.ojeda2002@gmail.com', `📩 Nuevo contacto: ${nombre}`, htmlAdmin);
+
+        // DELAY ANTI-SPAM / RATE LIMIT (Evita error 429 en cuentas gratis)
+        await new Promise(r => setTimeout(r, 1500));
 
         // 2. CONFIRMACIÓN AL CLIENTE (Si falla por sandbox, no detiene el flujo)
         const htmlCliente = `<h2>Hola ${nombre}</h2><p>Recibimos tu mensaje. Te contactaremos pronto.</p>`;

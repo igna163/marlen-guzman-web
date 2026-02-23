@@ -1894,37 +1894,42 @@ window.seleccionarHora = (fecha, hora) => {
 // Ejecutar al cargar (Se llama desde DOMContentLoaded)
 async function cargarIndicadores() {
     const STORAGE_KEY = 'indicadores_chile_v4_final'; // Clave única
-    const hoy = new Date().toLocaleDateString('es-CL'); // Fecha de hoy en Chile
+    const CACHE_HORAS = 12; // Horas de validez del caché
+    const CACHE_MS = CACHE_HORAS * 60 * 60 * 1000;
 
-    // 1. FASE DE VELOCIDAD: Cargar memoria (LocalStorage)
-    // Esto hace que aparezca AL TIRO, sin esperar internet
-    const memoria = localStorage.getItem(STORAGE_KEY);
+    // 1. FASE DE VELOCIDAD: Leer caché de localStorage
+    const memoriaRaw = localStorage.getItem(STORAGE_KEY);
+    let memoriaObj = null;
 
-    if (memoria) {
+    if (memoriaRaw) {
         try {
-            const dataMemoria = JSON.parse(memoria);
-            renderizarIndicadores(dataMemoria.datos); // Pintar inmediato
+            memoriaObj = JSON.parse(memoriaRaw);
+            const edadMs = Date.now() - (memoriaObj.timestamp || 0);
 
-            // Si los datos son de HOY, no hacemos nada más (Ahorramos recursos)
-            if (dataMemoria.fecha === hoy) {
-                console.log("⚡ Indicadores cargados desde memoria (Dato fresco)");
+            if (edadMs < CACHE_MS) {
+                // Datos frescos (menos de 12 horas): usar directamente y no hacer fetch
+                renderizarIndicadores(memoriaObj.datos);
+                console.log(`⚡ Indicadores desde caché (${Math.round(edadMs / 60000)} min de antigüedad)`);
                 return;
             }
-            console.log("⚠️ Dato en memoria es antiguo, actualizando en segundo plano...");
+
+            // Datos existen pero son viejos: pintarlos igual para mostrar algo mientras
+            renderizarIndicadores(memoriaObj.datos);
+            console.log("⚠️ Caché antiguo (>12h), actualizando en segundo plano...");
         } catch (e) {
-            console.warn("Memoria corrupta, limpiando...");
+            console.warn("Caché corrupto, limpiando...");
             localStorage.removeItem(STORAGE_KEY);
+            memoriaObj = null;
         }
     }
 
-    // 2. FASE DE ACTUALIZACIÓN: Conectar a Internet
+    // 2. FASE DE ACTUALIZACIÓN: Fetch a la API
     try {
         const response = await fetch('https://mindicador.cl/api');
         if (!response.ok) throw new Error('API caída');
 
         const apiData = await response.json();
 
-        // Creamos un objeto limpio solo con lo que usamos
         const datosFrescos = {
             uf: apiData.uf?.valor || 0,
             dolar: apiData.dolar?.valor || 0,
@@ -1933,27 +1938,22 @@ async function cargarIndicadores() {
             ipc: apiData.ipc?.valor || 0
         };
 
-        // Guardamos para la próxima vez (Mañana o en 1 hora)
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ fecha: hoy, datos: datosFrescos }));
+        // Guardar en localStorage con timestamp actual
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ timestamp: Date.now(), datos: datosFrescos }));
 
-        // Actualizamos la pantalla con el dato fresco
         renderizarIndicadores(datosFrescos);
         console.log("✅ Indicadores actualizados desde Internet");
 
     } catch (error) {
-        console.error("❌ Error API Mindicador (Usando respaldo):", error);
+        console.error("❌ Error API Mindicador:", error);
 
-        // 3. FASE DE RESPALDO DE EMERGENCIA (Hardcoded)
-        // Solo si NO hay memoria y NO hay internet, usamos esto para que no se vea feo.
-        if (!memoria) {
-            const respaldo = {
-                uf: 38550,
-                dolar: 980,
-                euro: 1050,
-                utm: 64500,
-                ipc: 0.0
-            };
-            renderizarIndicadores(respaldo);
+        // 3. FASE DE RESPALDO: si el fetch falla, usar datos viejos del caché si existen
+        if (memoriaObj && memoriaObj.datos) {
+            renderizarIndicadores(memoriaObj.datos);
+            console.warn("🗄️ Usando datos viejos del caché como respaldo.");
+        } else {
+            // Último recurso: valores hardcoded para no mostrar '...'
+            renderizarIndicadores({ uf: 38550, dolar: 980, euro: 1050, utm: 64500, ipc: 0.0 });
         }
     }
 }

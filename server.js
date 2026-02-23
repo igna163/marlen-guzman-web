@@ -1685,28 +1685,67 @@ app.get('/api/test-publicacion/:id', async (req, res) => {
 /* === NUEVA RUTA: ESTADÍSTICAS REALES PARA DASHBOARD === */
 app.get('/api/admin/stats', async (req, res) => {
     try {
-        // 1. Contar propiedades reales
+        // 1. Estadísticas de Propiedades
         const props = await pool.query(`
             SELECT 
                 COUNT(*) FILTER (WHERE estado_publicacion = 'PUBLICADA') as activas,
-                COUNT(*) FILTER (WHERE es_vendida = true) as vendidas,
+                COUNT(*) FILTER (WHERE estado_publicacion = 'PUBLICADA' AND fecha_publicacion >= CURRENT_DATE - INTERVAL '7 days') as activas_nuevas_semana,
+                COUNT(*) FILTER (WHERE es_vendida = true) as vendidas_total,
+                COUNT(*) FILTER (WHERE es_vendida = true AND fecha_publicacion >= date_trunc('month', CURRENT_DATE)) as cierres_mes, 
                 COUNT(*) FILTER (WHERE es_arrendada = true) as arrendadas
             FROM propiedades2
         `);
 
-        // 2. Traer las últimas 5 citas reales para la tabla
-        const citas = await pool.query(`
-            SELECT nombre_contacto, fecha, hora_inicio, motivo 
-            FROM citas 
-            ORDER BY fecha DESC LIMIT 5
+        // 2. Estadísticas de Leads (leads2)
+        const leads = await pool.query(`
+            SELECT 
+                COUNT(*) as total,
+                COUNT(*) FILTER (WHERE estado = 'NUEVO') as calientes,
+                COUNT(*) FILTER (WHERE estado = 'PENDIENTE') as pendientes
+            FROM leads2
+        `);
+
+        // 3. Estadísticas de Visitas Web (Mes Actual vs Mes Anterior)
+        const visitas = await pool.query(`
+            SELECT 
+                COALESCE(SUM(contador) FILTER (WHERE fecha >= date_trunc('month', CURRENT_DATE)), 0) as mes_actual,
+                COALESCE(SUM(contador) FILTER (WHERE fecha >= date_trunc('month', CURRENT_DATE - INTERVAL '1 month') AND fecha < date_trunc('month', CURRENT_DATE)), 0) as mes_anterior,
+                COALESCE(SUM(contador), 0) as total_historico
+            FROM visitas_web
+        `);
+
+        // 4. Calcular porcentaje de cambio en visitas
+        const actual = parseInt(visitas.rows[0].mes_actual);
+        const anterior = parseInt(visitas.rows[0].mes_anterior);
+        let cambio = 0;
+        if (anterior > 0) {
+            cambio = ((actual - anterior) / anterior) * 100;
+        } else if (actual > 0) {
+            cambio = 100;
+        }
+
+        // 5. Últimos Leads para la tabla de AI (Simulamos AI Score por ahora ya que no existe en DB)
+        const recentLeads = await pool.query(`
+            SELECT id, nombre_completo, comuna, fecha_creacion, estado, email, telefono
+            FROM leads2 
+            ORDER BY fecha_creacion DESC 
+            LIMIT 5
         `);
 
         res.json({
             success: true,
-            summary: props.rows[0],
-            citas: citas.rows
+            summary: {
+                ...props.rows[0],
+                total_leads: leads.rows[0].total,
+                leads_calientes: leads.rows[0].calientes,
+                leads_pendientes: leads.rows[0].pendientes,
+                visitas_mes: actual,
+                visitas_cambio: Math.round(cambio)
+            },
+            leads_recientes: recentLeads.rows
         });
     } catch (err) {
+        console.error("Error en stats:", err);
         res.status(500).json({ success: false, error: err.message });
     }
 });

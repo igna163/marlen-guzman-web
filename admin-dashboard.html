@@ -284,23 +284,86 @@
                 const data = await res.json();
 
                 if (data.success) {
-                    const stats = data.summary;
-                    const visitas = data.visitas;
+                    const s = data.summary;
 
-                    const cards = document.querySelectorAll('.stat-card h2');
-                    cards[0].innerText = stats.activas || 0;
-                    cards[1].innerText = visitas.total_historico.toLocaleString('es-CL'); // Visitas Reales
+                    // A. PROPIEDADES ACTIVAS
+                    const card1 = document.querySelectorAll('.stat-card')[0];
+                    card1.querySelector('h2').innerText = s.activas || 0;
+                    card1.querySelector('small').innerHTML = `<i class="bi bi-graph-up"></i> ${s.activas_nuevas_semana || 0} nuevas esta semana`;
 
-                    // ✅ Aquí usamos el dato real de la base de datos
-                    cards[2].innerText = data.summary.total_leads || 0;
+                    // B. VISITAS WEB
+                    const card2 = document.querySelectorAll('.stat-card')[1];
+                    card2.querySelector('h2').innerText = (s.visitas_mes || 0).toLocaleString('es-CL');
+                    const colorVisita = s.visitas_cambio >= 0 ? 'text-success' : 'text-danger';
+                    const iconVisita = s.visitas_cambio >= 0 ? 'bi-arrow-up' : 'bi-arrow-down';
+                    card2.querySelector('small').className = `${colorVisita} fw-bold`;
+                    card2.querySelector('small').innerHTML = `<i class="bi ${iconVisita}"></i> ${s.visitas_cambio}% vs mes anterior`;
 
-                    cards[3].innerText = stats.vendidas || 0;
+                    // C. LEADS CALIENTES
+                    const card3 = document.querySelectorAll('.stat-card')[2];
+                    card3.querySelector('h2').innerText = s.leads_calientes || 0;
+                    card3.querySelector('small').innerText = `${s.leads_pendientes || 0} sin gestionar`;
+
+                    // D. CIERRES DEL MES
+                    const card4 = document.querySelectorAll('.stat-card')[3];
+                    card4.querySelector('h2').innerText = s.cierres_mes || 0;
+                    // Mantenemos la meta fija visualmente, o podríamos traerla de config
+
+                    // E. TABLA DE OPORTUNIDADES (LEADS REALES)
+                    renderTablaLeads(data.leads_recientes);
                 }
             } catch (e) { console.error("Error cargando stats:", e); }
 
             // 4. Cargar el Gráfico Real
             cargarGraficoReal();
         });
+
+        function renderTablaLeads(leads) {
+            const tbody = document.querySelector('table tbody');
+            tbody.innerHTML = '';
+
+            if (!leads || leads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3">No hay leads recientes.</td></tr>';
+                return;
+            }
+
+            leads.forEach(lead => {
+                const initials = lead.nombre_completo.substring(0, 2).toUpperCase();
+                // Simulamos un score IA basado en si tiene teléfono y email
+                let score = 50;
+                if (lead.email) score += 20;
+                if (lead.telefono) score += 20;
+                if (lead.comuna) score += 9;
+
+                const fecha = new Date(lead.fecha_creacion).toLocaleDateString('es-CL', {
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2"
+                                style="width: 35px; height: 35px;">${initials}</div>
+                            <div>
+                                <div class="fw-bold">${lead.nombre_completo}</div>
+                                <div class="small text-muted">Web Form</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${lead.comuna ? 'Interés en ' + lead.comuna : 'Consulta General'}</td>
+                    <td>${fecha}</td>
+                    <td><span class="text-warning">⭐⭐⭐⭐</span> <span class="badge bg-danger-subtle text-danger ms-2">${score}%</span></td>
+                    <td><span class="badge bg-info text-dark">${lead.estado || 'NUEVO'}</span></td>
+                    <td>
+                        <a href="https://wa.me/${lead.telefono ? lead.telefono.replace(/[^0-9]/g, '') : ''}" target="_blank" class="btn btn-sm btn-success ${!lead.telefono ? 'disabled' : ''}">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
 
         // 5. Función del Gráfico con datos de la semana
         async function cargarGraficoReal() {

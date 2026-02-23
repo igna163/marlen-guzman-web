@@ -477,7 +477,6 @@
             }
 
             // B. PROCESAR: Tomar las primeras 10 y convertirlas a URLs públicas
-            // Instagram/Facebook solo permiten máximo 10 fotos por carrusel.
             const urlsPublicas = todasLasFotos.slice(0, 10).map(img => SERVER_TUNNEL_URL + img.url_imagen);
 
             const originalText = btn.innerHTML;
@@ -485,29 +484,38 @@
             btn.disabled = true;
 
             // C. CREAR PAQUETE PARA N8N
-            // IMPORTANTE: Ahora enviamos "imagenes" (plural, array)
-            // 2. PAQUETE DE DATOS PARA N8N
             const payload = {
                 mensaje: texto,
-                // Enviamos la primera foto como 'imagen' para que tu N8N actual funcione YA
                 imagen: urlsPublicas[0],
-                // Enviamos todas las fotos como 'imagenes' para cuando configures el carrusel
                 imagenes: urlsPublicas,
                 plataforma: currentPlatform
             };
 
             console.log("🚀 Enviando a N8N:", payload);
 
+            // D. DETECTAR PLATAFORMA Y ASIGNAR LA URL CORRECTA DEL WEBHOOK
+            let webhookUrl = "";
+            if (currentPlatform === 'instagram') {
+                webhookUrl = `${N8N_TUNNEL_URL}/webhook-test/publicar-propiedad-instagram-2302`;
+            } else if (currentPlatform === 'facebook') {
+                webhookUrl = `${N8N_TUNNEL_URL}/webhook-test/publicar-propiedad-facebook-2302`;
+            } else {
+                alert("❌ Plataforma no soportada para publicación automática todavía.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+
             try {
-                // Apuntando exactamente a la URL de prueba que pediste
-                const response = await fetch(`${N8N_TUNNEL_URL}/webhook-test/publicar-propiedad-facebook-2302`, {
+                // Apuntando dinámicamente a la URL según la red social seleccionada
+                const response = await fetch(webhookUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
-                    alert(`✅ ¡ENVIADO A PROCESAR!\n\nSe han enviado ${urlsPublicas.length} fotos a N8N.\nEl sistema las publicará en unos momentos.`);
+                    alert(`✅ ¡ENVIADO A PROCESAR EN ${currentPlatform.toUpperCase()}!\n\nSe han enviado ${urlsPublicas.length} fotos a N8N.\nEl sistema las publicará en unos momentos.`);
                     btn.className = "btn btn-success btn-sm rounded-pill fw-bold shadow-sm";
                     btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> PUBLICADO';
                 } else {

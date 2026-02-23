@@ -499,8 +499,8 @@
             console.log("🚀 Enviando a N8N:", payload);
 
             try {
-                // Usamos /webhook/ para producción (workflow activo) en lugar de /webhook-test/
-                const response = await fetch(`${N8N_TUNNEL_URL}/webhook-test/publicar-facebook`, {
+                // Apuntando exactamente a la URL de prueba que pediste
+                const response = await fetch(`${N8N_TUNNEL_URL}/webhook-test/publicar-propiedad-facebook-2302`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -515,7 +515,7 @@
                 }
             } catch (error) {
                 console.error(error);
-                alert("❌ Error de conexión con N8N. Verifica el túnel 5678.");
+                alert("❌ Error de conexión con N8N. Verifica que el nodo de prueba esté escuchando.");
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }

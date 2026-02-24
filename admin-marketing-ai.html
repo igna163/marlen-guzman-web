@@ -480,7 +480,7 @@
             const urlsPublicas = todasLasFotos.slice(0, 10).map(img => SERVER_TUNNEL_URL + img.url_imagen);
 
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Enviando a N8N...';
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Publicando en vivo...';
             btn.disabled = true;
 
             // C. CREAR PAQUETE PARA N8N
@@ -496,9 +496,9 @@
             // D. DETECTAR PLATAFORMA Y ASIGNAR LA URL CORRECTA DEL WEBHOOK
             let webhookUrl = "";
             if (currentPlatform === 'instagram') {
-                webhookUrl = `${N8N_TUNNEL_URL}/webhook-test/publicar-propiedad-instagram-2302`;
+                webhookUrl = `${N8N_TUNNEL_URL}/webhook/publicar-propiedad-instagram-2402`;
             } else if (currentPlatform === 'facebook') {
-                webhookUrl = `${N8N_TUNNEL_URL}/webhook-test/publicar-propiedad-facebook-2302`;
+                webhookUrl = `${N8N_TUNNEL_URL}/webhook/publicar-propiedad-facebook-2402`;
             } else {
                 alert("❌ Plataforma no soportada para publicación automática todavía.");
                 btn.innerHTML = originalText;
@@ -514,16 +514,24 @@
                     body: JSON.stringify(payload)
                 });
 
+                // E. PROCESAR RESPUESTA DEL NODO "RESPOND TO WEBHOOK" DE N8N
                 if (response.ok) {
-                    alert(`✅ ¡ENVIADO A PROCESAR EN ${currentPlatform.toUpperCase()}!\n\nSe han enviado ${urlsPublicas.length} fotos a N8N.\nEl sistema las publicará en unos momentos.`);
-                    btn.className = "btn btn-success btn-sm rounded-pill fw-bold shadow-sm";
-                    btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> PUBLICADO';
+                    // Leemos el JSON que nos manda n8n de vuelta
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert(`✅ ${result.message}\nID de publicación: ${result.post_id}`);
+                        btn.className = "btn btn-success btn-sm rounded-pill fw-bold shadow-sm";
+                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> PUBLICADO EXITOSAMENTE';
+                    } else {
+                        throw new Error(result.message || "Error desconocido en el flujo de N8N");
+                    }
                 } else {
-                    throw new Error("N8N respondió con error");
+                    throw new Error(`Error en el servidor: ${response.status}`);
                 }
             } catch (error) {
                 console.error(error);
-                alert("❌ Error de conexión con N8N. Verifica que el nodo de prueba esté escuchando.");
+                alert("❌ Error de conexión o ejecución en N8N. Verifica que el flujo esté activo (Publish).");
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }

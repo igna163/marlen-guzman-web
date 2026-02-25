@@ -186,14 +186,17 @@ ul {
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--primary-color);
-    z-index: 1100; /* Asegurar que esté sobre el menú */
+    z-index: 1100;
+    /* Asegurar que esté sobre el menú */
     position: relative;
-    padding: 5px; /* Aumentar área de toque */
+    padding: 5px;
+    /* Aumentar área de toque */
 }
 
 /* Icono cambia a X cuando está activo */
 .mobile-menu-btn.active i::before {
-    content: "\f00d"; /* FontAwesome 'fa-times' */
+    content: "\f00d";
+    /* FontAwesome 'fa-times' */
 }
 
 /* ========================================= */
@@ -366,13 +369,22 @@ ul {
 }
 
 @keyframes slideInChat {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .chat-header {
-    background: var(--primary-color); /* Negro elegante */
-    color: var(--accent-color); /* Letras doradas */
+    background: var(--primary-color);
+    /* Negro elegante */
+    color: var(--accent-color);
+    /* Letras doradas */
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -394,7 +406,8 @@ ul {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background: #fdfbf7; /* Fondo crema muy suave */
+    background: #fdfbf7;
+    /* Fondo crema muy suave */
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -406,7 +419,7 @@ ul {
     font-size: 14px;
     max-width: 85%;
     line-height: 1.5;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .bot {
@@ -510,7 +523,10 @@ ul {
     transition: 0.2s;
 }
 
-.close-chat:hover { opacity: 1; transform: scale(1.1); }
+.close-chat:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
 
 /* Responsive Generales */
 @media (max-width: 900px) {
@@ -560,11 +576,11 @@ ul {
     .navbar {
         height: 80px;
     }
-    
+
     .nav-logo-img {
         height: 60px;
     }
-    
+
     .hero {
         margin-top: 80px;
     }
@@ -1689,39 +1705,33 @@ h6.section-header {
    NAVBAR MÓVIL Y TABLET (pantallas ≤ 900px)
    ============================================================ */
 
-/* Botón hamburguesa: oculto en escritorio */
+/* Botón hamburguesa: oculto en escritorio por defecto */
 .mobile-menu-btn {
     display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px;
+    font-size: 1.5rem;
+    color: #333;
+    padding: 8px 12px;
     z-index: 1100;
+    transition: color 0.2s;
 }
 
-.hamburger-bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background-color: #333;
-    border-radius: 3px;
-    transition: all 0.3s ease;
+.mobile-menu-btn:hover {
+    color: #bfa378;
 }
 
 @media (max-width: 900px) {
 
     /* Mostrar botón hamburguesa */
     .mobile-menu-btn {
-        display: flex;
+        display: block;
     }
 
     /* Ocultar menú de navegación por defecto en móvil */
     .nav-links {
-        display: none;
+        display: none !important;
         flex-direction: column;
         align-items: flex-start;
         position: fixed;
@@ -1733,18 +1743,18 @@ h6.section-header {
         padding: 20px 0;
         overflow-y: auto;
         z-index: 999;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         gap: 0;
     }
 
-    /* Mostrar menú cuando tiene clase .active (toggled por JS) */
+    /* Mostrar menú cuando JS agrega la clase .active */
     .nav-links.active {
-        display: flex;
+        display: flex !important;
     }
 
     /* Estilo de los links dentro del menú móvil */
     .nav-links .nav-link,
-    .nav-links > a {
+    .nav-links>a {
         width: 100%;
         padding: 16px 24px;
         border-bottom: 1px solid #f0f0f0;
@@ -1760,7 +1770,7 @@ h6.section-header {
         height: auto;
     }
 
-    .nav-links .dropdown > a {
+    .nav-links .dropdown>a {
         width: 100%;
         padding: 16px 24px;
         border-bottom: 1px solid #f0f0f0;
@@ -1774,14 +1784,9 @@ h6.section-header {
         display: none;
     }
 
-    /* Animación del botón hamburguesa → X cuando el menú está abierto */
-    .mobile-menu-btn.active .hamburger-bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-    .mobile-menu-btn.active .hamburger-bar:nth-child(2) {
-        opacity: 0;
-    }
-    .mobile-menu-btn.active .hamburger-bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
+    /* Cambiar ícono de ☰ a ✕ cuando menú está abierto */
+    .mobile-menu-btn.active i.fa-bars::before {
+        content: "\f00d";
+        /* FontAwesome fa-times = ✕ */
     }
 }

@@ -4,14 +4,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Cuenta | Marlen Guzmán</title>
+    <title>Mi Panel | Marlen Guzmán</title>
+    <meta name="description" content="Panel de cliente Marlen Guzmán Propiedades">
     <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
     <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/client-sidebar.css">
+
+    <style>
+        /* ── Dashboard Variables ──────────────────────────── */
+        :root {
+            --gold: #bfa378;
+            --gold-light: #d4b88f;
+            --dark: #3e3632;
+            --cream: #f9f7f2;
+            --white: #ffffff;
+            --text: #594a42;
+            --border: rgba(191, 163, 120, 0.2);
+        }
+
+        .dashboard-wrapper {
+            padding: 10px 0 40px;
+        }
+
+        /* ── Greeting Header ──────────────────────────────── */
+        .greeting-header {
+            background: linear-gradient(135deg, var(--dark) 0%, #5a4a3f 100%);
+            border-radius: 16px;
+            padding: 30px 35px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 8px 30px rgba(62, 54, 50, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .greeting-header::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(191, 163, 120, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .greeting-left {
+            position: relative;
+            z-index: 1;
+        }
+
+        .greeting-tag {
+            display: inline-block;
+            background: rgba(191, 163, 120, 0.25);
+            color: var(--gold-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .greeting-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            color: #fff;
+            margin: 0 0 6px;
+            line-height: 1.2;
+        }
+
+        .greeting-sub {
+            font-family: 'Inter', sans-serif;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.92rem;
+            margin: 0;
+        }
+
+        .greeting-avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--dark);
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(191, 163, 120, 0.4);
+        }
+
+        /* ── Stats Grid ───────────────────────────────────── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: default;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.09);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.gold {
+            background: rgba(191, 163, 120, 0.12);
+            color: var(--gold);
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .stat-icon.green {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .stat-icon.rose {
+            background: rgba(244, 63, 94, 0.1);
+            color: #f43f5e;
+        }
+
+        .stat-info {
+            min-width: 0;
+        }
+
+        .stat-value {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: #999;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ── Middle Row ───────────────────────────────────── */
+        .middle-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        /* ── Panel Cards base ─────────────────────────────── */
+        .panel-card {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .panel-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-card-title i {
+            color: var(--gold);
+            font-size: 1rem;
+        }
+
+        /* ── Indicadores Económicos ───────────────────────── */
+        .indicadores-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .ind-item {
+            background: var(--cream);
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .ind-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .ind-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .ind-value {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .ind-fecha {
+            font-size: 0.72rem;
+            color: #bbb;
+            margin-top: 12px;
+            text-align: right;
+        }
+
+        /* ── Estado Evaluación ────────────────────────────── */
+        .eval-bar-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .eval-label {
+            font-weight: 600;
+            color: var(--gold);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .eval-pct {
+            font-weight: 700;
+            color: var(--dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .eval-bar {
+            width: 100%;
+            background: #eee;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .eval-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            border-radius: 5px;
+            width: 60%;
+            transition: width 1s ease;
+        }
+
+        .eval-info {
+            font-size: 0.88rem;
+            color: #777;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+        }
+
+        .eval-steps {
+            display: flex;
+            gap: 6px;
+            margin-top: 14px;
+        }
+
+        .eval-step {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: #eee;
+        }
+
+        .eval-step.done {
+            background: var(--gold);
+        }
+
+        .eval-step.active {
+            background: var(--gold-light);
+        }
+
+        /* ── Acceso Rápido ────────────────────────────────── */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .quick-card {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .quick-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+            border-color: var(--gold);
+            color: inherit;
+        }
+
+        .quick-card .qc-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            transition: transform 0.2s;
+        }
+
+        .quick-card:hover .qc-icon {
+            transform: scale(1.1);
+        }
+
+        .quick-card h4 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0 0 4px;
+        }
+
+        .quick-card p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            color: #999;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* ── Actividad Reciente ───────────────────────────── */
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .activity-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            color: var(--text);
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .activity-text strong {
+            color: var(--dark);
+        }
+
+        .activity-time {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: #bbb;
+            white-space: nowrap;
+            margin-top: 3px;
+        }
+
+        /* ── Badge Premium ────────────────────────────────── */
+        .badge-premium {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(135deg, #fff8ee, #fdebd0);
+            color: #8a6a30;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1px solid rgba(191, 163, 120, 0.4);
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        /* ── Responsive ───────────────────────────────────── */
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 868px) {
+            .middle-row {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .greeting-name {
+                font-size: 1.4rem;
+            }
+
+            .indicadores-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body data-page="client-dashboard">
@@ -19,123 +511,383 @@
     <div class="sidebar"></div>
 
     <div class="main-content">
-        <section class="section bg-light" style="padding-top: 40px; min-height: 80vh;">
-            <div class="container">
-                <div class="section-header text-center">
-                    <span class="overline">Panel de Usuario</span>
-                    <h2 class="section-title" id="welcome-msg">Bienvenido a tu Espacio</h2>
-                    <!-- Badge de Nivel -->
-                    <div
-                        style="display:inline-block; background:#f0f8ff; color:#0d6efd; padding:5px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; margin-bottom:20px; border:1px solid #cce5ff;">
-                        <i class="fas fa-star" style="color:#FFD700;"></i> Cliente Preferencial
+        <div class="dashboard-wrapper container">
+
+            <!-- ── GREETING HEADER ──────────────────────────────── -->
+            <div class="greeting-header">
+                <div class="greeting-left">
+                    <div class="greeting-tag"><i class="fas fa-star"></i> &nbsp;Cliente Preferencial</div>
+                    <h1 class="greeting-name" id="welcome-msg">Bienvenido a tu Espacio</h1>
+                    <p class="greeting-sub" id="greeting-sub">Gestiona tus propiedades y solicitudes desde aquí.</p>
+                </div>
+                <div class="greeting-avatar" id="avatar-initials">MG</div>
+            </div>
+
+            <!-- ── ESTADÍSTICAS RÁPIDAS ─────────────────────────── -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon gold"><i class="fas fa-heart"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="stat-favoritos">—</div>
+                        <div class="stat-label">Favoritos guardados</div>
                     </div>
-                    <p>Gestiona tus datos y revisa el estado de tus solicitudes inmobiliarias.</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="stat-visitas">—</div>
+                        <div class="stat-label">Visitas agendadas</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-file-alt"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="stat-docs">—</div>
+                        <div class="stat-label">Documentos subidos</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon rose"><i class="fas fa-home"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="stat-props">—</div>
+                        <div class="stat-label">Propiedades vistas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── FILA CENTRAL ─────────────────────────────────── -->
+            <div class="middle-row">
+
+                <!-- Estado de Evaluación -->
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <i class="fas fa-chart-line"></i>
+                        Estado de tu Evaluación
+                    </div>
+                    <div class="eval-bar-wrap">
+                        <span class="eval-label">En Proceso de Análisis</span>
+                        <span class="eval-pct">60%</span>
+                    </div>
+                    <div class="eval-bar">
+                        <div class="eval-fill"></div>
+                    </div>
+                    <p class="eval-info">
+                        <i class="fas fa-info-circle" style="color:var(--gold); margin-right:5px;"></i>
+                        Tu documentación está siendo revisada por el área de riesgo. Te notificaremos a la brevedad.
+                    </p>
+                    <div class="eval-steps">
+                        <div class="eval-step done" title="Registro completado"></div>
+                        <div class="eval-step done" title="Documentos recibidos"></div>
+                        <div class="eval-step active" title="Análisis en curso"></div>
+                        <div class="eval-step" title="Aprobación"></div>
+                        <div class="eval-step" title="Firma"></div>
+                    </div>
+                    <div
+                        style="display:flex;justify-content:space-between;margin-top:6px;font-family:'Inter',sans-serif;font-size:0.7rem;color:#bbb;">
+                        <span>Registro</span><span>Docs</span><span>Análisis</span><span>Aprobación</span><span>Firma</span>
+                    </div>
                 </div>
 
-                <!-- WIDGET: ESTADO DE SOLICITUDES -->
-                <div
-                    style="background: white; border-radius: 10px; padding: 25px; margin-bottom: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #eee;">
-                    <h4 style="margin-bottom: 15px; font-size: 1.1rem; color: #444;">Estado de Evaluación Comercial</h4>
-                    <div
-                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                        <span style="font-weight: 600; color: #bfa378;">En Proceso de Análisis</span>
-                        <span style="font-weight: 700; color: #444;">60%</span>
+                <!-- Indicadores Económicos -->
+                <div class="panel-card">
+                    <div class="panel-card-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Indicadores Económicos
                     </div>
-                    <div style="width: 100%; background: #eee; height: 10px; border-radius: 5px; overflow: hidden;">
-                        <div
-                            style="width: 60%; background: linear-gradient(90deg, #bfa378, #d4b88f); height: 100%; border-radius: 5px;">
+                    <div class="indicadores-grid">
+                        <div class="ind-item">
+                            <div class="ind-icon">UF</div>
+                            <div>
+                                <div class="ind-label">UF</div>
+                                <div class="ind-value" id="dash-uf">Cargando...</div>
+                            </div>
+                        </div>
+                        <div class="ind-item">
+                            <div class="ind-icon">$</div>
+                            <div>
+                                <div class="ind-label">Dólar</div>
+                                <div class="ind-value" id="dash-dolar">Cargando...</div>
+                            </div>
+                        </div>
+                        <div class="ind-item">
+                            <div class="ind-icon">€</div>
+                            <div>
+                                <div class="ind-label">Euro</div>
+                                <div class="ind-value" id="dash-euro">Cargando...</div>
+                            </div>
+                        </div>
+                        <div class="ind-item">
+                            <div class="ind-icon">UTM</div>
+                            <div>
+                                <div class="ind-label">UTM</div>
+                                <div class="ind-value" id="dash-utm">Cargando...</div>
+                            </div>
                         </div>
                     </div>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">
-                        <i class="fas fa-info-circle"></i> Tu documentación está siendo revisada por el área de riesgo.
-                        Te
-                        notificaremos en brevedad.
-                    </p>
+                    <div class="ind-fecha">Actualizado: <span id="dash-fecha">—</span></div>
                 </div>
+            </div>
 
-                <div class="dashboard-grid">
-
-                    <div class="dashboard-card" onclick="window.location.href='cliente-config.html'">
-                        <div class="icon-wrapper">
+            <!-- ── ACCESO RÁPIDO ─────────────────────────────────── -->
+            <div class="panel-card" style="margin-bottom:28px;">
+                <div class="panel-card-title">
+                    <i class="fas fa-th-large"></i>
+                    Acceso Rápido
+                </div>
+                <div class="quick-grid">
+                    <a href="cliente-config.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(191,163,120,0.12);color:var(--gold);">
                             <i class="fas fa-user-cog"></i>
                         </div>
-                        <h3>Mis Datos y Clave</h3>
-                        <p>Actualiza tu contraseña por seguridad.</p>
-                    </div>
-
-                    <div class="dashboard-card" onclick="window.location.href='cliente-visita.html'">
-                        <div class="icon-wrapper">
+                        <h4>Mis Datos</h4>
+                        <p>Actualiza tu perfil y contraseña</p>
+                    </a>
+                    <a href="cliente-visita.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6;">
                             <i class="fas fa-calendar-check"></i>
                         </div>
-                        <h3>Mis Visitas</h3>
-                        <p>Revisa fechas y horarios confirmados.</p>
-                    </div>
-
-                    <!-- Favoritos ACTIVADO -->
-                    <div class="dashboard-card" onclick="window.location.href='favoritos.html'">
-                        <div class="icon-wrapper">
+                        <h4>Mis Visitas</h4>
+                        <p>Fechas y horarios confirmados</p>
+                    </a>
+                    <a href="favoritos.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(244,63,94,0.1);color:#f43f5e;">
                             <i class="fas fa-heart"></i>
                         </div>
-                        <h3>Favoritos</h3>
-                        <p>Propiedades que te han gustado.</p>
-                    </div>
-
-                    <div class="dashboard-card" onclick="window.location.href='index.html'">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-search"></i>
+                        <h4>Mis Favoritos</h4>
+                        <p>Propiedades que te gustaron</p>
+                    </a>
+                    <a href="cliente-documentos.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(16,185,129,0.1);color:#10b981;">
+                            <i class="fas fa-folder-open"></i>
                         </div>
-                        <h3>Buscar Propiedades</h3>
-                        <p>Volver al catálogo principal.</p>
-                    </div>
-
-                    <!-- WhastApp Card -->
-                    <div class="dashboard-card" onclick="window.open('https://wa.me/56952286689', '_blank')"
-                        style="border: 1px solid #25D366;">
-                        <div class="icon-wrapper" style="background: #e7fbf0; color: #25D366;">
+                        <h4>Documentos</h4>
+                        <p>Sube y revisa tu documentación</p>
+                    </a>
+                    <a href="cliente-simulador.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(139,92,246,0.1);color:#8b5cf6;">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h4>Simulador</h4>
+                        <p>Calcula tu dividendo mensual</p>
+                    </a>
+                    <a href="propiedades.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(245,158,11,0.1);color:#f59e0b;">
+                            <i class="fas fa-search-location"></i>
+                        </div>
+                        <h4>Ver Propiedades</h4>
+                        <p>Explora el catálogo completo</p>
+                    </a>
+                    <a href="cliente-postulaciones.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(20,184,166,0.1);color:#14b8a6;">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <h4>Mis Postulaciones</h4>
+                        <p>Estado de tus solicitudes</p>
+                    </a>
+                    <a href="https://wa.me/56952286689" target="_blank" rel="noopener" class="quick-card"
+                        style="border-color:rgba(37,211,102,0.3);">
+                        <div class="qc-icon" style="background:rgba(37,211,102,0.1);color:#25D366;">
                             <i class="fab fa-whatsapp"></i>
                         </div>
-                        <h3>Ejecutivo Asignado</h3>
-                        <p>Contactar directamente por WhatsApp.</p>
-                    </div>
-
+                        <h4>Mi Ejecutivo</h4>
+                        <p>Contactar por WhatsApp</p>
+                    </a>
+                    <a href="reparacion-propiedad.html" class="quick-card">
+                        <div class="qc-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h4>Remodelación</h4>
+                        <p>Solicita una cotización</p>
+                    </a>
                 </div>
             </div>
-        </section>
 
-        <div id="config-modal" class="modal">
-            <div class="modal-content" style="max-width: 500px; padding: 2rem;">
-                <span class="close-modal" onclick="document.getElementById('config-modal').style.display='none'"
-                    style="float:right; cursor:pointer; font-size:1.5rem;">&times;</span>
-                <h3 style="text-align:center; color: var(--primary-color); margin-bottom: 1rem;">Configuración de Cuenta
-                </h3>
-
-                <form id="change-password-form">
-                    <label>Nueva Contraseña</label>
-                    <div class="input-group-icon" style="margin-bottom: 10px;">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="new-password" required
-                            style="width: 100%; padding: 10px 10px 10px 35px; border: 1px solid #ddd;">
-                    </div>
-
-                    <label>Confirmar Contraseña</label>
-                    <div class="input-group-icon" style="margin-bottom: 20px;">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="confirm-password" required
-                            style="width: 100%; padding: 10px 10px 10px 35px; border: 1px solid #ddd;">
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-block">Guardar Cambios</button>
-                </form>
+            <!-- ── ACTIVIDAD RECIENTE ─────────────────────────────── -->
+            <div class="panel-card">
+                <div class="panel-card-title">
+                    <i class="fas fa-history"></i>
+                    Actividad Reciente
+                </div>
+                <ul class="activity-list" id="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-dot" style="background:rgba(191,163,120,0.12);color:var(--gold);">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <div>
+                            <div class="activity-text"><strong>Inicio de sesión</strong> en el portal de clientes</div>
+                            <div class="activity-time" id="last-login-time">Hoy</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-dot" style="background:rgba(59,130,246,0.1);color:#3b82f6;">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div>
+                            <div class="activity-text">Tu cuenta fue <strong>activada exitosamente</strong></div>
+                            <div class="activity-time">Al registrarse</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-dot" style="background:rgba(16,185,129,0.1);color:#10b981;">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div>
+                            <div class="activity-text">Completa tu <strong>documentación pendiente</strong> para avanzar
+                                en tu evaluación</div>
+                            <div class="activity-time">Recomendación</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </div>
+
+        </div><!-- /dashboard-wrapper -->
+
         <div id="footer-placeholder"></div>
-    </div>
+    </div><!-- /main-content -->
 
-    <!-- Cargar Scripts del Sidebar -->
+    <!-- Scripts -->
     <script src="js/client-sidebar.js"></script>
-
     <script src="cargador.js"></script>
     <script type="module" src="script.js"></script>
+
+    <script>
+        (function () {
+            // ── Saludo personalizado ──────────────────────────────────────
+            function setGreeting() {
+                const userStr = localStorage.getItem('user');
+                const welcomeEl = document.getElementById('welcome-msg');
+                const subEl = document.getElementById('greeting-sub');
+                const avatarEl = document.getElementById('avatar-initials');
+
+                const hora = new Date().getHours();
+                let saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
+
+                if (userStr) {
+                    try {
+                        const user = JSON.parse(userStr);
+                        const nombre = user.nombre_completo || user.username || 'Cliente';
+                        const firstName = nombre.split(' ')[0];
+
+                        if (welcomeEl) welcomeEl.textContent = `${saludo}, ${firstName} 👋`;
+
+                        // Iniciales para el avatar
+                        if (avatarEl) {
+                            const partes = nombre.trim().split(' ');
+                            const iniciales = partes.length >= 2
+                                ? (partes[0][0] + partes[1][0]).toUpperCase()
+                                : nombre.substring(0, 2).toUpperCase();
+                            avatarEl.textContent = iniciales;
+                        }
+
+                        // Hora local en el subtítulo
+                        if (subEl) {
+                            const now = new Date();
+                            const timeStr = now.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+                            const dateStr = now.toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' });
+                            subEl.textContent = `${dateStr} · ${timeStr}`;
+                        }
+                    } catch (e) { /* silencio */ }
+                } else {
+                    // No hay sesión → redirigir
+                    window.location.href = 'index.html';
+                }
+            }
+            setGreeting();
+
+            // ── Tiempo del último login ───────────────────────────────────
+            const loginEl = document.getElementById('last-login-time');
+            if (loginEl) {
+                const now = new Date();
+                loginEl.textContent = now.toLocaleString('es-CL', {
+                    day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+                });
+            }
+
+            // ── Estadísticas ─────────────────────────────────────────────
+            function cargarEstadisticas() {
+                // Favoritos (desde localStorage)
+                const favs = JSON.parse(localStorage.getItem('favoritos') || '[]');
+                const statFav = document.getElementById('stat-favoritos');
+                if (statFav) statFav.textContent = favs.length;
+
+                // Propiedades vistas
+                const vistas = JSON.parse(localStorage.getItem('propiedades_vistas') || '[]');
+                const statProps = document.getElementById('stat-props');
+                if (statProps) statProps.textContent = vistas.length;
+
+                // Visitas y documentos (intentar desde API)
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    try {
+                        const user = JSON.parse(userStr);
+                        const userId = user.id;
+
+                        // Visitas agendadas
+                        fetch(`/api/visitas?usuario_id=${userId}`)
+                            .then(r => r.json())
+                            .then(data => {
+                                const el = document.getElementById('stat-visitas');
+                                if (el) el.textContent = Array.isArray(data) ? data.length : '0';
+                            })
+                            .catch(() => {
+                                const el = document.getElementById('stat-visitas');
+                                if (el) el.textContent = '0';
+                            });
+
+                        // Documentos subidos
+                        fetch(`/api/documentos?usuario_id=${userId}`)
+                            .then(r => r.json())
+                            .then(data => {
+                                const el = document.getElementById('stat-docs');
+                                if (el) el.textContent = Array.isArray(data) ? data.length : '0';
+                            })
+                            .catch(() => {
+                                const el = document.getElementById('stat-docs');
+                                if (el) el.textContent = '0';
+                            });
+                    } catch (e) {
+                        document.getElementById('stat-visitas').textContent = '0';
+                        document.getElementById('stat-docs').textContent = '0';
+                    }
+                }
+            }
+            cargarEstadisticas();
+
+            // ── Indicadores Económicos desde /api/indicadores ────────────
+            function cargarIndicadores() {
+                const fmt = n => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(n);
+                const fmtUF = n => `$${Number(n).toLocaleString('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                fetch('/api/indicadores')
+                    .then(r => r.json())
+                    .then(data => {
+                        const el = id => document.getElementById(id);
+                        if (el('dash-uf')) el('dash-uf').textContent = fmtUF(data.uf);
+                        if (el('dash-dolar')) el('dash-dolar').textContent = fmt(data.dolar);
+                        if (el('dash-euro')) el('dash-euro').textContent = fmt(data.euro);
+                        if (el('dash-utm')) el('dash-utm').textContent = fmt(data.utm);
+                        if (el('dash-fecha') && data.fecha) {
+                            el('dash-fecha').textContent = new Date(data.fecha).toLocaleDateString('es-CL');
+                        }
+                    })
+                    .catch(() => {
+                        // Fallback a localStorage si la API falla
+                        const cached = localStorage.getItem('indicadores_cache');
+                        if (cached) {
+                            try {
+                                const d = JSON.parse(cached);
+                                const el = id => document.getElementById(id);
+                                if (el('dash-uf')) el('dash-uf').textContent = fmtUF(d.uf);
+                                if (el('dash-dolar')) el('dash-dolar').textContent = `$${Number(d.dolar).toLocaleString('es-CL')}`;
+                                if (el('dash-euro')) el('dash-euro').textContent = `$${Number(d.euro).toLocaleString('es-CL')}`;
+                                if (el('dash-utm')) el('dash-utm').textContent = `$${Number(d.utm).toLocaleString('es-CL')}`;
+                            } catch (e) { /* silencio */ }
+                        }
+                    });
+            }
+            cargarIndicadores();
+        })();
+    </script>
 </body>
 
 </html>

@@ -923,88 +923,117 @@ function openDetail(id) {
 function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
 
 function setupNavigation() {
-    const nav = document.querySelector('.nav-links');
-    const btn = document.querySelector('.mobile-menu-btn');
+    // Guardamos un flag para no registrar listeners duplicados
+    // si cargador.js llama esta función una segunda vez después de inyectar el navbar
+    if (document._navSetup) return;
+    document._navSetup = true;
 
-    if (!nav || !btn) return;
+    // ============================================================
+    // DELEGACIÓN DE EVENTOS EN document
+    // Funciona aunque el navbar se cargue async con fetch()
+    // ============================================================
+    document.addEventListener('click', function (e) {
+        const nav = document.querySelector('.nav-links');
+        const btn = document.querySelector('.mobile-menu-btn');
 
-    // --- Función para abrir/cerrar el menú ---
-    function toggleMenu(forceClose = false) {
-        const isActive = nav.classList.contains('active');
-        if (forceClose || isActive) {
-            // CERRAR
-            nav.classList.remove('active');
-            btn.classList.remove('active');
-            // Cerrar todos los sub-dropdowns abiertos
-            nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
-                d.classList.remove('mobile-open');
-                d.style.display = '';
-            });
-        } else {
-            // ABRIR
-            nav.classList.add('active');
-            btn.classList.add('active');
-        }
-    }
+        // Si el navbar aún no cargó, no hacemos nada
+        if (!nav || !btn) return;
 
-    // --- Click en el botón hamburguesa ---
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMenu();
-    });
-
-    // --- En móvil, los dropdowns se manejan con click (no hover) ---
-    nav.querySelectorAll('.dropdown > a').forEach(link => {
-        link.addEventListener('click', function (e) {
-            // Solo interceptar en móvil
-            if (window.innerWidth > 900) return;
-            e.preventDefault();
+        // ── 1. Click en el botón hamburguesa ──────────────────
+        if (e.target.closest('.mobile-menu-btn')) {
             e.stopPropagation();
-
-            const dropdown = this.closest('.dropdown');
-            const content = dropdown.querySelector('.dropdown-content');
-            if (!content) return;
-
-            const isOpen = content.classList.contains('mobile-open');
-            // Cerrar todos los otros dropdowns abiertos
-            nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
-                d.classList.remove('mobile-open');
-                d.style.display = '';
-            });
-            // Toggle del actual
-            if (!isOpen) {
-                content.classList.add('mobile-open');
-                content.style.display = 'block';
-                content.style.position = 'static';
-                content.style.boxShadow = 'none';
-                content.style.borderTop = 'none';
-                content.style.padding = '0 0 0 15px';
+            const isOpen = nav.classList.contains('active');
+            if (isOpen) {
+                // CERRAR
+                nav.classList.remove('active');
+                btn.classList.remove('active');
+                // Cerrar sub-dropdowns abiertos
+                nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                    d.classList.remove('mobile-open');
+                    d.style.display = '';
+                    d.style.position = '';
+                    d.style.boxShadow = '';
+                    d.style.borderTop = '';
+                    d.style.padding = '';
+                });
+            } else {
+                // ABRIR
+                nav.classList.add('active');
+                btn.classList.add('active');
             }
-        });
-    });
+            return;
+        }
 
-    // --- Cerrar menú al hacer click en un link de navegación real ---
-    nav.querySelectorAll('a:not(.dropdown > a)').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 900) {
-                toggleMenu(true);
+        // ── 2. Click en cabecera de un dropdown (Nosotros, etc.) en MÓVIL ──
+        if (window.innerWidth <= 900) {
+            const dropLink = e.target.closest('.dropdown > a');
+            if (dropLink && nav.contains(dropLink)) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const dropdown = dropLink.closest('.dropdown');
+                const content = dropdown.querySelector('.dropdown-content');
+                if (!content) return;
+
+                const isOpen = content.classList.contains('mobile-open');
+
+                // Cerrar todos los demás dropdowns
+                nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                    d.classList.remove('mobile-open');
+                    d.style.display = '';
+                    d.style.position = '';
+                    d.style.boxShadow = '';
+                    d.style.borderTop = '';
+                    d.style.padding = '';
+                });
+
+                if (!isOpen) {
+                    content.classList.add('mobile-open');
+                    content.style.display = 'block';
+                    content.style.position = 'static';
+                    content.style.boxShadow = 'none';
+                    content.style.borderTop = 'none';
+                    content.style.padding = '0 0 0 15px';
+                }
+                return;
             }
-        });
-    });
 
-    // --- Cerrar menú al hacer click fuera ---
-    document.addEventListener('click', (e) => {
-        if (window.innerWidth > 900) return;
-        if (!nav.classList.contains('active')) return;
-        // Si el click NO fue dentro del navbar, cerramos
-        const navbar = e.target.closest('.navbar');
-        if (!navbar) {
-            toggleMenu(true);
+            // ── 3. Click en un link real (navegar) en MÓVIL → cerrar menú ──
+            const realLink = e.target.closest('.nav-links a');
+            if (realLink && !realLink.closest('.dropdown > a')) {
+                nav.classList.remove('active');
+                btn.classList.remove('active');
+                nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                    d.classList.remove('mobile-open');
+                    d.style.display = '';
+                    d.style.position = '';
+                    d.style.boxShadow = '';
+                    d.style.borderTop = '';
+                    d.style.padding = '';
+                });
+                return;
+            }
+
+            // ── 4. Click fuera del navbar → cerrar menú ──
+            if (nav.classList.contains('active') && !e.target.closest('.navbar')) {
+                nav.classList.remove('active');
+                btn.classList.remove('active');
+                nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                    d.classList.remove('mobile-open');
+                    d.style.display = '';
+                    d.style.position = '';
+                    d.style.boxShadow = '';
+                    d.style.borderTop = '';
+                    d.style.padding = '';
+                });
+            }
         }
     });
 }
+window.setupNavigation = setupNavigation;
 
 /* ================================================================= */
+
 /* 3. CEREBRO DEL CHATBOT (CONECTADO A TU SERVER.JS /api/citas)      */
 /* ================================================================= */
 

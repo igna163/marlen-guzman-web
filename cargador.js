@@ -11,8 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 document.getElementById('nav-placeholder').innerHTML = data;
 
-                // INTENTO DE ACTUALIZAR LA UI (LOGIN vs USUARIO)
-                // Esto verifica si la función es visible globalmente antes de llamarla
+                // Reiniciar el flag para que setupNavigation() se registre ahora
+                // que el navbar ya está en el DOM
+                document._navSetup = false;
+                if (typeof window.setupNavigation === 'function') {
+                    window.setupNavigation();
+                }
+
+                // Actualizar UI de login/usuario
                 if (typeof window.updateUserUI === 'function') {
                     window.updateUserUI();
                 }

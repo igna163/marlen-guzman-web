@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propiedades Recomendadas | Marlen Guzmán</title>
+    <link rel="icon" href="Logo_MG.jpeg" type="image/jpeg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/client-sidebar.css">
+    <style>
+        :root {
+            --gold: #bfa378;
+            --gold-light: #d4b88f;
+            --dark: #3e3632;
+            --cream: #f9f7f2;
+            --white: #fff;
+            --border: rgba(191, 163, 120, 0.2);
+        }
+
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 0 60px;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-header .overline {
+            font-family: 'Inter', sans-serif;
+            font-size: .78rem;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--dark);
+            margin: 6px 0 10px;
+        }
+
+        .page-header p {
+            font-family: 'Inter', sans-serif;
+            color: #999;
+            font-size: .95rem;
+        }
+
+        /* ── Tabs de operación ── */
+        .tabs-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 9px 20px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: .88rem;
+            font-weight: 600;
+            color: #aaa;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .tab-btn.active {
+            background: var(--gold);
+            color: #fff;
+            border-color: var(--gold);
+        }
+
+        .tab-btn:hover:not(.active) {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ── Filtros avanzados ── */
+        .filter-row {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+            border: 1px solid var(--border);
+        }
+
+        .filter-row select,
+        .filter-row input {
+            padding: 9px 14px;
+            border: 1.5px solid #e8e0d6;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: .88rem;
+            background: var(--cream);
+            color: var(--dark);
+            outline: none;
+        }
+
+        .filter-row select:focus,
+        .filter-row input:focus {
+            border-color: var(--gold);
+        }
+
+        .filter-row .result-count {
+            margin-left: auto;
+            font-family: 'Inter', sans-serif;
+            font-size: .85rem;
+            color: #aaa;
+        }
+
+        .filter-row .result-count span {
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* ── Grid ── */
+        .props-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* ── Tarjeta ── */
+        .p-card {
+            background: var(--white);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, .07);
+            border: 1px solid var(--border);
+            transition: transform .2s, box-shadow .2s;
+            position: relative;
+        }
+
+        .p-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, .12);
+        }
+
+        .p-card-img {
+            position: relative;
+            height: 185px;
+            overflow: hidden;
+            background: #f0ebe3;
+        }
+
+        .p-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .35s;
+        }
+
+        .p-card:hover .p-card-img img {
+            transform: scale(1.05);
+        }
+
+        .p-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-venta {
+            background: rgba(59, 130, 246, .9);
+            color: #fff;
+        }
+
+        .badge-arriendo {
+            background: rgba(16, 185, 129, .9);
+            color: #fff;
+        }
+
+        .badge-temporal {
+            background: rgba(245, 158, 11, .9);
+            color: #fff;
+        }
+
+        .btn-fav {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .9rem;
+            transition: all .2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+        }
+
+        .btn-fav.guardado {
+            color: #f43f5e;
+            background: #fff;
+        }
+
+        .btn-fav:not(.guardado) {
+            color: #ccc;
+        }
+
+        .btn-fav:hover {
+            transform: scale(1.15);
+        }
+
+        .p-card-body {
+            padding: 16px;
+        }
+
+        .p-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            color: var(--dark);
+            margin: 0 0 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .p-loc {
+            font-family: 'Inter', sans-serif;
+            font-size: .8rem;
+            color: #aaa;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .p-price {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .p-specs {
+            display: flex;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: .78rem;
+            color: #999;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .p-specs span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .p-specs i {
+            color: var(--gold);
+            font-size: .75rem;
+        }
+
+        .p-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-ver {
+            flex: 1;
+            padding: 9px;
+            background: var(--dark);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-ver:hover {
+            background: #5a4a3f;
+            color: #fff;
+        }
+
+        .btn-cont {
+            padding: 9px 12px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--dark);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: .82rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        .btn-cont:hover {
+            opacity: .9;
+            color: var(--dark);
+        }
+
+        /* Recomendado badge */
+        .recommended-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--dark);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: .7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Empty */
+        .empty-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 3.5rem;
+            color: #e8e0d6;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-family: 'Inter', sans-serif;
+            color: #aaa;
+        }
+
+        /* Modal */
+        .prop-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .prop-modal-overlay.open {
+            display: flex;
+        }
+
+        .prop-modal {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .prop-modal-header {
+            position: relative;
+        }
+
+        .prop-modal-header img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .prop-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, .5);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prop-modal-body {
+            padding: 24px;
+        }
+
+        .prop-modal-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .modal-price {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 14px;
+        }
+
+        .modal-specs-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .modal-spec {
+            background: var(--cream);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: .85rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .modal-spec i {
+            color: var(--gold);
+        }
+
+        .modal-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: .9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .modal-cta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .modal-cta a {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: .9rem;
+            text-decoration: none;
+            min-width: 140px;
+        }
+
+        .modal-cta .btn-dark {
+            background: var(--dark);
+            color: #fff;
+        }
+
+        .modal-cta .btn-green {
+            background: #25D366;
+            color: #fff;
+        }
+
+        /* Loading shimmer */
+        .shimmer {
+            background: linear-gradient(90deg, #f0ebe3 25%, #e8e0d6 50%, #f0ebe3 75%);
+            background-size: 400% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 100% 0
+            }
+
+            100% {
+                background-position: -100% 0
+            }
+        }
+
+        /* Responsive */
+        @media(max-width:900px) {
+            .props-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:600px) {
+            .props-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+
+<body data-page="cliente-propiedades">
+    <div class="sidebar"></div>
+    <div class="main-content">
+        <div class="page-wrapper container">
+
+            <div class="page-header">
+                <span class="overline">Catálogo exclusivo</span>
+                <h1><i class="fas fa-home" style="color:var(--gold);font-size:.85em;margin-right:8px;"></i>Propiedades
+                    para Ti</h1>
+                <p>Las últimas propiedades disponibles, actualizadas en tiempo real desde nuestra base de datos.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-bar">
+                <button class="tab-btn active" data-op="">Todas</button>
+                <button class="tab-btn" data-op="Venta">Venta</button>
+                <button class="tab-btn" data-op="Arriendo">Arriendo</button>
+                <button class="tab-btn" data-op="Arriendo Temporal">Temporada</button>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filter-row">
+                <select id="filtro-tipo">
+                    <option value="">Todos los tipos</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Departamento">Departamento</option>
+                    <option value="Terreno">Terreno</option>
+                    <option value="Local">Local Comercial</option>
+                </select>
+                <select id="filtro-dorms">
+                    <option value="">Cualquier dormitorio</option>
+                    <option value="1">1 dorm.</option>
+                    <option value="2">2 dorm.</option>
+                    <option value="3">3 dorm.</option>
+                    <option value="4">4+ dorm.</option>
+                </select>
+                <input type="text" id="filtro-buscar" placeholder="🔍  Buscar comuna...">
+                <div class="result-count">Mostrando <span id="count-num">0</span> propiedades</div>
+            </div>
+
+            <!-- Grid -->
+            <div class="props-grid" id="props-grid">
+                <!-- Skeleton -->
+                <div class="p-card">
+                    <div class="p-card-img shimmer"></div>
+                    <div class="p-card-body">
+                        <div class="shimmer" style="height:16px;margin-bottom:8px;border-radius:4px;"></div>
+                        <div class="shimmer" style="height:12px;width:60%;border-radius:4px;"></div>
+                    </div>
+                </div>
+                <div class="p-card">
+                    <div class="p-card-img shimmer"></div>
+                    <div class="p-card-body">
+                        <div class="shimmer" style="height:16px;margin-bottom:8px;border-radius:4px;"></div>
+                        <div class="shimmer" style="height:12px;width:60%;border-radius:4px;"></div>
+                    </div>
+                </div>
+                <div class="p-card">
+                    <div class="p-card-img shimmer"></div>
+                    <div class="p-card-body">
+                        <div class="shimmer" style="height:16px;margin-bottom:8px;border-radius:4px;"></div>
+                        <div class="shimmer" style="height:12px;width:60%;border-radius:4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <!-- Modal detalle -->
+    <div class="prop-modal-overlay" id="prop-modal">
+        <div class="prop-modal">
+            <div class="prop-modal-header">
+                <img id="modal-img" src="" alt="">
+                <button class="prop-modal-close" onclick="cerrarModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="prop-modal-body">
+                <span id="modal-badge" class="p-badge" style="margin-bottom:8px;display:inline-block;"></span>
+                <h2 id="modal-title"></h2>
+                <div class="modal-price" id="modal-price"></div>
+                <div class="modal-specs-row" id="modal-specs"></div>
+                <p class="modal-desc" id="modal-desc"></p>
+                <div class="modal-cta">
+                    <a href="#" id="modal-ficha" class="btn-dark" target="_blank"><i
+                            class="fas fa-external-link-alt"></i> Ver ficha completa</a>
+                    <a href="#" id="modal-wa" class="btn-green" target="_blank"><i class="fab fa-whatsapp"></i>
+                        Consultar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/client-sidebar.js"></script>
+    <script src="cargador.js"></script>
+    <script type="module" src="script.js"></script>
+    <script>
+        (function () {
+            let todas = [];
+            let filtradas = [];
+            let tabActiva = '';
+            let favIds = new Set(JSON.parse(localStorage.getItem('favoritos') || '[]').map(Number));
+
+            // ── Cargar propiedades ────────────────────────────────────────────
+            async function cargar() {
+                const grid = document.getElementById('props-grid');
+                try {
+                    const res = await fetch('/api/propiedades');
+                    const data = await res.json();
+                    todas = data || [];
+                    filtradas = [...todas];
+                    actualizarContador(filtradas.length);
+                    renderizar(filtradas, grid);
+                } catch (e) {
+                    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-exclamation-circle"></i><h3>Error de conexión</h3><p>No se pudo conectar con el servidor.</p></div>`;
+                }
+            }
+
+            function actualizarContador(n) {
+                const el = document.getElementById('count-num');
+                if (el) el.textContent = n;
+            }
+
+            function badgeClass(op) {
+                if (!op) return 'badge-venta';
+                const o = op.toLowerCase();
+                if (o.includes('temporal')) return 'badge-temporal';
+                if (o.includes('arriendo')) return 'badge-arriendo';
+                return 'badge-venta';
+            }
+
+            function tarjetaHTML(p, idx) {
+                const img = p.images?.main || 'https://placehold.co/400x300/f9f7f2/bfa378?text=Sin+foto';
+                const bc = badgeClass(p.operation);
+                const esFav = favIds.has(Number(p.id));
+                const esNuevo = idx < 3;
+                return `
+        <div class="p-card" id="card-${p.id}">
+            <div class="p-card-img">
+                <img src="${img}" alt="${p.title}" loading="lazy" onerror="this.src='https://placehold.co/400x300/f9f7f2/bfa378?text=Sin+foto'">
+                <span class="p-badge ${bc}">${p.operation || 'Venta'}</span>
+                <button class="btn-fav ${esFav ? 'guardado' : ''}" title="${esFav ? 'Quitar de favoritos' : 'Guardar'}" onclick="toggleFav(${p.id}, this)">
+                    <i class="${esFav ? 'fas' : 'far'} fa-heart"></i>
+                </button>
+                ${esNuevo ? '<div class="recommended-badge"><i class="fas fa-star"></i> Nuevo</div>' : ''}
+            </div>
+            <div class="p-card-body">
+                <div class="p-title" title="${p.title}">${p.title}</div>
+                <div class="p-loc"><i class="fas fa-map-marker-alt"></i>${p.location || 'Consultar'}</div>
+                <div class="p-price">${p.price}</div>
+                <div class="p-specs">
+                    ${p.specs?.dorms ? `<span><i class="fas fa-bed"></i>${p.specs.dorms} Dorm.</span>` : ''}
+                    ${p.specs?.baths ? `<span><i class="fas fa-bath"></i>${p.specs.baths} Baños</span>` : ''}
+                    ${p.specs?.m2Util ? `<span><i class="fas fa-ruler-combined"></i>${p.specs.m2Util} m²</span>` : ''}
+                </div>
+                <div class="p-actions">
+                    <button class="btn-ver" onclick="abrirModal(${p.id})"><i class="fas fa-eye"></i> Ver detalle</button>
+                    <a class="btn-cont" href="https://wa.me/56952286689?text=Hola%2C%20me%20interesa%20${encodeURIComponent(p.title)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Consultar</a>
+                </div>
+            </div>
+        </div>`;
+            }
+
+            function renderizar(props, grid) {
+                if (!props.length) {
+                    grid.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><h3>Sin resultados</h3><p>Prueba con otros filtros.</p></div>';
+                    return;
+                }
+                grid.innerHTML = props.map((p, i) => tarjetaHTML(p, i)).join('');
+            }
+
+            // ── Toggle favorito ───────────────────────────────────────────────
+            window.toggleFav = function (id, btn) {
+                id = Number(id);
+                const icon = btn.querySelector('i');
+                if (favIds.has(id)) {
+                    favIds.delete(id);
+                    btn.classList.remove('guardado');
+                    icon.className = 'far fa-heart';
+                    btn.title = 'Guardar';
+                } else {
+                    favIds.add(id);
+                    btn.classList.add('guardado');
+                    icon.className = 'fas fa-heart';
+                    btn.title = 'Quitar de favoritos';
+                    // Animación de pulso
+                    btn.style.transform = 'scale(1.4)';
+                    setTimeout(() => btn.style.transform = 'scale(1)', 250);
+                }
+                localStorage.setItem('favoritos', JSON.stringify([...favIds]));
+            };
+
+            // ── Tabs ──────────────────────────────────────────────────────────
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    tabActiva = this.dataset.op;
+                    aplicarFiltros();
+                });
+            });
+
+            // ── Filtros ───────────────────────────────────────────────────────
+            function aplicarFiltros() {
+                const tipo = (document.getElementById('filtro-tipo').value || '').toLowerCase();
+                const dorms = document.getElementById('filtro-dorms').value;
+                const busca = (document.getElementById('filtro-buscar').value || '').toLowerCase();
+
+                filtradas = todas.filter(p => {
+                    const passOp = !tabActiva || (p.operation || '').toLowerCase() === tabActiva.toLowerCase();
+                    const passTipo = !tipo || (p.type || '').toLowerCase().includes(tipo);
+                    const passDorm = !dorms || (dorms === '4' ? (p.specs?.dorms || 0) >= 4 : (p.specs?.dorms || 0) == parseInt(dorms));
+                    const passBusc = !busca || (p.title || '').toLowerCase().includes(busca) || (p.location || '').toLowerCase().includes(busca);
+                    return passOp && passTipo && passDorm && passBusc;
+                });
+                actualizarContador(filtradas.length);
+                renderizar(filtradas, document.getElementById('props-grid'));
+            }
+            ['filtro-tipo', 'filtro-dorms', 'filtro-buscar'].forEach(id =>
+                document.getElementById(id)?.addEventListener('input', aplicarFiltros)
+            );
+
+            // ── Modal ─────────────────────────────────────────────────────────
+            window.abrirModal = function (id) {
+                const p = todas.find(x => x.id == id);
+                if (!p) return;
+                document.getElementById('modal-img').src = p.images?.main || '';
+                document.getElementById('modal-title').textContent = p.title;
+                document.getElementById('modal-price').textContent = p.price;
+                document.getElementById('modal-desc').textContent = p.desc || 'Sin descripción disponible.';
+                const badge = document.getElementById('modal-badge');
+                badge.textContent = p.operation;
+                badge.className = `p-badge ${badgeClass(p.operation)}`;
+                document.getElementById('modal-specs').innerHTML = [
+                    p.specs?.dorms ? `<div class="modal-spec"><i class="fas fa-bed"></i>${p.specs.dorms} Dormitorios</div>` : '',
+                    p.specs?.baths ? `<div class="modal-spec"><i class="fas fa-bath"></i>${p.specs.baths} Baños</div>` : '',
+                    p.specs?.m2Util ? `<div class="modal-spec"><i class="fas fa-ruler-combined"></i>${p.specs.m2Util} m² útiles</div>` : '',
+                    p.specs?.m2Total ? `<div class="modal-spec"><i class="fas fa-expand"></i>${p.specs.m2Total} m² totales</div>` : '',
+                    p.location ? `<div class="modal-spec"><i class="fas fa-map-marker-alt"></i>${p.location}</div>` : '',
+                    p.specs?.parking ? `<div class="modal-spec"><i class="fas fa-car"></i>${p.specs.parking} Estacion.</div>` : ''
+                ].join('');
+                document.getElementById('modal-ficha').href = `web-ficha.html?id=${p.id}`;
+                document.getElementById('modal-wa').href = `https://wa.me/56952286689?text=Hola%2C%20me%20interesa%20${encodeURIComponent(p.title)}`;
+                document.getElementById('prop-modal').classList.add('open');
+            };
+
+            window.cerrarModal = function () {
+                document.getElementById('prop-modal').classList.remove('open');
+            };
+            document.getElementById('prop-modal').addEventListener('click', function (e) {
+                if (e.target === this) cerrarModal();
+            });
+
+            cargar();
+        })();
+    </script>
+</body>
+
+</html>

@@ -518,6 +518,82 @@ app.get('/api/propiedades/historial', async (req, res) => {
     } catch (err) { errorResponse(res, err.message); }
 });
 
+// --- API: PROPIEDADES DESTACADAS (para portal cliente) ---
+app.get('/api/propiedades/destacadas', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 6;
+        const op = req.query.operacion; // opcional: 'Venta' | 'Arriendo'
+        let query = 'SELECT * FROM propiedades WHERE active = TRUE';
+        const params = [];
+        if (op) { params.push(op); query += ` AND tipo_operacion = $${params.length}`; }
+        query += ` ORDER BY id DESC LIMIT $${params.length + 1}`;
+        params.push(limit);
+        const result = await pool.query(query, params);
+        const mapped = result.rows.map(row => ({
+            id: row.id,
+            title: row.titulo,
+            operation: row.tipo_operacion,
+            type: row.tipo_propiedad,
+            price: row.precio ? (row.moneda || 'UF') + ' ' + Number(row.precio).toLocaleString('es-CL') : 'Consulte',
+            rawPrice: row.precio,
+            moneda: row.moneda || 'UF',
+            location: row.comuna,
+            desc: row.descripcion,
+            specs: {
+                dorms: row.dormitorios,
+                baths: row.banos,
+                m2Total: row.m2_totales,
+                m2Util: row.m2_utiles,
+                parking: row.estacionamientos
+            },
+            images: {
+                main: row.imagen_url || 'https://placehold.co/400x300/f9f7f2/bfa378?text=Sin+foto',
+                gallery: row.galeria || []
+            },
+            estado: row.estado
+        }));
+        res.json(mapped);
+    } catch (err) { errorResponse(res, err.message); }
+});
+
+// --- API: PROPIEDADES POR IDs (para recuperar favoritos de localStorage) ---
+app.get('/api/propiedades/por-ids', async (req, res) => {
+    try {
+        const ids = (req.query.ids || '').split(',').map(Number).filter(Boolean);
+        if (!ids.length) return res.json([]);
+        const placeholders = ids.map((_, i) => `$${i + 1}`).join(',');
+        const result = await pool.query(
+            `SELECT * FROM propiedades WHERE id IN (${placeholders})`,
+            ids
+        );
+        const mapped = result.rows.map(row => ({
+            id: row.id,
+            title: row.titulo,
+            operation: row.tipo_operacion,
+            type: row.tipo_propiedad,
+            price: row.precio ? (row.moneda || 'UF') + ' ' + Number(row.precio).toLocaleString('es-CL') : 'Consulte',
+            rawPrice: row.precio,
+            moneda: row.moneda || 'UF',
+            location: row.comuna,
+            desc: row.descripcion,
+            specs: {
+                dorms: row.dormitorios,
+                baths: row.banos,
+                m2Total: row.m2_totales,
+                m2Util: row.m2_utiles,
+                parking: row.estacionamientos
+            },
+            images: {
+                main: row.imagen_url || 'https://placehold.co/400x300/f9f7f2/bfa378?text=Sin+foto',
+                gallery: row.galeria || []
+            },
+            estado: row.estado
+        }));
+        res.json(mapped);
+    } catch (err) { errorResponse(res, err.message); }
+});
+
+
 app.get('/api/propiedades/:id', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM propiedades WHERE id = $1', [req.params.id]);

@@ -3,45 +3,63 @@
     <span>MI CUENTA</span>
 </div>
 
-<div class="text-center mb-3 d-flex align-items-center justify-content-center px-3">
-    <i class="bi bi-person-circle fs-4 me-2"></i>
-    <span class="small fw-bold text-white" id="sidebar-user">Cargando...</span>
+<div style="text-align:center; padding: 0 16px 16px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+    <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#bfa378,#d4b88f);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:700;color:#3e3632;margin:0 auto 8px;"
+        id="sidebar-avatar">MG</div>
+    <span style="font-family:'Inter',sans-serif;font-size:.88rem;font-weight:600;color:#fff;"
+        id="sidebar-user">Cargando...</span><br>
+    <span style="font-family:'Inter',sans-serif;font-size:.72rem;color:rgba(255,255,255,.4);">Cliente
+        Preferencial</span>
 </div>
 
-<div class="small text-uppercase fw-bold text-white-50 px-3 mt-3 mb-1" style="font-size: 0.7rem;">
-    Navegación
+<div
+    style="font-family:'Inter',sans-serif;font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);padding:16px 20px 6px;font-weight:700;">
+    Principal
 </div>
-<a href="cliente.html"><i class="bi bi-grid-1x2"></i> Resumen</a>
-<a href="favoritos.html"><i class="bi bi-heart"></i> Mis Favoritos <span class="badge bg-danger ms-2">3</span></a>
+<a href="cliente.html"><i class="fas fa-th-large"></i> Mi Panel</a>
+<a href="cliente-propiedades.html"><i class="fas fa-home"></i> Ver Propiedades</a>
+<a href="cliente-favoritos.html"><i class="fas fa-heart"></i> Mis Favoritos</a>
 
-<div class="small text-uppercase fw-bold text-white-50 px-3 mt-3 mb-1" style="font-size: 0.7rem;">
+<div
+    style="font-family:'Inter',sans-serif;font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);padding:16px 20px 6px;font-weight:700;">
     Gestión
 </div>
+<a href="cliente-visita.html"><i class="fas fa-calendar-check"></i> Mis Visitas</a>
+<a href="cliente-postulaciones.html"><i class="fas fa-file-signature"></i> Postulaciones</a>
+<a href="cliente-documentos.html"><i class="fas fa-folder-open"></i> Documentos</a>
 
-<a href="cliente-documentos.html">
-    <i class="bi bi-file-earmark-person"></i> Carpeta Digital
-</a>
-
-<a href="cliente-postulaciones.html">
-    <i class="bi bi-send-check"></i> Estado de Postulaciones
-</a>
-
-<a href="cliente-visita.html">
-    <i class="bi bi-calendar-week"></i> Mis Visitas Agendadas
-</a>
-
-<div class="small text-uppercase fw-bold text-white-50 px-3 mt-3 mb-1" style="font-size: 0.7rem;">
-    Servicios
+<div
+    style="font-family:'Inter',sans-serif;font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);padding:16px 20px 6px;font-weight:700;">
+    Herramientas
 </div>
-<a href="#" onclick="alert('Funcionalidad en desarrollo: Mis Proyectos Solares')">
-    <i class="bi bi-sun"></i> Mis Proyectos Solares
-</a>
+<a href="cliente-simulador.html"><i class="fas fa-calculator"></i> Simulador Crédito</a>
+<a href="reparacion-propiedad.html"><i class="fas fa-tools"></i> Remodelación</a>
+<a href="https://wa.me/56952286689" target="_blank" rel="noopener" style="color:#25D366 !important;"><i
+        class="fab fa-whatsapp"></i> Mi Ejecutivo</a>
 
-<hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+<hr style="border-color: rgba(255,255,255,0.08); margin: 16px 0;">
 
-<a href="cliente-config.html">
-    <i class="bi bi-person-circle"></i> Mi Perfil y Clave
-</a>
-<a href="index.html" class="text-danger" onclick="handleLogout()">
-    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-</a>
+<a href="cliente-config.html"><i class="fas fa-user-cog"></i> Mi Perfil y Clave</a>
+<a href="index.html" style="color:#f87171 !important;" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i>
+    Cerrar Sesión</a>
+
+<script>
+    // Sincronizar avatar e iniciales con el sidebar
+    (function () {
+        const userStr = localStorage.getItem('user');
+        if (!userStr) return;
+        try {
+            const user = JSON.parse(userStr);
+            const nombre = user.nombre_completo || user.username || '';
+            const el = document.getElementById('sidebar-user');
+            const av = document.getElementById('sidebar-avatar');
+            if (el) el.textContent = nombre.split(' ')[0] || 'Cliente';
+            if (av && nombre) {
+                const partes = nombre.trim().split(' ');
+                av.textContent = partes.length >= 2
+                    ? (partes[0][0] + partes[1][0]).toUpperCase()
+                    : nombre.substring(0, 2).toUpperCase();
+            }
+        } catch (e) { }
+    })();
+</script>

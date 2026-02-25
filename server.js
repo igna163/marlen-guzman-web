@@ -164,8 +164,79 @@ async function agendarEnGoogle(fechaStr, horaStr, nombreCliente, telefono, email
 }
 
 // =======================================================
+//       RUTA: INDICADORES ECONÓMICOS (PROXY VÍA N8N)
+// =======================================================
+// N8N se encarga de llamar a mindicador.cl desde el servidor,
+// evitando los bloqueos CORS y rate-limiting del navegador.
+
+const N8N_INDICADORES_URL = 'https://n8n-marlen-auto.onrender.com/webhook/indicadores-economicos';
+
+// Caché en memoria para no saturar N8N con cada recarga de página
+let indicadoresCache = { datos: null, timestamp: 0 };
+const INDICADORES_CACHE_MS = 60 * 60 * 1000; // 1 hora en milisegundos
+
+app.get('/api/indicadores', async (req, res) => {
+    // 1. Servir desde caché si los datos tienen menos de 1 hora
+    const ahora = Date.now();
+    if (indicadoresCache.datos && (ahora - indicadoresCache.timestamp) < INDICADORES_CACHE_MS) {
+        console.log('⚡ Indicadores desde caché del servidor');
+        return res.json({ success: true, datos: indicadoresCache.datos, fuente: 'cache' });
+    }
+
+    // 2. Pedir datos frescos a N8N
+    try {
+        console.log('🌐 Solicitando indicadores a N8N...');
+        const response = await fetch(N8N_INDICADORES_URL, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            signal: AbortSignal.timeout(10000) // timeout 10 segundos
+        });
+
+        if (!response.ok) {
+            throw new Error(`N8N respondió con estado: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // N8N puede devolver el JSON directamente o anidado en un array
+        const payload = Array.isArray(data) ? data[0] : data;
+
+        const datosFrescos = {
+            uf: payload.uf || payload.UF || 0,
+            dolar: payload.dolar || payload.Dolar || payload.dólar || 0,
+            euro: payload.euro || payload.Euro || 0,
+            utm: payload.utm || payload.UTM || 0,
+            ipc: payload.ipc || payload.IPC || 0,
+        };
+
+        // Actualizar caché
+        indicadoresCache = { datos: datosFrescos, timestamp: ahora };
+
+        console.log('✅ Indicadores actualizados desde N8N:', datosFrescos);
+        res.json({ success: true, datos: datosFrescos, fuente: 'n8n' });
+
+    } catch (error) {
+        console.error('❌ Error al contactar N8N para indicadores:', error.message);
+
+        // 3. Si N8N falla pero hay caché viejo, lo devolvemos igual
+        if (indicadoresCache.datos) {
+            console.warn('🗄️ Devolviendo caché antiguo como respaldo');
+            return res.json({ success: true, datos: indicadoresCache.datos, fuente: 'cache_antiguo' });
+        }
+
+        // 4. Último recurso: valores hardcoded para que nunca aparezcan "..."
+        res.json({
+            success: true,
+            datos: { uf: 38550, dolar: 980, euro: 1050, utm: 66000, ipc: 0.0 },
+            fuente: 'fallback'
+        });
+    }
+});
+
+// =======================================================
 //                RUTAS DE AUTH Y USUARIOS
 // =======================================================
+
 
 app.post('/api/login', async (req, res) => {
     let { email, password } = req.body;

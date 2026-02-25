@@ -923,27 +923,83 @@ function openDetail(id) {
 function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
 
 function setupNavigation() {
-    document.addEventListener('click', (e) => {
-        const nav = document.querySelector('.nav-links');
-        const btn = e.target.closest('.mobile-menu-btn');
+    const nav = document.querySelector('.nav-links');
+    const btn = document.querySelector('.mobile-menu-btn');
 
-        // 1. Toggle Button
-        if (btn) {
-            if (nav) nav.classList.toggle('active');
-            return;
+    if (!nav || !btn) return;
+
+    // --- Función para abrir/cerrar el menú ---
+    function toggleMenu(forceClose = false) {
+        const isActive = nav.classList.contains('active');
+        if (forceClose || isActive) {
+            // CERRAR
+            nav.classList.remove('active');
+            btn.classList.remove('active');
+            // Cerrar todos los sub-dropdowns abiertos
+            nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                d.classList.remove('mobile-open');
+                d.style.display = '';
+            });
+        } else {
+            // ABRIR
+            nav.classList.add('active');
+            btn.classList.add('active');
         }
+    }
 
-        // 2. Logic to Close Menu (Only if active)
-        if (nav && nav.classList.contains('active')) {
-            const isLink = e.target.closest('.nav-links a');
-            const isCheckId = e.target.closest('.nav-links'); // If click is inside nav container
+    // --- Click en el botón hamburguesa ---
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+    });
 
-            // Close if:
-            // A) Click is OUTSIDE the nav container
-            // B) Click is INSIDE a link (to navigate)
-            if (!isCheckId || isLink) {
-                nav.classList.remove('active');
+    // --- En móvil, los dropdowns se manejan con click (no hover) ---
+    nav.querySelectorAll('.dropdown > a').forEach(link => {
+        link.addEventListener('click', function (e) {
+            // Solo interceptar en móvil
+            if (window.innerWidth > 900) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const dropdown = this.closest('.dropdown');
+            const content = dropdown.querySelector('.dropdown-content');
+            if (!content) return;
+
+            const isOpen = content.classList.contains('mobile-open');
+            // Cerrar todos los otros dropdowns abiertos
+            nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                d.classList.remove('mobile-open');
+                d.style.display = '';
+            });
+            // Toggle del actual
+            if (!isOpen) {
+                content.classList.add('mobile-open');
+                content.style.display = 'block';
+                content.style.position = 'static';
+                content.style.boxShadow = 'none';
+                content.style.borderTop = 'none';
+                content.style.padding = '0 0 0 15px';
             }
+        });
+    });
+
+    // --- Cerrar menú al hacer click en un link de navegación real ---
+    nav.querySelectorAll('a:not(.dropdown > a)').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 900) {
+                toggleMenu(true);
+            }
+        });
+    });
+
+    // --- Cerrar menú al hacer click fuera ---
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth > 900) return;
+        if (!nav.classList.contains('active')) return;
+        // Si el click NO fue dentro del navbar, cerramos
+        const navbar = e.target.closest('.navbar');
+        if (!navbar) {
+            toggleMenu(true);
         }
     });
 }
@@ -1893,11 +1949,11 @@ window.seleccionarHora = (fecha, hora) => {
 
 // Ejecutar al cargar (Se llama desde DOMContentLoaded)
 async function cargarIndicadores() {
-    const STORAGE_KEY = 'indicadores_chile_v4_final'; // Clave única
-    const CACHE_HORAS = 12; // Horas de validez del caché
+    const STORAGE_KEY = 'indicadores_chile_v5_n8n'; // Nueva clave para limpiar caché viejo
+    const CACHE_HORAS = 12; // Horas de validez del caché local
     const CACHE_MS = CACHE_HORAS * 60 * 60 * 1000;
 
-    // 1. FASE DE VELOCIDAD: Leer caché de localStorage
+    // 1. FASE DE VELOCIDAD: Mostrar caché local si existe y es reciente
     const memoriaRaw = localStorage.getItem(STORAGE_KEY);
     let memoriaObj = null;
 
@@ -1907,53 +1963,52 @@ async function cargarIndicadores() {
             const edadMs = Date.now() - (memoriaObj.timestamp || 0);
 
             if (edadMs < CACHE_MS) {
-                // Datos frescos (menos de 12 horas): usar directamente y no hacer fetch
+                // Datos frescos: usar directamente sin hacer fetch al servidor
                 renderizarIndicadores(memoriaObj.datos);
-                console.log(`⚡ Indicadores desde caché (${Math.round(edadMs / 60000)} min de antigüedad)`);
+                console.log(`⚡ Indicadores desde caché local (${Math.round(edadMs / 60000)} min de antigüedad)`);
                 return;
             }
 
-            // Datos existen pero son viejos: pintarlos igual para mostrar algo mientras
+            // Datos viejos: pintarlos igual para mostrar algo mientras actualizamos
             renderizarIndicadores(memoriaObj.datos);
-            console.log("⚠️ Caché antiguo (>12h), actualizando en segundo plano...");
+            console.log('⚠️ Caché local antiguo (>12h), actualizando desde servidor...');
         } catch (e) {
-            console.warn("Caché corrupto, limpiando...");
+            console.warn('Caché corrupto, limpiando...');
             localStorage.removeItem(STORAGE_KEY);
             memoriaObj = null;
         }
     }
 
-    // 2. FASE DE ACTUALIZACIÓN: Fetch a la API
+    // 2. FASE DE ACTUALIZACIÓN: Llamar al endpoint propio del servidor (proxy N8N)
+    // Esto evita los bloqueos CORS y rate-limiting de mindicador.cl en el navegador
     try {
-        const response = await fetch('https://mindicador.cl/api');
-        if (!response.ok) throw new Error('API caída');
+        const response = await fetch('/api/indicadores');
+        if (!response.ok) throw new Error('Error de red al contactar /api/indicadores');
 
-        const apiData = await response.json();
+        const result = await response.json();
 
-        const datosFrescos = {
-            uf: apiData.uf?.valor || 0,
-            dolar: apiData.dolar?.valor || 0,
-            euro: apiData.euro?.valor || 0,
-            utm: apiData.utm?.valor || 0,
-            ipc: apiData.ipc?.valor || 0
-        };
-
-        // Guardar en localStorage con timestamp actual
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ timestamp: Date.now(), datos: datosFrescos }));
-
-        renderizarIndicadores(datosFrescos);
-        console.log("✅ Indicadores actualizados desde Internet");
+        if (result.success && result.datos) {
+            // Guardar en localStorage con timestamp actual
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                timestamp: Date.now(),
+                datos: result.datos
+            }));
+            renderizarIndicadores(result.datos);
+            console.log(`✅ Indicadores actualizados (fuente: ${result.fuente})`);
+        } else {
+            throw new Error('El servidor no devolvió datos válidos');
+        }
 
     } catch (error) {
-        console.error("❌ Error API Mindicador:", error);
+        console.error('❌ Error al cargar indicadores desde servidor:', error.message);
 
-        // 3. FASE DE RESPALDO: si el fetch falla, usar datos viejos del caché si existen
+        // 3. FASE DE RESPALDO: Si el servidor falla, usar caché antiguo o hardcoded
         if (memoriaObj && memoriaObj.datos) {
             renderizarIndicadores(memoriaObj.datos);
-            console.warn("🗄️ Usando datos viejos del caché como respaldo.");
+            console.warn('🗄️ Usando datos viejos del caché local como respaldo.');
         } else {
             // Último recurso: valores hardcoded para no mostrar '...'
-            renderizarIndicadores({ uf: 38550, dolar: 980, euro: 1050, utm: 64500, ipc: 0.0 });
+            renderizarIndicadores({ uf: 38550, dolar: 980, euro: 1050, utm: 66000, ipc: 0.0 });
         }
     }
 }

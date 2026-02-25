@@ -1684,3 +1684,104 @@ h6.section-header {
     padding-left: 25px;
     /* Efecto movimiento */
 }
+
+/* ============================================================
+   NAVBAR MÓVIL Y TABLET (pantallas ≤ 900px)
+   ============================================================ */
+
+/* Botón hamburguesa: oculto en escritorio */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1100;
+}
+
+.hamburger-bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 900px) {
+
+    /* Mostrar botón hamburguesa */
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    /* Ocultar menú de navegación por defecto en móvil */
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 80px);
+        background-color: #fff;
+        padding: 20px 0;
+        overflow-y: auto;
+        z-index: 999;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        gap: 0;
+    }
+
+    /* Mostrar menú cuando tiene clase .active (toggled por JS) */
+    .nav-links.active {
+        display: flex;
+    }
+
+    /* Estilo de los links dentro del menú móvil */
+    .nav-links .nav-link,
+    .nav-links > a {
+        width: 100%;
+        padding: 16px 24px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 1.05rem;
+        color: #333;
+    }
+
+    /* Los dropdown ocupan el ancho completo */
+    .nav-links .dropdown {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+    }
+
+    .nav-links .dropdown > a {
+        width: 100%;
+        padding: 16px 24px;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Ocultar hover de dropdown en móvil (se maneja con JS) */
+    .dropdown:hover .dropdown-content {
+        display: none;
+    }
+
+    /* Animación del botón hamburguesa → X cuando el menú está abierto */
+    .mobile-menu-btn.active .hamburger-bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .mobile-menu-btn.active .hamburger-bar:nth-child(2) {
+        opacity: 0;
+    }
+    .mobile-menu-btn.active .hamburger-bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}

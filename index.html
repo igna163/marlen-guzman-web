@@ -749,7 +749,7 @@
                 return;
             }
 
-            // E) ENVÍO AL SERVIDOR
+            // E) ENVÍO A N8N (MODO PRUEBA)
             btnSubmit.disabled = true;
             btnSubmit.innerText = "Enviando...";
 
@@ -757,27 +757,27 @@
                 const datos = {
                     nombre: document.getElementById('contact-name').value,
                     email: document.getElementById('contact-email').value,
-                    telefono: cleanPhone, // Enviamos el número limpio de 9 dígitos
-                    mensaje: document.getElementById('contact-message').value
+                    telefono: "56" + cleanPhone, // Enviamos el código 56 ideal para conectarlo a WhatsApp luego
+                    mensaje: document.getElementById('contact-message').value,
+                    origen: "Formulario Principal Web"
                 };
 
-                const res = await fetch('/api/contact', {
+                // Apuntamos a tu Webhook de prueba en n8n
+                const res = await fetch('https://n8n-marlen-auto.onrender.com/webhook-test/contacto-web', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datos)
                 });
 
-                const json = await res.json();
-
-                if (json.success) {
+                if (res.ok) {
                     alert("✅ ¡Mensaje enviado con éxito! Marlen se contactará contigo pronto.");
                     document.getElementById('main-contact-form').reset();
                 } else {
-                    alert("❌ Error al enviar: " + json.message);
+                    alert("❌ Error al enviar. El sistema de contacto está en mantenimiento.");
                 }
 
             } catch (error) {
-                console.error(error);
+                console.error("Error enviando a n8n:", error);
                 alert("❌ Error de conexión. Inténtelo más tarde.");
             } finally {
                 btnSubmit.disabled = false;

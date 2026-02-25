@@ -11,11 +11,24 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 document.getElementById('nav-placeholder').innerHTML = data;
 
-                // Reiniciar el flag para que setupNavigation() se registre ahora
-                // que el navbar ya está en el DOM
+                // ============================================================
+                // TOGGLE DEL MENÚ HAMBURGUESA (☰)
+                // Se configura aquí directamente para garantizar que funcione
+                // independientemente del timing de script.js (type=module)
+                // ============================================================
+                initNavbarToggle();
+
+                // Intentar también llamar setupNavigation de script.js si está disponible
                 document._navSetup = false;
                 if (typeof window.setupNavigation === 'function') {
                     window.setupNavigation();
+                } else {
+                    // Si script.js aún no cargó, esperamos un ciclo y reintentamos
+                    setTimeout(() => {
+                        if (typeof window.setupNavigation === 'function' && !document._navSetup) {
+                            window.setupNavigation();
+                        }
+                    }, 300);
                 }
 
                 // Actualizar UI de login/usuario
@@ -45,3 +58,100 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error al cargar el footer:", error));
     }
 });
+
+// ============================================================
+// FUNCIÓN DE TOGGLE DEL NAVBAR MÓVIL
+// Implementada aquí para garantizar funcionamiento sin depender
+// del timing de carga de script.js (que es type="module")
+// ============================================================
+function initNavbarToggle() {
+    const btn = document.querySelector('.mobile-menu-btn');
+    const nav = document.querySelector('.nav-links');
+
+    if (!btn || !nav) {
+        console.warn('initNavbarToggle: no se encontró .mobile-menu-btn o .nav-links');
+        return;
+    }
+
+    // Eliminar listeners previos clonando el botón
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+
+    // Toggle al hacer click en ☰
+    newBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const isOpen = nav.classList.contains('active');
+
+        if (isOpen) {
+            // CERRAR menú
+            nav.classList.remove('active');
+            newBtn.classList.remove('active');
+            // Cerrar sub-dropdowns abiertos
+            nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                d.classList.remove('mobile-open');
+                d.style.display = '';
+                d.style.position = '';
+                d.style.boxShadow = '';
+                d.style.borderTop = '';
+                d.style.padding = '';
+            });
+        } else {
+            // ABRIR menú
+            nav.classList.add('active');
+            newBtn.classList.add('active');
+        }
+    });
+
+    // Click en un link de dropdown en móvil → abrir/cerrar sub-menú
+    nav.addEventListener('click', function (e) {
+        if (window.innerWidth > 900) return;
+
+        const dropLink = e.target.closest('.dropdown > a');
+        if (dropLink) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const dropdown = dropLink.closest('.dropdown');
+            const content = dropdown.querySelector('.dropdown-content');
+            if (!content) return;
+
+            const isOpen = content.classList.contains('mobile-open');
+
+            // Cerrar todos los otros dropdowns
+            nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                d.classList.remove('mobile-open');
+                d.style.display = '';
+                d.style.position = '';
+                d.style.boxShadow = '';
+                d.style.borderTop = '';
+                d.style.padding = '';
+            });
+
+            if (!isOpen) {
+                content.classList.add('mobile-open');
+                content.style.display = 'block';
+                content.style.position = 'static';
+                content.style.boxShadow = 'none';
+                content.style.borderTop = 'none';
+                content.style.padding = '0 0 0 15px';
+            }
+        }
+    });
+
+    // Click fuera del navbar → cerrar menú
+    document.addEventListener('click', function (e) {
+        if (window.innerWidth > 900) return;
+        if (nav.classList.contains('active') && !e.target.closest('.navbar')) {
+            nav.classList.remove('active');
+            newBtn.classList.remove('active');
+            nav.querySelectorAll('.dropdown-content.mobile-open').forEach(d => {
+                d.classList.remove('mobile-open');
+                d.style.display = '';
+                d.style.position = '';
+                d.style.boxShadow = '';
+                d.style.borderTop = '';
+                d.style.padding = '';
+            });
+        }
+    });
+}

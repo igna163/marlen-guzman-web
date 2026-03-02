@@ -457,10 +457,11 @@
                 // Filtro Operación
                 if (op === 'venta' && !p.operacion_venta) return false;
                 if (op === 'arriendo' && !p.operacion_arriendo) return false;
+                if (op === 'temporal' && !p.operacion_arriendo_temporal) return false;
                 // Filtro Tipo
-                if (tipo && p.tipo_propiedad !== tipo) return false;
+                if (tipo && (!p.tipo_propiedad || p.tipo_propiedad.toLowerCase() !== tipo.toLowerCase())) return false;
                 // Filtro Comuna
-                if (comuna && !p.comuna.toLowerCase().includes(comuna)) return false;
+                if (comuna && (!p.comuna || !p.comuna.toLowerCase().includes(comuna))) return false;
                 // Filtro Dorms/Baños
                 if (p.dormitorios < dorms) return false;
                 if (p.banos < banos) return false;

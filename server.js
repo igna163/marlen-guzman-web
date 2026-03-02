@@ -2248,6 +2248,45 @@ app.get('/api/db-test', async (req, res) => {
     }
 });
 
+// =======================================================
+//                RUTAS DE HISTORIAS
+// =======================================================
+
+app.get('/api/historias', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM historias WHERE aprobado = TRUE ORDER BY id DESC');
+        res.json({ success: true, data: result.rows });
+    } catch (err) { 
+        console.error("Error obteniendo historias:", err);
+        res.status(500).json({ success: false, message: 'Error en el servidor.' });
+    }
+});
+
+app.post('/api/historias', async (req, res) => {
+    const { nombre_cliente, servicio_realizado, titulo_historia, testimonio, foto_url, valoracion } = req.body;
+    
+    if (!nombre_cliente || !servicio_realizado || !titulo_historia || !testimonio || !valoracion) {
+        return res.status(400).json({ success: false, message: 'Faltan campos obligatorios' });
+    }
+
+    try {
+        const query = `
+            INSERT INTO historias 
+            (nombre_cliente, servicio_realizado, titulo_historia, testimonio, foto_url, valoracion, aprobado)
+            VALUES ($1, $2, $3, $4, $5, $6, FALSE) RETURNING *
+        `;
+        const values = [
+            nombre_cliente, servicio_realizado, titulo_historia, testimonio, foto_url || null, parseInt(valoracion) || 5
+        ];
+
+        const result = await pool.query(query, values);
+        res.json({ success: true, data: result.rows[0] });
+    } catch (err) {
+        console.error("Error guardando historia:", err);
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
 });

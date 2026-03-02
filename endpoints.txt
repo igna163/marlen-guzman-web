@@ -1,0 +1,90 @@
+﻿
+server.js:177:app.get('/api
+/indicadores', async (req, 
+res) => {
+server.js:427:app.get('/api
+/users', async (req, res) 
+=> {
+server.js:479:app.get('/api
+/propiedades', async (req, 
+res) => {
+server.js:513:app.get('/api
+/propiedades/historial', 
+async (req, res) => {
+server.js:522:app.get('/api
+/propiedades/destacadas', 
+async (req, res) => {
+server.js:560:app.get('/api
+/propiedades/por-ids', 
+async (req, res) => {
+server.js:597:app.get('/api
+/propiedades/:id', async 
+(req, res) => {
+server.js:849:app.get('/api
+/propiedades-list', async 
+(req, res) => {
+server.js:908:app.get('/api
+/destacadas', async (req, 
+res) => {
+server.js:954:app.get('/api
+/places', async (req, res) 
+=> {
+server.js:1007:app.get('/ap
+i/citas', async (req, res) 
+=> {
+server.js:1090:app.get('/ap
+i/disponibilidad', async 
+(req, res) => {
+server.js:1163:app.get('/ap
+i/propiedades2/:id', async 
+(req, res) => {
+server.js:1318:app.get('/ap
+i/leads', async (req, res) 
+=> {
+server.js:1397:app.get('/ap
+i/propiedades/:id/imagenes'
+, async (req, res) => {
+server.js:1513:app.get('/ap
+i/propiedades/:id/documento
+s', async (req, res) => {
+server.js:1594:app.get('/ap
+i/propiedades/:id/bitacora'
+, async (req, res) => {
+server.js:1629:app.get('/ap
+i/propiedades/:id/propietar
+io', async (req, res) => {
+server.js:1670:app.get('/ap
+i/clientes/:id', async 
+(req, res) => {
+server.js:1762:app.get('/ap
+i/propiedades/:id/informes'
+, async (req, res) => {
+server.js:1785:app.get('/ap
+i/test-publicacion/:id', 
+async (req, res) => {
+server.js:1828:app.get('/ap
+i/admin/stats', async 
+(req, res) => {
+server.js:1907:app.get('/ap
+i/admin/visitas-semana', 
+async (req, res) => {
+server.js:1952:app.get('/ap
+i/leads/:id/documentos', 
+async (req, res) => {
+server.js:1975:app.get('/ap
+i/admin/reporte-mensual', 
+async (req, res) => {
+server.js:2115:app.get('/ap
+i/historias', async (req, 
+res) => {
+server.js:2201:app.get('/ap
+i/propiedades-list', async 
+(req, res) => {
+server.js:2228:app.get('/ap
+i/db-test', async (req, 
+res) => {
+server.js:2255:app.get('/ap
+i/historias', async (req, 
+res) => {
+
+

@@ -201,14 +201,14 @@
                     <select id="home-operation">
                         <option value="venta">Comprar</option>
                         <option value="arriendo" selected>Arrendar</option>
-                        <option value="arriendotemporal">Arriendo Temporal</option>
+                        <option value="temporal">Arriendo Temporal</option>
                     </select>
                 </div>
                 <div class="search-field">
                     <label for="home-type">Tipo</label>
                     <select id="home-type">
-                        <option value="">Seleccione...</option>
-                        <option value="Casa" selected>Casa</option>
+                        <option value="" selected>Seleccione...</option>
+                        <option value="Casa">Casa</option>
                         <option value="Departamento">Departamento</option>
                         <option value="Oficina">Oficina</option>
                         <option value="Sitio">Sitio</option>
@@ -770,16 +770,36 @@
                 });
 
                 if (res.ok) {
-                    alert("✅ ¡Mensaje enviado con éxito! Marlen se contactará contigo pronto.");
+                    // Cambiamos el texto a "Enviado" como solicitaste
+                    btnSubmit.innerText = "¡Enviado!";
+                    btnSubmit.style.backgroundColor = "#2ecc71"; // Un toque visual verde de éxito
+                    btnSubmit.style.borderColor = "#2ecc71";
+                    btnSubmit.style.color = "#fff";
+
                     document.getElementById('main-contact-form').reset();
+
+                    // Pequeño timeout para permitir que el navegador actualice el texto del botón antes de la alerta
+                    setTimeout(() => {
+                        alert("✅ ¡Mensaje enviado con éxito! Marlen se contactará contigo pronto.");
+
+                        // Restauramos el botón después de cerrar la alerta
+                        setTimeout(() => {
+                            btnSubmit.disabled = false;
+                            btnSubmit.innerText = "Enviar Mensaje";
+                            btnSubmit.style.backgroundColor = "";
+                            btnSubmit.style.borderColor = "";
+                            btnSubmit.style.color = "";
+                        }, 1000);
+                    }, 100);
                 } else {
                     alert("❌ Error al enviar. El sistema de contacto está en mantenimiento.");
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerText = "Enviar Mensaje";
                 }
 
             } catch (error) {
                 console.error("Error enviando a n8n:", error);
                 alert("❌ Error de conexión. Inténtelo más tarde.");
-            } finally {
                 btnSubmit.disabled = false;
                 btnSubmit.innerText = "Enviar Mensaje";
             }

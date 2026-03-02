@@ -55,12 +55,13 @@
                     <form id="formHistoria" onsubmit="enviarHistoria(event)">
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Tu Nombre / Familia</label>
-                            <input type="text" class="form-control" placeholder="Ej: Familia González" required>
+                            <input type="text" id="nombre_cliente" class="form-control"
+                                placeholder="Ej: Familia González" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">¿Qué servicio realizaste?</label>
-                            <select class="form-select">
+                            <select id="servicio_realizado" class="form-select">
                                 <option>Compré una propiedad</option>
                                 <option>Vendí mi propiedad</option>
                                 <option>Arrendé una propiedad</option>
@@ -71,34 +72,36 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Título de tu historia</label>
-                            <input type="text" class="form-control" placeholder="Ej: ¡Un sueño hecho realidad!"
-                                required>
+                            <input type="text" id="titulo_historia" class="form-control"
+                                placeholder="Ej: ¡Un sueño hecho realidad!" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Cuéntanos tu experiencia</label>
-                            <textarea class="form-control" rows="4"
+                            <textarea id="testimonio" class="form-control" rows="4"
                                 placeholder="¿Cómo te sentiste? ¿Qué fue lo que más destacas?" required></textarea>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold small">Foto (Opcional)</label>
-                            <input type="file" class="form-control form-control-sm">
+                            <input type="file" id="foto_url" class="form-control form-control-sm">
                             <div class="form-text small">Una foto de tu nuevo hogar o del proceso.</div>
                         </div>
 
                         <div class="mb-4 text-center">
                             <label class="form-label fw-bold small d-block">Tu valoración</label>
-                            <div class="rating-stars" style="color: #ffc107; font-size: 1.5rem; cursor: pointer;">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
+                            <div class="rating-stars" id="rating-stars-container"
+                                style="color: #ffc107; font-size: 1.5rem; cursor: pointer;">
+                                <i class="fas fa-star" data-value="1"></i>
+                                <i class="fas fa-star" data-value="2"></i>
+                                <i class="fas fa-star" data-value="3"></i>
+                                <i class="fas fa-star" data-value="4"></i>
+                                <i class="far fa-star" data-value="5"></i>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-dark w-100 py-3 fw-bold rounded-pill shadow-sm">
+                        <button type="submit" id="btnSubmitHistoria"
+                            class="btn btn-dark w-100 py-3 fw-bold rounded-pill shadow-sm">
                             ENVIAR MI HISTORIA <i class="fas fa-paper-plane ms-2"></i>
                         </button>
                     </form>
@@ -115,7 +118,29 @@
     <script src="script.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', cargarHistorias);
+        let valoracionSeleccionada = 3; // Por defecto es 4 
+
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarHistorias();
+
+            // Lógica para estrellas
+            const stars = document.querySelectorAll('.rating-stars i');
+            stars.forEach(star => {
+                star.addEventListener('click', function () {
+                    valoracionSeleccionada = parseInt(this.getAttribute('data-value'));
+                    stars.forEach(s => {
+                        const val = parseInt(s.getAttribute('data-value'));
+                        if (val <= valoracionSeleccionada) {
+                            s.classList.remove('far');
+                            s.classList.add('fas');
+                        } else {
+                            s.classList.remove('fas');
+                            s.classList.add('far');
+                        }
+                    });
+                });
+            });
+        });
 
         async function cargarHistorias() {
             try {
@@ -173,10 +198,50 @@
         // Lógica para enviar el formulario (Conexión REAL)
         async function enviarHistoria(e) {
             e.preventDefault();
-            // Capturar datos del formulario...
-            // (Aquí conectaríamos con el endpoint POST /api/historias que creamos arriba)
-            alert("✨ ¡Gracias! Tu historia se ha enviado y está pendiente de aprobación.");
-            e.target.reset();
+
+            const btnSubmit = document.getElementById('btnSubmitHistoria');
+            const originalText = btnSubmit.innerHTML;
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+            const data = {
+                nombre_cliente: document.getElementById('nombre_cliente').value,
+                servicio_realizado: document.getElementById('servicio_realizado').value,
+                titulo_historia: document.getElementById('titulo_historia').value,
+                testimonio: document.getElementById('testimonio').value,
+                foto_url: null, // Por ahora enviamos null
+                valoracion: valoracionSeleccionada
+            };
+
+            try {
+                const res = await fetch('/api/historias', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const json = await res.json();
+
+                if (json.success) {
+                    alert("✨ ¡Gracias! Tu historia se ha enviado y está pendiente de aprobación.");
+                    e.target.reset();
+                    // Reiniciar estrellas a 4
+                    valoracionSeleccionada = 4;
+                    const stars = document.querySelectorAll('.rating-stars i');
+                    stars.forEach((s, i) => {
+                        if (i < 4) { s.classList.remove('far'); s.classList.add('fas'); }
+                        else { s.classList.remove('fas'); s.classList.add('far'); }
+                    });
+                } else {
+                    alert("❌ Error al enviar la historia: " + (json.message || "Inténtalo de nuevo."));
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("❌ Error de conexión al enviar.");
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = originalText;
+            }
         }
     </script>
 </body>

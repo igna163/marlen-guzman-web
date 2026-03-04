@@ -582,11 +582,16 @@
                         const moneda = p.operacion_venta ? p.moneda_venta : p.moneda_arriendo;
                         document.getElementById('prop-price').innerText = `${moneda} ${new Intl.NumberFormat('es-CL').format(valor)}`;
 
-                        // Nuevo: Mostrar valor CLP aproximado (si es UF)
+                        // Conversión Dinámica: UF a CLP o CLP a UF
                         const clpEl = document.getElementById('prop-price-clp');
+                        const ufActual = window.obtenerValorUFActual ? window.obtenerValorUFActual() : 38000;
+
                         if (moneda === 'UF') {
-                            const valorCLP = valor * 38000; // Valor UF aproximado
+                            const valorCLP = Math.round(valor * ufActual);
                             clpEl.innerText = `$ ${new Intl.NumberFormat('es-CL').format(valorCLP)} (Aprox.)`;
+                        } else if (moneda === '$' || moneda === 'CLP' || moneda === 'Pesos') {
+                            const valorUF = valor / ufActual;
+                            clpEl.innerText = `UF ${new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valorUF)} (Aprox.)`;
                         } else {
                             clpEl.innerText = '';
                         }

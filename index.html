@@ -332,6 +332,31 @@
                         <input type="tel" id="contact-phone" placeholder="Teléfono">
                     </div>
                     <div class="form-group">
+                        <select id="contact-project-type" class="form-control" required>
+                            <option value="" disabled selected>Tipo de proyecto o necesidad</option>
+                            <option value="Comprar">Comprar</option>
+                            <option value="Arrendar">Arrendar</option>
+                            <option value="Vender">Vender</option>
+                            <option value="Dar en Administración">Dar en Administración</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="contact-location" class="form-control"
+                            placeholder="Ubicación del proyecto" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="contact-property-type" class="form-control" required>
+                            <option value="" disabled selected>Tipo de propiedad</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Departamento">Departamento</option>
+                            <option value="Parcela">Parcela</option>
+                            <option value="Terreno">Terreno</option>
+                            <option value="Local Comercial">Local Comercial</option>
+                            <option value="Oficina">Oficina</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <textarea id="contact-message" placeholder="¿En qué podemos ayudarle?" rows="4"
                             required></textarea>
                     </div>
@@ -759,6 +784,9 @@
                     nombre: document.getElementById('contact-name').value,
                     email: document.getElementById('contact-email').value,
                     telefono: "56" + cleanPhone, // Enviamos el código 56 ideal para conectarlo a WhatsApp luego
+                    tipoProyecto: document.getElementById('contact-project-type').value,
+                    ubicacionProyecto: document.getElementById('contact-location').value,
+                    tipoPropiedad: document.getElementById('contact-property-type').value,
                     mensaje: document.getElementById('contact-message').value,
                     origen: "Formulario Principal Web"
                 };

@@ -101,6 +101,21 @@ window.resetAI = function () {
 let properties = [];
 let currentUser = null;
 
+window.obtenerValorUFActual = function () {
+    const memoriaRaw = localStorage.getItem('indicadores_chile_v5_n8n');
+    if (memoriaRaw) {
+        try {
+            const memoriaObj = JSON.parse(memoriaRaw);
+            if (memoriaObj && memoriaObj.datos && memoriaObj.datos.uf) {
+                return parseFloat(memoriaObj.datos.uf);
+            }
+        } catch (e) {
+            console.error("Error leyendo caché de indicadores:", e);
+        }
+    }
+    return 38000; // Valor de respaldo
+};
+
 // VARIABLES DE PAGINACIÓN
 let currentPage = 1;
 let rows = 9;
@@ -1660,9 +1675,15 @@ function createPremiumCardHTML(p) {
 
     // Formatear precio si viene como número
     let displayPrice = p.price;
+    let precioAproxDisplay = '';
+    const ufActual = window.obtenerValorUFActual();
+
     if (p.rawPrice && !isNaN(p.rawPrice)) {
-        // Si tenemos rawPrice, lo formateamos bonito. Si no, usamos p.price tal cual.
-        // Asumimos que p.price ya viene con el símbolo (UF o $)
+        if (displayPrice && displayPrice.includes('UF')) {
+            precioAproxDisplay = `$${new Intl.NumberFormat('es-CL').format(Math.round(p.rawPrice * ufActual))} aprox.`;
+        } else if (displayPrice && (displayPrice.includes('$') || displayPrice.includes('COP') || displayPrice.includes('CLP') || displayPrice.includes('Pesos'))) {
+            precioAproxDisplay = `UF ${new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(p.rawPrice / ufActual)} aprox.`;
+        }
     }
 
     const dorms = (p.specs && p.specs.dorms) || 0;
@@ -1695,7 +1716,7 @@ function createPremiumCardHTML(p) {
             <div class="premium-type">${type}</div>
             <h3 class="premium-title">${p.title}</h3>
             <p class="premium-location"><i class="fas fa-map-marker-alt" style="color:#bfa378;"></i> ${p.location}</p>
-            <div class="premium-price">${displayPrice}</div>
+            <div class="premium-price">${displayPrice} <br><small style="font-size: 0.75rem; color: #999; font-weight: normal;">${precioAproxDisplay}</small></div>
             
             <div class="premium-features">
                 <div class="feat-item"><i class="fas fa-bed"></i> ${dorms} Dorm</div>
@@ -1715,6 +1736,18 @@ function createCardHTML(p) {
     const activeClass = isFav ? 'active' : '';
     const badgeClass = p.operation.includes('Venta') ? 'sale' : 'rent';
 
+    let displayPrice = p.price || '';
+    let precioAproxDisplay = '';
+    const ufActual = window.obtenerValorUFActual();
+
+    if (p.rawPrice && typeof p.rawPrice === 'number') {
+        if (displayPrice.includes('UF')) {
+            precioAproxDisplay = `$${new Intl.NumberFormat('es-CL').format(Math.round(p.rawPrice * ufActual))} aprox.`;
+        } else if (displayPrice.includes('$') || displayPrice.includes('COP') || displayPrice.includes('CLP')) {
+            precioAproxDisplay = `UF ${new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(p.rawPrice / ufActual)} aprox.`;
+        }
+    }
+
     // ✅ CORRECCIÓN: Usar la imagen principal de la base de datos o el placeholder si no hay
     const imgUrl = (p.images && p.images.main) ? p.images.main : 'https://via.placeholder.com/400';
 
@@ -1726,7 +1759,7 @@ function createCardHTML(p) {
             <img src="${imgUrl}" class="card-image" onerror="this.src='https://via.placeholder.com/400'">
         </div>
         <div class="card-content">
-            <div class="card-price">${p.price}</div>
+            <div class="card-price">${displayPrice} <br><small style="font-size: 0.75rem; color: #999; font-weight: normal;">${precioAproxDisplay}</small></div>
             <h3 class="card-title">${p.title}</h3>
             <p class="card-location"><i class="fas fa-map-marker-alt"></i> ${p.location}</p>
             <div class="card-features">

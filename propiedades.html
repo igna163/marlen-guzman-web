@@ -558,15 +558,29 @@
             // Nota: grid.innerHTML = '' ya se hace en renderPaginated
 
             lista.forEach(p => {
-                // Lógica Precio
+                // Lógica Precio y Conversión Dinámica
                 let precioDisplay = '';
+                let precioAproxDisplay = '';
                 let badgeHtml = '';
+                const ufActual = window.obtenerValorUFActual ? window.obtenerValorUFActual() : 38000;
 
                 if (p.operacion_venta) {
-                    precioDisplay = `${p.moneda_venta} ${new Intl.NumberFormat('es-CL').format(p.precio_venta)}`;
+                    const valor = parseFloat(p.precio_venta);
+                    precioDisplay = `${p.moneda_venta} ${new Intl.NumberFormat('es-CL').format(valor)}`;
+                    if (p.moneda_venta === 'UF') {
+                        precioAproxDisplay = `$${new Intl.NumberFormat('es-CL').format(Math.round(valor * ufActual))} aprox.`;
+                    } else {
+                        precioAproxDisplay = `UF ${new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valor / ufActual)} aprox.`;
+                    }
                     badgeHtml = `<span class="badge-status bg-venta">VENTA</span>`;
                 } else if (p.operacion_arriendo) {
-                    precioDisplay = `${p.moneda_arriendo} ${new Intl.NumberFormat('es-CL').format(p.precio_arriendo)}`;
+                    const valor = parseFloat(p.precio_arriendo);
+                    precioDisplay = `${p.moneda_arriendo} ${new Intl.NumberFormat('es-CL').format(valor)}`;
+                    if (p.moneda_arriendo === 'UF') {
+                        precioAproxDisplay = `$${new Intl.NumberFormat('es-CL').format(Math.round(valor * ufActual))} aprox.`;
+                    } else {
+                        precioAproxDisplay = `UF ${new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(valor / ufActual)} aprox.`;
+                    }
                     badgeHtml = `<span class="badge-status bg-arriendo">ARRIENDO</span>`;
                 }
 
@@ -591,7 +605,7 @@
                             <h5 class="card-title">${p.tipo_propiedad} en ${p.comuna}</h5>
                             <p class="card-location"><i class="fas fa-map-marker-alt"></i> ${p.sector || p.comuna}</p>
                             
-                            <div class="card-price">${precioDisplay}</div>
+                            <div class="card-price">${precioDisplay} <br><small style="font-size: 0.75rem; color: #999; font-weight: normal;">${precioAproxDisplay}</small></div>
                             
                             <div class="card-features">
                                 <div class="feature-item"><i class="fas fa-bed"></i> ${p.dormitorios || 0}</div>

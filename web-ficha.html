@@ -11,6 +11,11 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Open Graph / Social Sharing -->
+    <meta id="og-title" property="og:title" content="Propiedad | Marlen Guzmán">
+    <meta id="og-description" property="og:description" content="">
+    <meta id="og-image" property="og:image" content="">
+    <meta id="og-url" property="og:url" content="">
     <style>
         body {
             padding-top: 80px;
@@ -554,6 +559,23 @@
                         document.getElementById('feat-banos').innerText = p.banos;
                         document.getElementById('feat-sup').innerText = p.superficie_util;
                         document.getElementById('prop-desc').innerText = p.descripcion_publica;
+
+                        // --- OPEN GRAPH: Actualizar meta tags para compartir ---
+                        const ogTipoOp = p.operacion_venta ? 'Venta' : 'Arriendo';
+                        const ogValor = p.operacion_venta ? p.precio_venta : p.precio_arriendo;
+                        const ogMoneda = p.operacion_venta ? p.moneda_venta : p.moneda_arriendo;
+                        const ogPrecioFormateado = `${ogMoneda} ${new Intl.NumberFormat('es-CL').format(ogValor)}`;
+                        const ogDescripcion = `${ogTipoOp} · ${ogPrecioFormateado} · ${p.comuna}`;
+
+                        const BASE_URL = 'https://marlen-guzman-web.onrender.com';
+                        const ogImagenRaw = p.imagen_principal || '';
+                        const ogImagenFull = ogImagenRaw.startsWith('http') ? ogImagenRaw : BASE_URL + ogImagenRaw;
+
+                        document.getElementById('og-title').setAttribute('content', p.titulo_publicacion);
+                        document.getElementById('og-description').setAttribute('content', ogDescripcion);
+                        document.getElementById('og-image').setAttribute('content', ogImagenFull);
+                        document.getElementById('og-url').setAttribute('content', window.location.href);
+                        // --- FIN OPEN GRAPH ---
 
                         // --- CONFIGURACIÓN DEL MAPA (LO NUEVO) ---
                         const direccionCompleta = `${p.direccion_calle} ${p.direccion_numero}, ${p.comuna}, Chile`;

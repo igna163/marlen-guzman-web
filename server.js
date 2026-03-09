@@ -112,7 +112,7 @@ async function agendarEnGoogle(fechaStr, horaStr, nombreCliente, telefono, email
     // URL DE TU WEBHOOK DE N8N
     // NOTA: Si n8n está en "Inactive", usa 'webhook-test' y dale al botón "Listen".
     // Si n8n está en "Active" (verde), usa 'webhook' (sin -test).
-    const N8N_URL = "http://localhost:5678/webhook/agendar-cita";
+    const N8N_URL = "https://n8n-marlen-auto.onrender.com/webhook-test/agendar-cita";
 
     try {
         // 1. Formatear la fecha para que sea estándar (YYYY-MM-DD)
@@ -629,8 +629,8 @@ app.post('/api/propiedades', upload.array('fotos', 20), async (req, res) => {
         const nuevaPropiedad = result.rows[0];
 
         // --- AUTOMATIZACIÓN PUBLICACIÓN RRSS (N8N) ---
-        const CLOUDFLARE_URL = "https://wake-win-pub-attorney.trycloudflare.com/";
-        const N8N_WEBHOOK_RRSS = "http://localhost:5678/webhook-test/publicar-casa";
+        const CLOUDFLARE_URL = "https://marlen-guzman-web.onrender.com";
+        const N8N_WEBHOOK_RRSS = "https://n8n-marlen-auto.onrender.com/webhook-test/publicar-casa";
 
         const payloadRRSS = {
             titulo: nuevaPropiedad.titulo,
@@ -1093,7 +1093,7 @@ app.get('/api/disponibilidad', async (req, res) => {
     console.log(`📡 1. Recibida petición en Node para fecha: ${fecha}`);
 
     // URL DE N8N (Asegúrate de que n8n esté en "Listening..." si usas -test)
-    const N8N_URL = "http://localhost:5678/webhook/consultar-disponibilidad";
+    const N8N_URL = "https://n8n-marlen-auto.onrender.com/webhook-test/consultar-disponibilidad";
 
     try {
         console.log(`📤 2. Enviando a n8n: ${N8N_URL}?fecha=${fecha}`);

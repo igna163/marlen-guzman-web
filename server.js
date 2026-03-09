@@ -13,6 +13,83 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+// =======================================================
+// RUTA SSR: web-ficha.html con Open Graph dinámico
+// IMPORTANTE: Debe ir ANTES de express.static()
+// WhatsApp/Facebook no ejecutan JavaScript, así que las
+// etiquetas OG deben estar en el HTML estático del servidor.
+// =======================================================
+app.get('/web-ficha.html', async (req, res, next) => {
+    const propId = req.query.id;
+
+    // Si no hay ID, servir el HTML normal (sin OG dinámico)
+    if (!propId) return next();
+
+    try {
+        // 1. Consultar datos de la propiedad en la BD
+        const propQuery = `
+            SELECT titulo_publicacion, descripcion_publica,
+                   operacion_venta, precio_venta, moneda_venta,
+                   precio_arriendo, moneda_arriendo,
+                   imagen_principal, comuna
+            FROM propiedades2 WHERE id = $1
+        `;
+        const propRes = await pool.query(propQuery, [propId]);
+
+        if (propRes.rows.length === 0) return next(); // Propiedad no encontrada, servir normal
+
+        const p = propRes.rows[0];
+
+        // 2. Construir valores OG
+        const BASE_URL = 'https://marlen-guzman-web.onrender.com';
+        const ogTitle = p.titulo_publicacion || 'Propiedad | Marlen Guzmán';
+        const tipoOp = p.operacion_venta ? 'Venta' : 'Arriendo';
+        const precio = p.operacion_venta ? p.precio_venta : p.precio_arriendo;
+        const moneda = p.operacion_venta ? p.moneda_venta : p.moneda_arriendo;
+        const precioFmt = precio ? `${moneda} ${parseInt(precio).toLocaleString('es-CL')}` : '';
+        const ogDesc = `${tipoOp} · ${precioFmt} · ${p.comuna || ''}`.trim().replace(/^·|·$/g, '').trim();
+        const imgRaw = p.imagen_principal || '';
+        const ogImage = imgRaw.startsWith('http') ? imgRaw : BASE_URL + imgRaw;
+        const ogUrl = `${BASE_URL}/web-ficha.html?id=${propId}`;
+
+        // 3. Leer el archivo HTML y reemplazar las etiquetas OG vacías
+        const htmlPath = path.join(__dirname, 'web-ficha.html');
+        let html = fs.readFileSync(htmlPath, 'utf8');
+
+        // Reemplazar los content="" de las etiquetas OG con los datos reales
+        html = html.replace(
+            /(<meta id="og-title"[^>]*content=")[^"]*(">)/,
+            `$1${ogTitle}$2`
+        );
+        html = html.replace(
+            /(<meta id="og-description"[^>]*content=")[^"]*(">)/,
+            `$1${ogDesc}$2`
+        );
+        html = html.replace(
+            /(<meta id="og-image"[^>]*content=")[^"]*(">)/,
+            `$1${ogImage}$2`
+        );
+        html = html.replace(
+            /(<meta id="og-url"[^>]*content=")[^"]*(">)/,
+            `$1${ogUrl}$2`
+        );
+
+        // Reemplazar también el <title> para que sea descriptivo
+        html = html.replace(
+            /<title>[^<]*<\/title>/,
+            `<title>${ogTitle} | Marlen Guzmán</title>`
+        );
+
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(html);
+
+    } catch (err) {
+        console.error('❌ Error SSR Open Graph:', err.message);
+        next(); // Si falla, servir el archivo estático normal
+    }
+});
+
 app.use(express.static(__dirname));
 
 // 1. CARPETA PÚBLICA PARA FOTOS

@@ -648,39 +648,85 @@
                     }
                 })
                 .catch(e => console.error("Error cargando ficha:", e));
-            // --- NUEVA LÓGICA: CALENDARIO Y ENVÍO DE VISITAS ---
+            // --- LÓGICA NATIVA CITAS3: DISPONIBILIDAD EN TIEMPO REAL Y ENVÍO ---
             const inputFecha = document.getElementById('visita-fecha');
             const inputHora = document.getElementById('visita-hora');
             const hintHora = document.getElementById('hora-hint');
+            const btnSubmit = document.getElementById('btn-visita-submit');
 
             // Evitar que seleccionen fechas en el pasado
             const today = new Date().toISOString().split('T')[0];
             inputFecha.setAttribute('min', today);
 
-            // Lógica inteligente de cambio de horarios según el día
-            inputFecha.addEventListener('change', function () {
-                if (!this.value) return;
-                // Crear fecha forzando la hora local para evitar problemas de zona horaria
-                const dateObj = new Date(this.value + "T00:00:00");
-                const day = dateObj.getDay(); // 0 es Domingo, 6 es Sábado
+            // Horas ocupadas cargadas desde el servidor (se actualiza al cambiar fecha)
+            let horasOcupadas = [];
 
+            // --- FUNCIÓN: Verificar disponibilidad de una hora específica ---
+            async function verificarDisponibilidad() {
+                const fecha = inputFecha.value;
+                const hora = inputHora.value;
+                if (!fecha || !hora) return;
+
+                // Normalizar hora a "HH:MM:SS" para comparar con PostgreSQL TIME
+                const horaNorm = hora.length === 5 ? hora + ':00' : hora;
+
+                if (horasOcupadas.includes(horaNorm)) {
+                    hintHora.innerHTML = `<span style="color:#e74c3c;">❌ Hora <strong>${hora}</strong> no disponible. Por favor elige otra.</span>`;
+                    btnSubmit.disabled = true;
+                    btnSubmit.style.opacity = '0.5';
+                    btnSubmit.title = 'Hora no disponible';
+                } else if (hora) {
+                    hintHora.innerHTML = `<span style="color:#27ae60;">✅ Hora <strong>${hora}</strong> disponible.</span>`;
+                    btnSubmit.disabled = false;
+                    btnSubmit.style.opacity = '1';
+                    btnSubmit.title = '';
+                }
+            }
+
+            // --- FUNCIÓN: Cargar horas ocupadas al cambiar la fecha ---
+            async function cargarDisponibilidad() {
+                const fecha = inputFecha.value;
+                if (!fecha) return;
+
+                // Lógica de horarios según día
+                const dateObj = new Date(fecha + 'T00:00:00');
+                const day = dateObj.getDay();
                 if (day === 0 || day === 6) {
-                    // Es Fin de semana
                     inputHora.setAttribute('min', '10:00');
                     inputHora.setAttribute('max', '21:00');
-                    hintHora.innerHTML = "<strong>Horario seleccionado:</strong> Fin de semana (10:00 a 21:00 hrs).";
-                    hintHora.style.color = "#bfa378";
                 } else {
-                    // Es día de semana
                     inputHora.setAttribute('min', '17:30');
                     inputHora.setAttribute('max', '21:00');
-                    hintHora.innerHTML = "<strong>Horario seleccionado:</strong> Día de semana (17:30 a 21:00 hrs).<br><em>Si es festivo, indique la hora de mañana en el mensaje.</em>";
-                    hintHora.style.color = "#bfa378";
                 }
-                inputHora.value = ""; // Limpiar la hora si cambian el día
-            });
+                inputHora.value = '';
+                btnSubmit.disabled = false;
+                btnSubmit.style.opacity = '1';
+                hintHora.innerHTML = `<span style="color:#888;">Consultando horas ocupadas...</span>`;
 
-            // Lógica de envío a n8n
+                try {
+                    const url = `/api/citas3/disponibilidad?fecha=${fecha}&propiedad_id=${propId}`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    horasOcupadas = data.horas_ocupadas || [];
+
+                    if (horasOcupadas.length === 0) {
+                        hintHora.innerHTML = `<span style="color:#27ae60;">✅ Todas las horas están disponibles para esta fecha.</span>`;
+                    } else {
+                        const horasMostrar = horasOcupadas.map(h => h.substring(0, 5)).join(', ');
+                        hintHora.innerHTML = `<span style="color:#e67e22;">⚠️ Horas <strong>ocupadas</strong>: ${horasMostrar}. Elige una hora diferente.</span>`;
+                    }
+                } catch (err) {
+                    console.error('Error consultando disponibilidad:', err);
+                    horasOcupadas = [];
+                    hintHora.innerHTML = `<span style="color:#888;">* No se pudo consultar disponibilidad. Continúa de igual forma.</span>`;
+                }
+            }
+
+            // Eventos: cargar disponibilidad al cambiar fecha, verificar al elegir hora
+            inputFecha.addEventListener('change', cargarDisponibilidad);
+            inputHora.addEventListener('change', verificarDisponibilidad);
+
+            // --- SUBMIT: Guardar directo en citas3 (sin n8n) ---
             document.getElementById('form-agendar-visita').addEventListener('submit', async function (e) {
                 e.preventDefault();
 
@@ -688,54 +734,65 @@
                 const minTime = inputHora.getAttribute('min');
                 const maxTime = inputHora.getAttribute('max');
 
-                // Validación estricta de la hora
+                // Validar horario de atención
                 if (minTime && maxTime && (timeVal < minTime || timeVal > maxTime)) {
                     alert(`⚠️ Horario no válido.\nPara la fecha seleccionada, por favor ingresa una hora entre las ${minTime} y ${maxTime} hrs.`);
                     return;
                 }
 
-                const btn = document.getElementById('btn-visita-submit');
-                btn.innerText = "Enviando...";
-                btn.disabled = true;
+                // Verificar una vez más en el cliente que la hora sigue libre
+                const horaNorm = timeVal.length === 5 ? timeVal + ':00' : timeVal;
+                if (horasOcupadas.includes(horaNorm)) {
+                    alert('❌ Esa hora ya fue tomada. Por favor elige otra hora.');
+                    return;
+                }
 
-                // Paquete de datos que le llegará a n8n
+                btnSubmit.innerText = 'Enviando...';
+                btnSubmit.disabled = true;
+
                 const payload = {
-                    propiedad_id: propId, // Sacamos el ID directo de la URL
-                    propiedad_titulo: document.getElementById('prop-title').innerText, // Lo leemos de la pantalla
-                    nombre: document.getElementById('visita-nombre').value,
-                    email: document.getElementById('visita-email').value,
-                    telefono: document.getElementById('visita-telefono').value,
+                    propiedad_id: propId,
+                    propiedad_titulo: document.getElementById('prop-title').innerText,
+                    nombre_cliente: document.getElementById('visita-nombre').value,
+                    email_cliente: document.getElementById('visita-email').value,
+                    telefono_cliente: document.getElementById('visita-telefono').value,
                     fecha: inputFecha.value,
-                    hora: inputHora.value,
-                    mensaje: document.getElementById('visita-mensaje').value,
-                    origen: "Formulario Ficha de Propiedad"
+                    hora_inicio: timeVal,
+                    mensaje: document.getElementById('visita-mensaje').value
                 };
 
                 try {
-                    // Apuntamos al webhook de n8n
-                    const res = await fetch('https://n8n-marlen-auto.onrender.com/webhook-test/visita-propiedad', {
+                    const res = await fetch('/api/citas3', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
+                    const data = await res.json();
 
-                    if (res.ok) {
-                        alert("✅ ¡Visita solicitada con éxito!\nMarlen se pondrá en contacto para confirmar la cita.");
+                    if (res.ok && data.success) {
+                        alert('✅ ¡Cita agendada con éxito!\nMarlen se pondrá en contacto para confirmar. También puedes contactarnos por WhatsApp.');
                         document.getElementById('form-agendar-visita').reset();
-                        hintHora.innerHTML = "* Días de semana: 17:30 a 21:00 hrs<br>* Fin de semana y festivos: 10:00 a 21:00 hrs";
-                        hintHora.style.color = "#888";
+                        horasOcupadas = [];
+                        hintHora.innerHTML = '* Días de semana: 17:30 a 21:00 hrs<br>* Fin de semana y festivos: 10:00 a 21:00 hrs';
+                        hintHora.style.color = '#888';
+                    } else if (res.status === 409) {
+                        alert('❌ ' + (data.message || 'Esa hora ya fue tomada. Por favor elige otra.'));
+                        // Recargar disponibilidad para reflejar el estado real
+                        await cargarDisponibilidad();
                     } else {
-                        alert("❌ Hubo un problema al procesar tu solicitud. Por favor intenta mediante WhatsApp.");
+                        alert('❌ Hubo un problema al procesar tu solicitud: ' + (data.message || 'Error del servidor.'));
                     }
                 } catch (err) {
                     console.error(err);
-                    alert("❌ Error de conexión con el sistema. Por favor, utiliza el botón de WhatsApp.");
+                    alert('❌ Error de conexión. Por favor, utiliza el botón de WhatsApp.');
                 } finally {
-                    btn.innerText = "ENVIAR SOLICITUD";
-                    btn.disabled = false;
+                    btnSubmit.innerText = 'ENVIAR SOLICITUD';
+                    btnSubmit.disabled = false;
+                    btnSubmit.style.opacity = '1';
                 }
             });
         }
+
     </script>
 </body>
 

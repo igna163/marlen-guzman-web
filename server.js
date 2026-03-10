@@ -2365,6 +2365,211 @@ app.post('/api/historias', upload.single('foto'), async (req, res) => {
     }
 });
 
+
+// =======================================================
+//    RUTAS: SISTEMA DE CITAS (citas3) — CRUD NATIVO
+// =======================================================
+
+/**
+ * GET /api/citas3/disponibilidad
+ * Devuelve las horas YA OCUPADAS para una fecha dada.
+ * Recibe: ?fecha=YYYY-MM-DD  &propiedad_id=X (opcional)
+ * Lógica de clínica: cualquier cita no-cancelada bloquea esa hora.
+ */
+app.get('/api/citas3/disponibilidad', async (req, res) => {
+    const { fecha, propiedad_id } = req.query;
+
+    if (!fecha) {
+        return res.status(400).json({ success: false, message: 'El parámetro fecha es obligatorio (YYYY-MM-DD).' });
+    }
+
+    try {
+        let query = `
+            SELECT hora_inicio
+            FROM citas3
+            WHERE fecha = $1
+              AND estado <> 'Cancelada'
+        `;
+        const params = [fecha];
+
+        if (propiedad_id) {
+            query += ` AND propiedad_id = $2`;
+            params.push(propiedad_id);
+        }
+
+        const result = await pool.query(query, params);
+        const horasOcupadas = result.rows.map(r => r.hora_inicio);
+
+        res.json({ success: true, horas_ocupadas: horasOcupadas });
+    } catch (err) {
+        console.error('❌ Error en /api/citas3/disponibilidad:', err.message);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+/**
+ * POST /api/citas3
+ * Crea una nueva cita.
+ * Body: { propiedad_id, propiedad_titulo, nombre_cliente, email_cliente,
+ *         telefono_cliente, fecha, hora_inicio, mensaje }
+ * Calcula hora_fin = hora_inicio + 1 hora automáticamente.
+ */
+app.post('/api/citas3', async (req, res) => {
+    const {
+        propiedad_id, propiedad_titulo,
+        nombre_cliente, email_cliente, telefono_cliente,
+        fecha, hora_inicio, mensaje
+    } = req.body;
+
+    if (!nombre_cliente || !email_cliente || !fecha || !hora_inicio) {
+        return res.status(400).json({ success: false, message: 'Faltan campos obligatorios (nombre_cliente, email_cliente, fecha, hora_inicio).' });
+    }
+
+    try {
+        // Verificar que la hora no esté ya ocupada (doble seguridad server-side)
+        const checkQuery = `
+            SELECT id FROM citas3
+            WHERE fecha = $1 AND hora_inicio = $2 AND estado <> 'Cancelada'
+              ${propiedad_id ? "AND propiedad_id = $3" : ""}
+        `;
+        const checkParams = propiedad_id ? [fecha, hora_inicio, propiedad_id] : [fecha, hora_inicio];
+        const existing = await pool.query(checkQuery, checkParams);
+
+        if (existing.rows.length > 0) {
+            return res.status(409).json({ success: false, message: 'Lo sentimos, esa hora ya fue tomada. Por favor elige otra.' });
+        }
+
+        // Calcular hora_fin = hora_inicio + 1 hora
+        const horaFinCalc = `(TIME '${hora_inicio}' + INTERVAL '1 hour')::TIME`;
+
+        const insertQuery = `
+            INSERT INTO citas3
+                (propiedad_id, propiedad_titulo, nombre_cliente, email_cliente,
+                 telefono_cliente, fecha, hora_inicio, hora_fin, mensaje, estado)
+            VALUES
+                ($1, $2, $3, $4, $5, $6, $7, ${horaFinCalc}, $8, 'Pendiente')
+            RETURNING *
+        `;
+        const values = [
+            propiedad_id || null,
+            propiedad_titulo || null,
+            nombre_cliente,
+            email_cliente,
+            telefono_cliente || null,
+            fecha,
+            hora_inicio,
+            mensaje || null
+        ];
+
+        const result = await pool.query(insertQuery, values);
+        res.status(201).json({ success: true, message: '✅ Cita agendada correctamente.', data: result.rows[0] });
+    } catch (err) {
+        console.error('❌ Error creando cita en citas3:', err.message);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+/**
+ * GET /api/citas3/mis-citas
+ * Historial de citas de un cliente.
+ * Recibe: ?email=cliente@mail.com
+ */
+app.get('/api/citas3/mis-citas', async (req, res) => {
+    const { email } = req.query;
+
+    if (!email) {
+        return res.status(400).json({ success: false, message: 'El parámetro email es obligatorio.' });
+    }
+
+    try {
+        const result = await pool.query(
+            `SELECT * FROM citas3
+             WHERE email_cliente = $1
+             ORDER BY fecha DESC, hora_inicio DESC`,
+            [email.toLowerCase()]
+        );
+        res.json({ success: true, data: result.rows });
+    } catch (err) {
+        console.error('❌ Error en /api/citas3/mis-citas:', err.message);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+/**
+ * PUT /api/citas3/:id
+ * Reagendar una cita (cambia fecha, hora_inicio, recalcula hora_fin).
+ * Body: { fecha, hora_inicio }
+ */
+app.put('/api/citas3/:id', async (req, res) => {
+    const { id } = req.params;
+    const { fecha, hora_inicio } = req.body;
+
+    if (!fecha || !hora_inicio) {
+        return res.status(400).json({ success: false, message: 'Se requieren fecha y hora_inicio para reagendar.' });
+    }
+
+    try {
+        // Verificar que la nueva hora no esté ocupada (excluyendo la propia cita)
+        const check = await pool.query(
+            `SELECT id FROM citas3
+             WHERE fecha = $1 AND hora_inicio = $2 AND estado <> 'Cancelada' AND id <> $3`,
+            [fecha, hora_inicio, id]
+        );
+        if (check.rows.length > 0) {
+            return res.status(409).json({ success: false, message: 'Esa hora ya está ocupada en la nueva fecha. Por favor elige otra.' });
+        }
+
+        const result = await pool.query(
+            `UPDATE citas3
+             SET fecha = $1,
+                 hora_inicio = $2,
+                 hora_fin = ($2::TIME + INTERVAL '1 hour')::TIME,
+                 estado = 'Reprogramada'
+             WHERE id = $3
+             RETURNING *`,
+            [fecha, hora_inicio, id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Cita no encontrada.' });
+        }
+        res.json({ success: true, message: '🔄 Cita reprogramada correctamente.', data: result.rows[0] });
+    } catch (err) {
+        console.error('❌ Error reagendando cita:', err.message);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+/**
+ * PUT /api/citas3/:id/cancelar
+ * Soft-delete: marca la cita como 'Cancelada' (mantiene historial).
+ */
+app.put('/api/citas3/:id/cancelar', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await pool.query(
+            `UPDATE citas3
+             SET estado = 'Cancelada'
+             WHERE id = $1
+             RETURNING *`,
+            [id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Cita no encontrada.' });
+        }
+        res.json({ success: true, message: '🚫 Cita cancelada. El historial se ha conservado.', data: result.rows[0] });
+    } catch (err) {
+        console.error('❌ Error cancelando cita:', err.message);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// =======================================================
+//    FIN RUTAS CITAS3
+// =======================================================
+
 app.listen(port, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
 });

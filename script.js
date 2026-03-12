@@ -2165,3 +2165,55 @@ function renderizarIndicadores(d) {
         initFloatingControls();
     }
 })();
+
+/* ==========================================================================
+   LÓGICA DEL WIDGET DE ACCESIBILIDAD
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Inyección dinámica del HTML (así no tocas tus archivos .html)
+    const widgetHTML = `
+        <div id="accessibility-widget" aria-label="Herramientas de accesibilidad">
+            <button id="btn-increase-font" aria-label="Aumentar tamaño de letra" title="Aumentar letra">A+</button>
+            <button id="btn-decrease-font" aria-label="Reducir tamaño de letra" title="Reducir letra">A-</button>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', widgetHTML);
+
+    // 2. Selectores y variables de estado
+    const btnIncrease = document.getElementById('btn-increase-font');
+    const btnDecrease = document.getElementById('btn-decrease-font');
+    
+    // Configuraciones de tamaño (en porcentaje)
+    let currentSizePercentage = 100;
+    const sizeStep = 10;
+    const maxSize = 130;
+    const minSize = 90;
+
+    // 3. Función para aplicar y guardar el tamaño
+    const applyFontSize = (percentage) => {
+        document.documentElement.style.fontSize = percentage + '%';
+        localStorage.setItem('accessibilityFontSize', percentage);
+    };
+
+    // 4. Lógica de Persistencia: Leer preferencias guardadas al cargar
+    const savedSize = localStorage.getItem('accessibilityFontSize');
+    if (savedSize !== null) {
+        currentSizePercentage = parseInt(savedSize, 10);
+        applyFontSize(currentSizePercentage);
+    }
+
+    // 5. Eventos de los botones
+    btnIncrease.addEventListener('click', () => {
+        if (currentSizePercentage < maxSize) {
+            currentSizePercentage += sizeStep;
+            applyFontSize(currentSizePercentage);
+        }
+    });
+
+    btnDecrease.addEventListener('click', () => {
+        if (currentSizePercentage > minSize) {
+            currentSizePercentage -= sizeStep;
+            applyFontSize(currentSizePercentage);
+        }
+    });
+});

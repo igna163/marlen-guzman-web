@@ -54,6 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (yearSpan) {
                     yearSpan.textContent = new Date().getFullYear();
                 }
+                // Actualizar año en el sub-footer también
+                document.querySelectorAll('.subfooter-year').forEach(el => {
+                    el.textContent = new Date().getFullYear();
+                });
             })
             .catch(error => console.error("Error al cargar el footer:", error));
     }

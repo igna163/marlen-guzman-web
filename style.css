@@ -767,6 +767,30 @@ ul {
     opacity: 0.6;
 }
 
+/* Sub-footer: legal links bar */
+.footer-subfooter {
+    background-color: rgba(0, 0, 0, 0.35);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.8rem;
+}
+
+.footer-subfooter small {
+    color: rgba(255, 255, 255, 0.55);
+    white-space: nowrap;
+}
+
+.footer-subfooter nav a {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+.footer-subfooter nav a:hover {
+    color: var(--accent-color);
+}
+
 /* ========================================= */
 /* ABOUT SECTION (DISEÑO FILA 50/50)         */
 /* ========================================= */

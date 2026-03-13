@@ -2036,4 +2036,10 @@ body.dark-mode #btn-theme-toggle {
 
 #accessibility-widget button:first-child {
   border-bottom: 1px solid #eaeaea;
+}
+
+/* Invertir el logotipo del Navbar a color blanco en Modo Oscuro */
+body.dark-mode .nav-logo-img {
+    filter: invert(1) brightness(100%);
+    -webkit-filter: invert(1) brightness(100%);
 }

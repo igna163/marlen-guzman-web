@@ -2043,4 +2043,79 @@ body.dark-mode .nav-logo-img {
     filter: invert(1) grayscale(100%) brightness(200%) contrast(200%) !important;
     -webkit-filter: invert(1) grayscale(100%) brightness(200%) contrast(200%) !important;
     mix-blend-mode: screen !important;
+}
+
+/* ==========================================================================
+   MODALES EN MODO OSCURO (Login y Registro)
+   ========================================================================== */
+body.dark-mode .modal-content,
+body.dark-mode .modal-header,
+body.dark-mode .modal-body {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    border-color: #333333 !important;
+}
+
+/* Botón de cerrar modal */
+body.dark-mode .modal-header .btn-close,
+body.dark-mode .modal-header .close {
+    filter: invert(1) grayscale(100%) brightness(200%) !important;
+    color: #ffffff !important;
+}
+
+/* Panel izquierdo (Bienvenida) */
+body.dark-mode .login-info-panel,
+body.dark-mode .modal-left {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .login-info-panel h2,
+body.dark-mode .login-info-panel p {
+    color: #ffffff !important;
+}
+
+/* Estilo de los inputs */
+body.dark-mode .modal-content .form-control,
+body.dark-mode .modal-content .input-group-text {
+    background-color: #2c2c2c !important;
+    color: #ffffff !important;
+    border: 1px solid #444444 !important;
+}
+
+body.dark-mode .modal-content .form-control:focus {
+    border-color: var(--accent-color, #d4a373) !important;
+    box-shadow: 0 0 0 0.2rem rgba(212, 163, 115, 0.25) !important;
+}
+
+body.dark-mode .modal-content .form-control::placeholder {
+    color: #999999 !important;
+}
+
+/* Botones ("Iniciar Sesión" y "Crear Cuenta") */
+body.dark-mode .modal-content .btn-primary,
+body.dark-mode .modal-content button[type="submit"] {
+    background-color: var(--accent-color, #d4a373) !important;
+    border-color: var(--accent-color, #d4a373) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    display: block;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .modal-content .btn-primary:hover,
+body.dark-mode .modal-content button[type="submit"]:hover {
+    background-color: var(--accent-dark, #b59326) !important;
+    border-color: var(--accent-dark, #b59326) !important;
+}
+
+/* Enlaces (¿Olvidaste tu contraseña?) */
+body.dark-mode .modal-content a {
+    color: var(--accent-color, #d4a373) !important;
+}
+
+body.dark-mode .modal-content a:hover {
+    color: var(--accent-dark, #b59326) !important;
+    text-decoration: underline !important;
 }

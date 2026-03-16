@@ -143,7 +143,7 @@ pool.on('connect', () => {
 });
 
 pool.on('error', (err) => {
-    console.error('❌ ERROR CRÍTICO EN EL POOL:', err.message);
+    console.error('Error inesperado en el pool de Neon (reconectando...):', err);
 });
 
 pool.connect((err) => {

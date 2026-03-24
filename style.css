@@ -408,51 +408,56 @@ ul {
 .properties-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 3rem;
+    margin-top: 3rem;
 }
 
 .property-card {
     background: var(--white);
-    border-radius: 8px;
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
     transition: var(--transition);
-    border: 1px solid #eee;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 2rem;
 }
 
 .card-image-wrapper {
-    height: 250px;
+    height: 280px;
     overflow: hidden;
     position: relative;
+    border-radius: 0;
 }
 
 .card-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s;
+    transition: transform 0.8s ease;
 }
 
 .property-card:hover .card-image {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
 .card-content {
-    padding: 1.5rem;
+    padding: 1.5rem 0 0 0;
 }
 
 .card-price {
-    color: var(--accent-color);
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+    color: #111;
+    font-size: 1.4rem;
+    font-family: 'Georgia', serif;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.5px;
 }
 
 .card-location {
-    color: var(--text-light);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    color: #555;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 5px;

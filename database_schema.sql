@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict 2OfyU2egYouSHAtG78cItM0WoeeZXgfNm1CsTJ1FfKLHBeTBklEplTPM8VBcUuh
+
 
 -- Dumped from database version 17.7
 -- Dumped by pg_dump version 17.7
@@ -1875,5 +1875,5 @@ ALTER TABLE ONLY public.propiedades2
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 2OfyU2egYouSHAtG78cItM0WoeeZXgfNm1CsTJ1FfKLHBeTBklEplTPM8VBcUuh
+
 

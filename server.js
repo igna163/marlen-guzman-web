@@ -147,11 +147,11 @@ const pool = new Pool({
 
 // Eventos de monitoreo (ESTO ES LO QUE NECESITAS AQUÍ)
 pool.on('connect', () => {
-    console.log("✅ ¡CONECTADO A NEON (BASE DE DATOS GRATUITA)! 🚀");
+    console.log("✅ ¡CONECTADO A SUPABASE POSTGRES! 🚀");
 });
 
 pool.on('error', (err) => {
-    console.error('Error inesperado en el pool de Neon (reconectando...):', err);
+    console.error('Error inesperado en el pool de Supabase Postgres (reconectando...):', err);
 });
 
 pool.connect((err) => {
